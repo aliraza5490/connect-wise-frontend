@@ -9,9 +9,21 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { MagnetIcon } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
 
 export default function Landing() {
+  const pathnameID = window.location.hash;
+  const params = useParams();
+
+  useEffect(() => {
+    console.log(pathnameID);
+    if (pathnameID === '#browse-mentors') {
+      const browseMentors = document.getElementById('browse-mentors');
+      browseMentors.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [pathnameID, params]);
+
   return (
     <div className="flex flex-col min-h-[100dvh]">
       <PageHeader />

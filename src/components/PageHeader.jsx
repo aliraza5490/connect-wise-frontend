@@ -14,13 +14,13 @@ function PageHeader() {
           className="text-sm font-medium hover:underline underline-offset-4"
           to="/#browse-mentors"
         >
-          Find Link Mentor
+          Find Mentor
         </Link>
         <Link
           className="text-sm font-medium hover:underline underline-offset-4"
           to="/become-mentor"
         >
-          Become Link Mentor
+          Become Mentor
         </Link>
         <Link
           className="text-sm font-medium hover:underline underline-offset-4 text-transparent bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text"
