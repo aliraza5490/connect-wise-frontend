@@ -18,7 +18,7 @@ export function ChatList({ messages, selectedUser, sendMessage, isMobile }) {
     <div className="w-full overflow-y-auto overflow-x-hidden h-full flex flex-col">
       <div
         ref={messagesContainerRef}
-        className="w-full overflow-y-auto overflow-x-hidden h-full flex flex-col"
+        className="w-full overflow-y-auto overflow-x-hidden h-full flex flex-col scroll-styles"
       >
         <AnimatePresence>
           {messages?.map((message, index) => (

@@ -71,3 +71,19 @@
 .Toastify__toast-theme--dark {
   background: #1f2937 !important;
 }
+
+body::-webkit-scrollbar,
+.scroll-styles::-webkit-scrollbar {
+  width: 0.2em;
+}
+
+body::-webkit-scrollbar-track,
+.scroll-styles::-webkit-scroll-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+body::-webkit-scrollbar-thumb,
+.scroll-styles::-webkit-thumb {
+  background-color: #1e293b;
+  outline: none;
+}
