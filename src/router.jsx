@@ -58,17 +58,20 @@ const router = createBrowserRouter([
       },
     ],
   },
-  // loader: () => {
-  //           const token = getTokenCookie()
-  //           if (!token) {
-  //               return redirect('/login')
-  //           }
-  //           const decode = decodeJWT(token)
-  //           if (decode && decode.exp < Date.now() / 1000) {
-  //               return redirect('/login')
-  //           }
-  //           return null
-  //       },
+  {
+    path: '/dashboard',
+    loader: () => {
+      const token = getTokenCookie();
+      if (!token) {
+        return redirect('/login');
+      }
+      const decode = decodeJWT(token);
+      if (decode && decode.exp < Date.now() / 1000) {
+        return redirect('/login');
+      }
+      return null;
+    },
+  },
 ]);
 
 export default router;
