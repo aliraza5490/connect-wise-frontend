@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, redirect } from 'react-router-dom';
 import AuthLayout from './layouts/AuthLayout';
 import About from './pages/About';
 import Landing from './pages/Landing';
@@ -8,6 +8,7 @@ import Register from './pages/auth/Register';
 import BecomeMentor from './pages/auth/mentor/BecomeMentor';
 import Failure from './pages/auth/mentor/Failure';
 import Success from './pages/auth/mentor/Success';
+import { decodeJWT, getTokenCookie } from './utils/helpers';
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,16 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/login',
+        loader: () => {
+          const token = getTokenCookie();
+          if (token) {
+            const decode = decodeJWT(token);
+            if (decode && decode.exp > Date.now() / 1000) {
+              return redirect('/dashboard');
+            }
+          }
+          return null;
+        },
         element: <Login />,
       },
       {
@@ -47,6 +58,17 @@ const router = createBrowserRouter([
       },
     ],
   },
+  // loader: () => {
+  //           const token = getTokenCookie()
+  //           if (!token) {
+  //               return redirect('/login')
+  //           }
+  //           const decode = decodeJWT(token)
+  //           if (decode && decode.exp < Date.now() / 1000) {
+  //               return redirect('/login')
+  //           }
+  //           return null
+  //       },
 ]);
 
 export default router;

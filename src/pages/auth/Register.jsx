@@ -4,12 +4,15 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import api from '@/utils/api';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { z } from 'zod';
 
 export default function Register() {
+  const [isLoading, setIsLoading] = useState(false);
+
   const {
     register,
     formState: { errors },
@@ -28,6 +31,8 @@ export default function Register() {
   });
 
   const onValid = async (data) => {
+    if (isLoading) return;
+    setIsLoading(true);
     console.log(data);
     try {
       await api.post('/auth/register', data);
@@ -38,6 +43,8 @@ export default function Register() {
         error?.response?.data?.message ||
           'An error occurred. Please try again.',
       );
+    } finally {
+      setIsLoading(false);
     }
   };
 

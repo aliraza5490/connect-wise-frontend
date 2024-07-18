@@ -1,10 +1,21 @@
 import axios from 'axios';
+import { decodeJWT, getTokenCookie } from './helpers';
 
-export const api = axios.create({
-  baseURL: 'http://localhost:3000/api/v1',
+const api = axios.create({
+  baseURL: import.meta.env.VITE_BACKEND_URL,
   headers: {
     'Content-Type': 'application/json',
   },
+});
+
+api.interceptors.request.use((config) => {
+  const token = getTokenCookie();
+  const decode = decodeJWT(token);
+  const isExpire = decode && Date.now() >= decode.exp * 1000;
+  if (token && !isExpire) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 export default api;
