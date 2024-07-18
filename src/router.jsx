@@ -1,3 +1,4 @@
+import { lazy } from 'react';
 import { createBrowserRouter, redirect } from 'react-router-dom';
 import GeneralError from './pages/errors/GeneralError';
 import MaintenanceError from './pages/errors/MaintenanceError';
@@ -8,33 +9,21 @@ import { decodeJWT, getTokenCookie } from './utils/helpers';
 const router = createBrowserRouter([
   {
     path: '/',
-    async lazy() {
-      let page = await import('./pages/Landing');
-      return { Component: page.default };
-    },
+    Component: lazy(() => import('./pages/Landing')),
     errorElement: <GeneralError />,
   },
   {
     path: '/about',
-    async lazy() {
-      let page = await import('./pages/About');
-      return { Component: page.default };
-    },
+    Component: lazy(() => import('./pages/About')),
     errorElement: <GeneralError />,
   },
   {
     path: '/pricing',
-    async lazy() {
-      let page = await import('./pages/Premium');
-      return { Component: page.default };
-    },
+    Component: lazy(() => import('./pages/Premium')),
     errorElement: <GeneralError />,
   },
   {
-    async lazy() {
-      let page = await import('./layouts/AuthLayout');
-      return { Component: page.default };
-    },
+    Component: lazy(() => import('./layouts/AuthLayout')),
     errorElement: <GeneralError />,
     children: [
       {
@@ -49,48 +38,30 @@ const router = createBrowserRouter([
           }
           return null;
         },
-        async lazy() {
-          let page = await import('./pages/auth/Login');
-          return { Component: page.default };
-        },
+        Component: lazy(() => import('./pages/auth/Login')),
       },
       {
         path: '/register',
-        async lazy() {
-          let page = await import('./pages/auth/Register');
-          return { Component: page.default };
-        },
+        Component: lazy(() => import('./pages/auth/Register')),
       },
       {
         path: '/become-mentor',
-        async lazy() {
-          let page = await import('./pages/auth/mentor/BecomeMentor');
-          return { Component: page.default };
-        },
+        Component: lazy(() => import('./pages/auth/mentor/BecomeMentor')),
       },
       {
         path: '/become-mentor/success',
-        async lazy() {
-          let page = await import('./pages/auth/mentor/Success');
-          return { Component: page.default };
-        },
+        Component: lazy(() => import('./pages/auth/mentor/Success')),
       },
       {
         path: '/become-mentor/failure',
-        async lazy() {
-          let page = await import('./pages/auth/mentor/Failure');
-          return { Component: page.default };
-        },
+        Component: lazy(() => import('./pages/auth/mentor/Failure')),
       },
     ],
   },
   {
     path: '/dashboard',
     errorElement: <GeneralError />,
-    async lazy() {
-      let page = await import('./layouts/DashboardLayout');
-      return { Component: page.default };
-    },
+    Component: lazy(() => import('./layouts/DashboardLayout')),
     loader: () => {
       const token = getTokenCookie();
       if (!token) {
@@ -105,24 +76,15 @@ const router = createBrowserRouter([
     children: [
       {
         path: '',
-        async lazy() {
-          let page = await import('./pages/dashboard/Dashboard');
-          return { Component: page.default };
-        },
+        Component: lazy(() => import('./pages/dashboard/Dashboard')),
       },
       {
         path: 'tasks',
-        async lazy() {
-          let page = await import('./pages/tasks/Tasks');
-          return { Component: page.default };
-        },
+        Component: lazy(() => import('./pages/tasks/Tasks')),
       },
       {
         path: 'chats',
-        async lazy() {
-          let page = await import('./pages/chat/Chat');
-          return { Component: page.default };
-        },
+        Component: lazy(() => import('./pages/chat/Chat')),
       },
     ],
   },
