@@ -4,7 +4,7 @@ import MagnetIcon from './MagnetIcon';
 
 function PageHeader() {
   return (
-    <header className="container py-4 px-4 lg:px-6 flex items-center justify-between">
+    <header className="container py-4 px-4 md:px-6 flex items-center justify-between">
       <Link className="flex items-center" to="/">
         <MagnetIcon className="h-6 w-6" />
         <span className="ml-2 text-xl font-bold">Connect Wise</span>

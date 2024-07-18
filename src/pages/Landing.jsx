@@ -8,16 +8,102 @@ import {
   CardHeader,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { truncateText } from '@/utils/helpers';
 import { MagnetIcon } from 'lucide-react';
 import { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
+
+const featuredMentors = [
+  {
+    id: 1,
+    name: 'John Doe',
+    expertise: 'Software Engineering Mentor',
+    description:
+      "John has over 10 years of experience in software engineering and is passionate about helping others grow their skills. He's available for 1-on-1 mentoring sessions.",
+    avatar: 'https://i.pravatar.cc/150?img=1',
+  },
+  {
+    id: 2,
+    name: 'Jane Smith',
+    expertise: 'Product Management Mentor',
+    description:
+      "Jane has extensive experience in product management and has helped numerous startups and companies launch successful products. She's available for 1-on-1 mentoring sessions.",
+    avatar: 'https://i.pravatar.cc/150?img=2',
+  },
+  {
+    id: 3,
+    name: 'Michael Lee',
+    expertise: 'Marketing Mentor',
+    description:
+      "Michael has over 15 years of experience in digital marketing and has helped numerous businesses grow their online presence. He's available for 1-on-1 mentoring sessions.",
+    avatar: 'https://i.pravatar.cc/150?img=3',
+  },
+  {
+    id: 4,
+    name: 'Sarah Kim',
+    expertise: 'Career Transition Mentor',
+    description:
+      "Sarah has helped numerous professionals navigate career transitions and find their dream jobs. She's available for 1-on-1 mentoring sessions.",
+    avatar: 'https://i.pravatar.cc/150?img=4',
+  },
+];
+
+const browseMentors = [
+  {
+    id: 5,
+    name: 'John Doe',
+    expertise: 'Software Engineering Mentor',
+    description:
+      "John has over 10 years of experience in software engineering and is passionate about helping others grow their skills. He's available for 1-on-1 mentoring sessions.",
+    avatar: 'https://i.pravatar.cc/150?img=5',
+  },
+  {
+    id: 6,
+    name: 'Jane Smith',
+    expertise: 'Product Management Mentor',
+    description:
+      "Jane has extensive experience in product management and has helped numerous startups and companies launch successful products. She's available for 1-on-1 mentoring sessions.",
+    avatar: 'https://i.pravatar.cc/150?img=6',
+  },
+  {
+    id: 7,
+    name: 'Michael Lee',
+    expertise: 'Marketing Mentor',
+    description:
+      "Michael has over 15 years of experience in digital marketing and has helped numerous businesses grow their online presence. He's available for 1-on-1 mentoring sessions.",
+    avatar: 'https://i.pravatar.cc/150?img=7',
+  },
+  {
+    id: 8,
+    name: 'Sarah Kim',
+    expertise: 'Career Transition Mentor',
+    description:
+      "Sarah has helped numerous professionals navigate career transitions and find their dream jobs. She's available for 1-on-1 mentoring sessions.",
+    avatar: 'https://i.pravatar.cc/150?img=8',
+  },
+  {
+    id: 9,
+    name: 'David Wang',
+    expertise: 'Entrepreneurship Mentor',
+    description:
+      "David has founded and scaled multiple successful startups. He's passionate about helping aspiring entrepreneurs turn their ideas into reality. He's available for 1-on-1 mentoring sessions.",
+    avatar: 'https://i.pravatar.cc/150?img=9',
+  },
+  {
+    id: 10,
+    name: 'Emily Chen',
+    expertise: 'UX Design Mentor',
+    description:
+      "Emily is a seasoned UX designer with a passion for creating delightful user experiences. She's available for 1-on-1 mentoring sessions.",
+    avatar: 'https://i.pravatar.cc/150?img=10',
+  },
+];
 
 export default function Landing() {
   const pathnameID = window.location.hash;
   const params = useParams();
 
   useEffect(() => {
-    console.log(pathnameID);
     if (pathnameID === '#browse-mentors') {
       const browseMentors = document.getElementById('browse-mentors');
       browseMentors.scrollIntoView({ behavior: 'smooth' });
@@ -25,43 +111,41 @@ export default function Landing() {
   }, [pathnameID, params]);
 
   return (
-    <div className="flex flex-col min-h-[100dvh]">
+    <div className="flex flex-col">
       <PageHeader />
       <main className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
-          <div className="container px-4 md:px-6">
-            <div className="grid lg:grid-cols-2 xl:grid-cols-[1fr_600px]">
-              <div className="space-y-4">
-                <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
-                  Find the perfect mentor for your growth
-                </h1>
-                <p className="max-w-[600px] text-gray-500 md:text-xl dark:text-gray-400">
-                  Connect with experienced professionals who can guide you on
-                  your journey to success.
-                </p>
-                <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                  <Link
-                    className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-8 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
-                    to="/register"
-                  >
-                    Join Now
-                  </Link>
-                  <Link
-                    className="inline-flex h-10 items-center justify-center rounded-md border  border-gray-200 bg-white px-8 text-sm font-medium shadow-sm transition-colors hover:bg-gray-100 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:border-gray-800 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus-visible:ring-gray-300"
-                    to="/about"
-                  >
-                    Learn More
-                  </Link>
-                </div>
+        <section className="w-full h-[100dvh] max-h-[1024px] grid place-content-center container px-4 md:px-6">
+          <div className="flex flex-col md:flex-row items-center justify-between">
+            <div className="space-y-4">
+              <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
+                Find the perfect mentor for your growth
+              </h1>
+              <p className="max-w-[600px] text-gray-500 md:text-xl dark:text-gray-400">
+                Connect with experienced professionals who can guide you on your
+                journey to success.
+              </p>
+              <div className="flex flex-col gap-2 min-[400px]:flex-row">
+                <Link
+                  className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-8 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
+                  to="/register"
+                >
+                  Join Now
+                </Link>
+                <Link
+                  className="inline-flex h-10 items-center justify-center rounded-md border  border-gray-200 bg-white px-8 text-sm font-medium shadow-sm transition-colors hover:bg-gray-100 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:border-gray-800 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus-visible:ring-gray-300"
+                  to="/about"
+                >
+                  Learn More
+                </Link>
               </div>
-              <img
-                alt="Hero"
-                className="mx-auto aspect-square overflow-hidden rounded-xl object-cover sm:w-full"
-                height={800}
-                src="/assets/images/work_7.png"
-                width={800}
-              />
             </div>
+            <img
+              alt="Hero"
+              className="mx-auto aspect-square overflow-hidden rounded-xl object-cover sm:w-full"
+              height={800}
+              src="/assets/images/work_7.png"
+              width={800}
+            />
           </div>
         </section>
         <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800">
@@ -77,122 +161,64 @@ export default function Landing() {
                 </p>
               </div>
             </div>
-            <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-2 lg:gap-12">
-              <div className="flex flex-col justify-center space-y-4">
-                <Card>
-                  <CardHeader className="flex flex-row items-center gap-4">
-                    <Avatar>
-                      <AvatarImage
-                        alt="John Doe"
-                        src={`https://i.pravatar.cc/150?img=${1}`}
-                      />
-                      <AvatarFallback>JD</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <h3 className="text-xl font-bold">John Doe</h3>
-                      <p className="text-gray-500 dark:text-gray-400">
-                        Software Engineering Mentor
-                      </p>
+            <div className="mx-auto grid max-w-5xl items-start gap-6 py-12 lg:grid-cols-2 lg:gap-12">
+              {featuredMentors.map((mentor) => (
+                <Card key={mentor.id}>
+                  <CardHeader className="flex flex-col gap-2">
+                    <div className="flex flex-row items-center gap-4">
+                      <Avatar>
+                        <AvatarImage alt={mentor.name} src={mentor.avatar} />
+                        <AvatarFallback>
+                          {mentor.name.split(' ').map((name) => name[0])}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <h3 className="text-xl font-bold">{mentor.name}</h3>
+                        <p className="text-gray-500 dark:text-gray-400">
+                          {mentor.expertise}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex flex-row items-center gap-4 text-gray-500 dark:text-gray-400">
+                      <div className="flex items-center gap-1">
+                        {[...Array(5)].map((_, index) => (
+                          <svg
+                            className="h-4 w-4 text-yellow-500 dark:text-yellow-400"
+                            fill={index < 4 ? 'currentColor' : 'none'}
+                            key={index}
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2"
+                              fill={index < 4 ? 'currentColor' : 'none'}
+                            />
+                          </svg>
+                        ))}
+                      </div>
+                      <span>4.8 (24 reviews)</span>
                     </div>
                   </CardHeader>
                   <CardContent>
                     <p className="text-gray-500 dark:text-gray-400">
-                      John has over 10 years of experience in software
-                      engineering and is passionate about helping others grow
-                      their skills. He&apos;s available for 1-on-1 mentoring
-                      sessions.
+                      {truncateText(mentor.description, 150)}
                     </p>
                   </CardContent>
                   <CardFooter>
-                    <Button>Book a Session</Button>
-                  </CardFooter>
-                </Card>
-                <Card>
-                  <CardHeader className="flex flex-row items-center gap-4">
-                    <Avatar>
-                      <AvatarImage
-                        alt="Jane Smith"
-                        src={`https://i.pravatar.cc/150?img=${2}`}
-                      />
-                      <AvatarFallback>JS</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <h3 className="text-xl font-bold">Jane Smith</h3>
-                      <p className="text-gray-500 dark:text-gray-400">
-                        Product Management Mentor
-                      </p>
+                    <div className="w-full flex items-center justify-between">
+                      <Button>View Profile</Button>
+                      {/* Price /hr */}
+                      <span className="text-gray-500 dark:text-gray-400">
+                        $50/hr
+                      </span>
                     </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-500 dark:text-gray-400">
-                      Jane has extensive experience in product management and
-                      has helped numerous startups and companies launch
-                      successful products. She&apos;s available for 1-on-1
-                      mentoring sessions.
-                    </p>
-                  </CardContent>
-                  <CardFooter>
-                    <Button>Book a Session</Button>
                   </CardFooter>
                 </Card>
-              </div>
-              <div className="flex flex-col justify-center space-y-4">
-                <Card>
-                  <CardHeader className="flex flex-row items-center gap-4">
-                    <Avatar>
-                      <AvatarImage
-                        alt="Michael Lee"
-                        src={`https://i.pravatar.cc/150?img=${3}`}
-                      />
-                      <AvatarFallback>ML</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <h3 className="text-xl font-bold">Michael Lee</h3>
-                      <p className="text-gray-500 dark:text-gray-400">
-                        Marketing Mentor
-                      </p>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-500 dark:text-gray-400">
-                      Michael has over 15 years of experience in digital
-                      marketing and has helped numerous businesses grow their
-                      online presence. He&apos;s available for 1-on-1 mentoring
-                      sessions.
-                    </p>
-                  </CardContent>
-                  <CardFooter>
-                    <Button>Book a Session</Button>
-                  </CardFooter>
-                </Card>
-                <Card>
-                  <CardHeader className="flex flex-row items-center gap-4">
-                    <Avatar>
-                      <AvatarImage
-                        alt="Sarah Kim"
-                        src={`https://i.pravatar.cc/150?img=${4}`}
-                      />
-                      <AvatarFallback>SK</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <h3 className="text-xl font-bold">Sarah Kim</h3>
-                      <p className="text-gray-500 dark:text-gray-400">
-                        Career Transition Mentor
-                      </p>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-500 dark:text-gray-400">
-                      Sarah has helped numerous professionals navigate career
-                      transitions and find their dream jobs. She&apos;s
-                      available for 1-on-1 mentoring sessions.
-                    </p>
-                  </CardContent>
-                  <CardFooter>
-                    <Button>Book a Session</Button>
-                  </CardFooter>
-                </Card>
-              </div>
+              ))}
             </div>
           </div>
         </section>
@@ -219,171 +245,64 @@ export default function Landing() {
                 </form>
               </div>
             </div>
-            <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-3 lg:gap-12">
-              <Card>
-                <CardHeader className="flex flex-row items-center gap-4">
-                  <Avatar>
-                    <AvatarImage
-                      alt="John Doe"
-                      src={`https://i.pravatar.cc/150?img=${5}`}
-                    />
-                    <AvatarFallback>JD</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <h3 className="text-xl font-bold">John Doe</h3>
+            <div className="mx-auto grid max-w-5xl items-start gap-6 py-12 lg:grid-cols-3 lg:gap-8">
+              {browseMentors.map((mentor) => (
+                <Card key={mentor.id}>
+                  <CardHeader className="flex flex-col gap-2">
+                    <div className="flex flex-row items-center gap-4">
+                      <Avatar>
+                        <AvatarImage alt={mentor.name} src={mentor.avatar} />
+                        <AvatarFallback>
+                          {mentor.name.split(' ').map((name) => name[0])}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <h3 className="text-xl font-bold">{mentor.name}</h3>
+                        <p className="text-gray-500 dark:text-gray-400">
+                          {mentor.expertise}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex flex-row items-center gap-4 text-gray-500 dark:text-gray-400">
+                      <div className="flex items-center gap-1">
+                        {[...Array(5)].map((_, index) => (
+                          <svg
+                            className="h-4 w-4 text-yellow-500 dark:text-yellow-400"
+                            fill={index < 4 ? 'currentColor' : 'none'}
+                            key={index}
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2"
+                              fill={index < 4 ? 'currentColor' : 'none'}
+                            />
+                          </svg>
+                        ))}
+                      </div>
+                      <span>4.8 (24 reviews)</span>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
                     <p className="text-gray-500 dark:text-gray-400">
-                      Software Engineering Mentor
+                      {truncateText(mentor.description, 120)}
                     </p>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-500 dark:text-gray-400">
-                    John has over 10 years of experience in software engineering
-                    and is passionate about helping others grow their skills.
-                    He&apos;s available for 1-on-1 mentoring sessions.
-                  </p>
-                </CardContent>
-                <CardFooter>
-                  <Button>Book a Session</Button>
-                </CardFooter>
-              </Card>
-              <Card>
-                <CardHeader className="flex flex-row items-center gap-4">
-                  <Avatar>
-                    <AvatarImage
-                      alt="Jane Smith"
-                      src={`https://i.pravatar.cc/150?img=${6}`}
-                    />
-                    <AvatarFallback>JS</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <h3 className="text-xl font-bold">Jane Smith</h3>
-                    <p className="text-gray-500 dark:text-gray-400">
-                      Product Management Mentor
-                    </p>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-500 dark:text-gray-400">
-                    Jane has extensive experience in product management and has
-                    helped numerous startups and companies launch successful
-                    products. She&apos;s available for 1-on-1 mentoring
-                    sessions.
-                  </p>
-                </CardContent>
-                <CardFooter>
-                  <Button>Book a Session</Button>
-                </CardFooter>
-              </Card>
-              <Card>
-                <CardHeader className="flex flex-row items-center gap-4">
-                  <Avatar>
-                    <AvatarImage
-                      alt="Michael Lee"
-                      src={`https://i.pravatar.cc/150?img=${7}`}
-                    />
-                    <AvatarFallback>ML</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <h3 className="text-xl font-bold">Michael Lee</h3>
-                    <p className="text-gray-500 dark:text-gray-400">
-                      Marketing Mentor
-                    </p>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-500 dark:text-gray-400">
-                    Michael has over 15 years of experience in digital marketing
-                    and has helped numerous businesses grow their online
-                    presence. He&apos;s available for 1-on-1 mentoring sessions.
-                  </p>
-                </CardContent>
-                <CardFooter>
-                  <Button>Book a Session</Button>
-                </CardFooter>
-              </Card>
-              <Card>
-                <CardHeader className="flex flex-row items-center gap-4">
-                  <Avatar>
-                    <AvatarImage
-                      alt="Sarah Kim"
-                      src={`https://i.pravatar.cc/150?img=${8}`}
-                    />
-                    <AvatarFallback>SK</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <h3 className="text-xl font-bold">Sarah Kim</h3>
-                    <p className="text-gray-500 dark:text-gray-400">
-                      Career Transition Mentor
-                    </p>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-500 dark:text-gray-400">
-                    Sarah has helped numerous professionals navigate career
-                    transitions and find their dream jobs. She&apos;s available
-                    for 1-on-1 mentoring sessions.
-                  </p>
-                </CardContent>
-                <CardFooter>
-                  <Button>Book a Session</Button>
-                </CardFooter>
-              </Card>
-              <Card>
-                <CardHeader className="flex flex-row items-center gap-4">
-                  <Avatar>
-                    <AvatarImage
-                      alt="David Wang"
-                      src={`https://i.pravatar.cc/150?img=${9}`}
-                    />
-                    <AvatarFallback>DW</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <h3 className="text-xl font-bold">David Wang</h3>
-                    <p className="text-gray-500 dark:text-gray-400">
-                      Entrepreneurship Mentor
-                    </p>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-500 dark:text-gray-400">
-                    David has founded and scaled multiple successful startups.
-                    He&apos;s passionate about helping aspiring entrepreneurs
-                    turn their ideas into reality. He&apos;s available for
-                    1-on-1 mentoring sessions.
-                  </p>
-                </CardContent>
-                <CardFooter>
-                  <Button>Book a Session</Button>
-                </CardFooter>
-              </Card>
-              <Card>
-                <CardHeader className="flex flex-row items-center gap-4">
-                  <Avatar>
-                    <AvatarImage
-                      alt="Emily Chen"
-                      src={`https://i.pravatar.cc/150?img=${10}`}
-                    />
-                    <AvatarFallback>EC</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <h3 className="text-xl font-bold">Emily Chen</h3>
-                    <p className="text-gray-500 dark:text-gray-400">
-                      UX Design Mentor
-                    </p>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-500 dark:text-gray-400">
-                    Emily is a seasoned UX designer with a passion for creating
-                    delightful user experiences. She&apos;s available for 1-on-1
-                    mentoring sessions.
-                  </p>
-                </CardContent>
-                <CardFooter>
-                  <Button>Book a Session</Button>
-                </CardFooter>
-              </Card>
+                  </CardContent>
+                  <CardFooter>
+                    <div className="w-full flex justify-between items-center">
+                      <Button>View Profile</Button>
+                      {/* Price /hr */}
+                      <span className="text-gray-500 dark:text-gray-400">
+                        $50/hr
+                      </span>
+                    </div>
+                  </CardFooter>
+                </Card>
+              ))}
             </div>
           </div>
         </section>
