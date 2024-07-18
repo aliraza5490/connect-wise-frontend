@@ -33,13 +33,13 @@ export const sidelinks = [
   {
     title: 'Tasks',
     label: '3',
-    href: '/tasks',
+    href: '/dashboard/tasks',
     icon: <IconChecklist size={18} />,
   },
   {
     title: 'Chats',
     label: '9',
-    href: '/chats',
+    href: '/dashboard/chats',
     icon: <IconMessages size={18} />,
   },
   {

@@ -110,6 +110,20 @@ const router = createBrowserRouter([
           return { Component: page.default };
         },
       },
+      {
+        path: 'tasks',
+        async lazy() {
+          let page = await import('./pages/tasks/Tasks');
+          return { Component: page.default };
+        },
+      },
+      {
+        path: 'chats',
+        async lazy() {
+          let page = await import('./pages/chat/Chat');
+          return { Component: page.default };
+        },
+      },
     ],
   },
 
