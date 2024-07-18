@@ -15,9 +15,14 @@ function AuthButtons() {
   return (
     <div>
       {user ? (
-        <Button onClick={handleLogOut} variant="ghost">
-          Sign Out
-        </Button>
+        <>
+          <Link to="/dashboard">
+            <Button variant="ghost">Dashboard</Button>
+          </Link>
+          <Button onClick={handleLogOut} variant="ghost">
+            Sign Out
+          </Button>
+        </>
       ) : (
         <>
           <Link to="/login">

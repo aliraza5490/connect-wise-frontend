@@ -1,30 +1,41 @@
 import { createBrowserRouter, redirect } from 'react-router-dom';
-import AuthLayout from './layouts/AuthLayout';
-import About from './pages/About';
-import Landing from './pages/Landing';
-import Premium from './pages/Premium';
-import Login from './pages/auth/Login';
-import Register from './pages/auth/Register';
-import BecomeMentor from './pages/auth/mentor/BecomeMentor';
-import Failure from './pages/auth/mentor/Failure';
-import Success from './pages/auth/mentor/Success';
+import GeneralError from './pages/errors/GeneralError';
+import MaintenanceError from './pages/errors/MaintenanceError';
+import NotFoundError from './pages/errors/NotFoundError';
+import UnauthorisedError from './pages/errors/UnauthorisedError';
 import { decodeJWT, getTokenCookie } from './utils/helpers';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Landing />,
+    async lazy() {
+      let page = await import('./pages/Landing');
+      return { Component: page.default };
+    },
+    errorElement: <GeneralError />,
   },
   {
     path: '/about',
-    element: <About />,
+    async lazy() {
+      let page = await import('./pages/About');
+      return { Component: page.default };
+    },
+    errorElement: <GeneralError />,
   },
   {
     path: '/pricing',
-    element: <Premium />,
+    async lazy() {
+      let page = await import('./pages/Premium');
+      return { Component: page.default };
+    },
+    errorElement: <GeneralError />,
   },
   {
-    element: <AuthLayout />,
+    async lazy() {
+      let page = await import('./layouts/AuthLayout');
+      return { Component: page.default };
+    },
+    errorElement: <GeneralError />,
     children: [
       {
         path: '/login',
@@ -38,28 +49,48 @@ const router = createBrowserRouter([
           }
           return null;
         },
-        element: <Login />,
+        async lazy() {
+          let page = await import('./pages/auth/Login');
+          return { Component: page.default };
+        },
       },
       {
         path: '/register',
-        element: <Register />,
+        async lazy() {
+          let page = await import('./pages/auth/Register');
+          return { Component: page.default };
+        },
       },
       {
         path: '/become-mentor',
-        element: <BecomeMentor />,
+        async lazy() {
+          let page = await import('./pages/auth/mentor/BecomeMentor');
+          return { Component: page.default };
+        },
       },
       {
         path: '/become-mentor/success',
-        element: <Success />,
+        async lazy() {
+          let page = await import('./pages/auth/mentor/Success');
+          return { Component: page.default };
+        },
       },
       {
         path: '/become-mentor/failure',
-        element: <Failure />,
+        async lazy() {
+          let page = await import('./pages/auth/mentor/Failure');
+          return { Component: page.default };
+        },
       },
     ],
   },
   {
     path: '/dashboard',
+    errorElement: <GeneralError />,
+    async lazy() {
+      let page = await import('./layouts/DashboardLayout');
+      return { Component: page.default };
+    },
     loader: () => {
       const token = getTokenCookie();
       if (!token) {
@@ -71,7 +102,25 @@ const router = createBrowserRouter([
       }
       return null;
     },
+    children: [
+      {
+        path: '',
+        async lazy() {
+          let page = await import('./pages/dashboard/Dashboard');
+          return { Component: page.default };
+        },
+      },
+    ],
   },
+
+  // Error routes
+  { path: '/500', element: <GeneralError /> },
+  { path: '/404', element: <NotFoundError /> },
+  { path: '/503', element: <MaintenanceError /> },
+  { path: '/401', element: <UnauthorisedError /> },
+
+  // Fallback 404 route
+  { path: '*', element: <NotFoundError /> },
 ]);
 
 export default router;
