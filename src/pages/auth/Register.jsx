@@ -59,7 +59,7 @@ export default function Register() {
           Already have an account? Sign in
         </a>
       </div>
-      <div>
+      <div className="px-4 md:px-0">
         <div>
           <form onSubmit={handleSubmit(onValid)} className="space-y-4">
             <div className="space-y-2">

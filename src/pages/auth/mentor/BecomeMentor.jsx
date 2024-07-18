@@ -10,39 +10,139 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import { z } from 'zod';
 
 export default function BecomeMentor() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    register,
+    formState: { errors },
+    control,
+    handleSubmit,
+  } = useForm({
+    resolver: zodResolver(
+      z.object({
+        firstName: z.string().min(2).max(80),
+        lastName: z.string().min(2).max(80),
+        email: z.string().email(),
+        password: z.string().min(6),
+        linkedInProfile: z.string().optional().default(''),
+        bio: z.string().optional().default(''),
+        expertise: z.string().min(2).max(80),
+        experience: z.string().min(2).max(80),
+      }),
+    ),
+  });
+
+  const onValid = async (data) => {
+    if (isLoading) return;
+    setIsLoading(true);
+    try {
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+      toast.error(
+        error?.response?.data?.message ||
+          'An error occurred. Please try again.',
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  console.log(errors);
+
   return (
     <div className="mx-auto max-w-md space-y-6">
       <div className="space-y-2 text-center">
         <h1 className="text-3xl font-bold">Become a Mentor</h1>
         <p className="text-gray-500 dark:text-gray-400">
-          Fill out the form below to join our mentorship program.
+          Fill out the form below to become a mentor in our program.
         </p>
       </div>
-      <div>
+      <div className="px-4 md:px-0">
         <div>
-          <form className="space-y-4">
+          <form onSubmit={handleSubmit(onValid)} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" placeholder="Enter your name" required />
+              <Label htmlFor="firstName">First Name</Label>
+              <Input
+                id="firstName"
+                name="firstName"
+                placeholder="Enter your First Name"
+                required
+                {...register('firstName', {
+                  required: 'First Name is required',
+                })}
+              />
+              {errors?.firstName && (
+                <p className="text-red-500 dark:text-red-400">
+                  {errors?.firstName.message}
+                </p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="lastName">Last Name</Label>
+              <Input
+                id="lastName"
+                name="lastName"
+                placeholder="Enter your Last Name"
+                required
+                {...register('lastName', { required: 'Last Name is required' })}
+              />
+              {errors?.lastName && (
+                <p className="text-red-500 dark:text-red-400">
+                  {errors?.lastName.message}
+                </p>
+              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
+                type="email"
                 placeholder="Enter your email"
                 required
-                type="email"
+                {...register('email', { required: 'Email is required' })}
               />
+              {errors?.email && (
+                <p className="text-red-500 dark:text-red-400">
+                  {errors?.email.message}
+                </p>
+              )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="linkedin">LinkedIn Profile</Label>
+              <Label htmlFor="password">Password</Label>
               <Input
-                id="linkedin"
-                placeholder="Enter your LinkedIn profile URL"
+                id="password"
+                type="password"
+                name="password"
+                placeholder="Enter your password"
                 required
+                {...register('password', { required: 'Password is required' })}
               />
+              {errors?.password && (
+                <p className="text-red-500 dark:text-red-400">
+                  {errors?.password.message}
+                </p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="linkedInProfile">LinkedIn Profile</Label>
+              <Input
+                id="linkedInProfile"
+                placeholder="Enter your LinkedIn profile URL"
+                {...register('linkedInProfile')}
+              />
+              {errors?.linkedInProfile && (
+                <p className="text-red-500 dark:text-red-400">
+                  {errors?.linkedInProfile.message}
+                </p>
+              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="bio">Bio</Label>
@@ -50,8 +150,13 @@ export default function BecomeMentor() {
                 className="min-h-[100px]"
                 id="bio"
                 placeholder="Tell us about yourself"
-                required
+                {...register('bio')}
               />
+              {errors?.bio && (
+                <p className="text-red-500 dark:text-red-400">
+                  {errors?.bio.message}
+                </p>
+              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="expertise">Areas of Expertise</Label>
@@ -59,21 +164,49 @@ export default function BecomeMentor() {
                 id="expertise"
                 placeholder="e.g. Web Development, UX Design"
                 required
+                {...register('expertise', {
+                  required: 'Expertise is required',
+                })}
               />
+              {errors?.expertise && (
+                <p className="text-red-500 dark:text-red-400">
+                  {errors?.expertise.message}
+                </p>
+              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="experience">Years of Experience</Label>
-              <Select defaultValue="1-3" id="experience">
-                <SelectTrigger>
-                  <SelectValue placeholder="Select" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="1-3">1-3 years</SelectItem>
-                  <SelectItem value="4-6">4-6 years</SelectItem>
-                  <SelectItem value="7-10">7-10 years</SelectItem>
-                  <SelectItem value="10+">10+ years</SelectItem>
-                </SelectContent>
-              </Select>
+              <Controller
+                control={control}
+                id="experience"
+                name="experience"
+                render={({ field }) => {
+                  return (
+                    <Select
+                      defaultValue="beginner"
+                      required
+                      onValueChange={field.onChange}
+                      {...field}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="beginner">1-3 years</SelectItem>
+                        <SelectItem value="intermediate">4-6 years</SelectItem>
+                        <SelectItem value="expert">7-10 years</SelectItem>
+                        <SelectItem value="pro">10+ years</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  );
+                }}
+              ></Controller>
+
+              {errors?.experience && (
+                <p className="text-red-500 dark:text-red-400">
+                  {errors?.experience.message}
+                </p>
+              )}
             </div>
             <div className="flex items-center">
               <Checkbox id="availability" className="mx-2" />
