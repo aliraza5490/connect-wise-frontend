@@ -2,8 +2,45 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import api from '@/utils/api';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { redirect } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { z } from 'zod';
 
 export default function Register() {
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm({
+    resolver: zodResolver(
+      z.object({
+        firstName: z.string().min(2).max(80),
+        lastName: z.string().min(2).max(80),
+        email: z.string().email(),
+        password: z.string().min(6),
+        linkedInProfile: z.string().optional().default(''),
+        bio: z.string().optional().default(''),
+      }),
+    ),
+  });
+
+  const onValid = async (data) => {
+    console.log(data);
+    try {
+      await api.post('/auth/register', data);
+      redirect('/login');
+    } catch (error) {
+      console.error(error);
+      toast.error(
+        error?.response?.data?.message ||
+          'An error occurred. Please try again.',
+      );
+    }
+  };
+
   return (
     <div className="mx-auto max-w-md space-y-6">
       <div className="space-y-2 text-center">
@@ -17,15 +54,38 @@ export default function Register() {
       </div>
       <div>
         <div>
-          <form className="space-y-4">
+          <form onSubmit={handleSubmit(onValid)} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="firstName">First Name</Label>
               <Input
-                id="name"
-                name="name"
-                placeholder="Enter your name"
+                id="firstName"
+                name="firstName"
+                placeholder="Enter your First Name"
                 required
+                {...register('firstName', {
+                  required: 'First Name is required',
+                })}
               />
+              {errors?.firstName && (
+                <p className="text-red-500 dark:text-red-400">
+                  {errors?.firstName.message}
+                </p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="lastName">Last Name</Label>
+              <Input
+                id="lastName"
+                name="lastName"
+                placeholder="Enter your Last Name"
+                required
+                {...register('lastName', { required: 'Last Name is required' })}
+              />
+              {errors?.lastName && (
+                <p className="text-red-500 dark:text-red-400">
+                  {errors?.lastName.message}
+                </p>
+              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
@@ -33,9 +93,15 @@ export default function Register() {
                 id="email"
                 name="email"
                 placeholder="Enter your email"
-                required
                 type="email"
+                required
+                {...register('email', { required: 'Email is required' })}
               />
+              {errors?.email && (
+                <p className="text-red-500 dark:text-red-400">
+                  {errors?.email.message}
+                </p>
+              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
@@ -43,9 +109,14 @@ export default function Register() {
                 id="password"
                 name="password"
                 placeholder="Enter your password"
-                required
                 type="password"
+                {...register('password', { required: 'Password is required' })}
               />
+              {errors?.password && (
+                <p className="text-red-500 dark:text-red-400">
+                  {errors?.password.message}
+                </p>
+              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="linkedin">LinkedIn Profile</Label>
@@ -53,8 +124,13 @@ export default function Register() {
                 id="linkedin"
                 name="linkedin"
                 placeholder="Enter your LinkedIn profile URL"
-                required
+                {...register('linkedin')}
               />
+              {errors?.linkedin && (
+                <p className="text-red-500 dark:text-red-400">
+                  {errors?.linkedin.message}
+                </p>
+              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="bio">Bio</Label>
@@ -63,8 +139,13 @@ export default function Register() {
                 name="bio"
                 id="bio"
                 placeholder="Tell us about yourself"
-                required
+                {...register('bio')}
               />
+              {errors?.bio && (
+                <p className="text-red-500 dark:text-red-400">
+                  {errors?.bio.message}
+                </p>
+              )}
             </div>
             <div className="flex justify-end items-center">
               <a href="../">

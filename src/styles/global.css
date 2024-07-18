@@ -67,3 +67,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+.Toastify__toast-theme--dark {
+  background: #1f2937 !important;
+}
