@@ -10,8 +10,18 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import useUserStore from '@/store/userStore';
+import { useNavigate } from 'react-router-dom';
 
 export function UserNav() {
+  const navigate = useNavigate();
+  const logOut = useUserStore((state) => state.logOut);
+
+  const handleLogOut = () => {
+    logOut();
+    navigate('/', { replace: true, relative: false });
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -48,7 +58,7 @@ export function UserNav() {
           <DropdownMenuItem>New Team</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={handleLogOut}>
           Log out
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
