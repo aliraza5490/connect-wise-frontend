@@ -21,6 +21,9 @@ const featuredMentors = [
     description:
       "John has over 10 years of experience in software engineering and is passionate about helping others grow their skills. He's available for 1-on-1 mentoring sessions.",
     avatar: 'https://i.pravatar.cc/150?img=1',
+    reviews: 24,
+    rating: 4.8,
+    price: 50,
   },
   {
     id: 2,
@@ -29,6 +32,9 @@ const featuredMentors = [
     description:
       "Jane has extensive experience in product management and has helped numerous startups and companies launch successful products. She's available for 1-on-1 mentoring sessions.",
     avatar: 'https://i.pravatar.cc/150?img=2',
+    reviews: 13,
+    rating: 3.9,
+    price: 30,
   },
   {
     id: 3,
@@ -37,6 +43,9 @@ const featuredMentors = [
     description:
       "Michael has over 15 years of experience in digital marketing and has helped numerous businesses grow their online presence. He's available for 1-on-1 mentoring sessions.",
     avatar: 'https://i.pravatar.cc/150?img=3',
+    reviews: 32,
+    rating: 4.5,
+    price: 40,
   },
   {
     id: 4,
@@ -45,6 +54,9 @@ const featuredMentors = [
     description:
       "Sarah has helped numerous professionals navigate career transitions and find their dream jobs. She's available for 1-on-1 mentoring sessions.",
     avatar: 'https://i.pravatar.cc/150?img=4',
+    reviews: 17,
+    rating: 4.2,
+    price: 45,
   },
 ];
 
@@ -56,6 +68,9 @@ const browseMentors = [
     description:
       "John has over 10 years of experience in software engineering and is passionate about helping others grow their skills. He's available for 1-on-1 mentoring sessions.",
     avatar: 'https://i.pravatar.cc/150?img=5',
+    reviews: 24,
+    rating: 4.8,
+    price: 50,
   },
   {
     id: 6,
@@ -64,6 +79,9 @@ const browseMentors = [
     description:
       "Jane has extensive experience in product management and has helped numerous startups and companies launch successful products. She's available for 1-on-1 mentoring sessions.",
     avatar: 'https://i.pravatar.cc/150?img=6',
+    reviews: 13,
+    rating: 3.9,
+    price: 30,
   },
   {
     id: 7,
@@ -72,6 +90,9 @@ const browseMentors = [
     description:
       "Michael has over 15 years of experience in digital marketing and has helped numerous businesses grow their online presence. He's available for 1-on-1 mentoring sessions.",
     avatar: 'https://i.pravatar.cc/150?img=7',
+    reviews: 32,
+    rating: 4.5,
+    price: 40,
   },
   {
     id: 8,
@@ -80,6 +101,9 @@ const browseMentors = [
     description:
       "Sarah has helped numerous professionals navigate career transitions and find their dream jobs. She's available for 1-on-1 mentoring sessions.",
     avatar: 'https://i.pravatar.cc/150?img=8',
+    reviews: 17,
+    rating: 4.2,
+    price: 45,
   },
   {
     id: 9,
@@ -88,6 +112,9 @@ const browseMentors = [
     description:
       "David has founded and scaled multiple successful startups. He's passionate about helping aspiring entrepreneurs turn their ideas into reality. He's available for 1-on-1 mentoring sessions.",
     avatar: 'https://i.pravatar.cc/150?img=9',
+    reviews: 21,
+    rating: 4.6,
+    price: 55,
   },
   {
     id: 10,
@@ -96,6 +123,9 @@ const browseMentors = [
     description:
       "Emily is a seasoned UX designer with a passion for creating delightful user experiences. She's available for 1-on-1 mentoring sessions.",
     avatar: 'https://i.pravatar.cc/150?img=10',
+    reviews: 28,
+    rating: 4.7,
+    price: 60,
   },
 ];
 
@@ -195,12 +225,18 @@ export default function Landing() {
                           >
                             <path
                               d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2"
-                              fill={index < 4 ? 'currentColor' : 'none'}
+                              fill={
+                                index + 1 < mentor.rating
+                                  ? 'currentColor'
+                                  : 'none'
+                              }
                             />
                           </svg>
                         ))}
                       </div>
-                      <span>4.8 (24 reviews)</span>
+                      <span>
+                        {mentor.rating} ({mentor.reviews} reviews)
+                      </span>
                     </div>
                   </CardHeader>
                   <CardContent>
@@ -213,7 +249,7 @@ export default function Landing() {
                       <Button>View Profile</Button>
                       {/* Price /hr */}
                       <span className="text-gray-500 dark:text-gray-400">
-                        $50/hr
+                        ${mentor.price}/hr
                       </span>
                     </div>
                   </CardFooter>
@@ -279,12 +315,18 @@ export default function Landing() {
                           >
                             <path
                               d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2"
-                              fill={index < 4 ? 'currentColor' : 'none'}
+                              fill={
+                                index + 1 < mentor.rating
+                                  ? 'currentColor'
+                                  : 'none'
+                              }
                             />
                           </svg>
                         ))}
                       </div>
-                      <span>4.8 (24 reviews)</span>
+                      <span>
+                        {mentor.rating} ({mentor.reviews} reviews)
+                      </span>
                     </div>
                   </CardHeader>
                   <CardContent>
@@ -297,7 +339,7 @@ export default function Landing() {
                       <Button>View Profile</Button>
                       {/* Price /hr */}
                       <span className="text-gray-500 dark:text-gray-400">
-                        $50/hr
+                        ${mentor.price}/hr
                       </span>
                     </div>
                   </CardFooter>
