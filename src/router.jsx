@@ -13,6 +13,16 @@ const router = createBrowserRouter([
     errorElement: <GeneralError />,
   },
   {
+    path: '/profile',
+    Component: lazy(() => import('./pages/Profile')),
+    errorElement: <GeneralError />,
+  },
+  {
+    path: '/search',
+    Component: lazy(() => import('./pages/Search')),
+    errorElement: <GeneralError />,
+  },
+  {
     path: '/about',
     Component: lazy(() => import('./pages/About')),
     errorElement: <GeneralError />,
