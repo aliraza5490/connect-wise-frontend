@@ -7,7 +7,7 @@ function PageHeader() {
     <header className="container py-4 px-4 lg:px-6 flex items-center justify-between">
       <Link className="flex items-center" to="/">
         <MagnetIcon className="h-6 w-6" />
-        <span className="text-xl font-bold">Connect Wise</span>
+        <span className="ml-2 text-xl font-bold">Connect Wise</span>
       </Link>
       <nav className="hidden lg:flex gap-4 sm:gap-6">
         <Link
