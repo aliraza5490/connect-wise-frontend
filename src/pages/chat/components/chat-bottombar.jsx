@@ -7,8 +7,6 @@ import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { EmojiPicker } from './emoji-picker';
 
-const BottombarIcons = [{ icon: Paperclip }];
-
 export default function ChatBottombar({ sendMessage, isMobile }) {
   const [message, setMessage] = useState('');
   const inputRef = useRef(null);
@@ -61,19 +59,24 @@ export default function ChatBottombar({ sendMessage, isMobile }) {
     <div className="p-2 flex justify-between w-full items-center gap-2">
       <div className="flex gap-1">
         <div className="flex gap-1">
-          {BottombarIcons.map((icon, index) => (
-            <Link
-              key={index}
-              to="#"
-              className={cn(
-                buttonVariants({ variant: 'ghost', size: 'icon' }),
-                'h-9 w-9',
-                'dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white',
-              )}
-            >
-              <icon.icon size={20} className="text-muted-foreground" />
-            </Link>
-          ))}
+          <input
+            style={{
+              display: 'none',
+            }}
+            accept=".json" // specify the file type that you wanted to accept
+            id="choose-file"
+            type="file"
+          />
+          <label
+            className={cn(
+              buttonVariants({ variant: 'ghost', size: 'icon' }),
+              'h-9 w-9',
+              'dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white hover:cursor-pointer',
+            )}
+            htmlFor="choose-file"
+          >
+            <Paperclip size={20} className="text-muted-foreground" />
+          </label>
         </div>
       </div>
 
