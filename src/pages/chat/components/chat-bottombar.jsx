@@ -1,25 +1,13 @@
 import { buttonVariants } from '@/components/ui/button';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
 import { loggedInUserData } from '@/data/chat';
 import { cn } from '@/lib/utils';
 import { AnimatePresence, motion } from 'framer-motion';
-import {
-  FileImage,
-  Mic,
-  Paperclip,
-  PlusCircle,
-  SendHorizontal,
-  ThumbsUp,
-} from 'lucide-react';
+import { Paperclip, SendHorizontal, ThumbsUp } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { EmojiPicker } from './emoji-picker';
 
-const BottombarIcons = [{ icon: FileImage }, { icon: Paperclip }];
+const BottombarIcons = [{ icon: Paperclip }];
 
 export default function ChatBottombar({ sendMessage, isMobile }) {
   const [message, setMessage] = useState('');
@@ -72,9 +60,10 @@ export default function ChatBottombar({ sendMessage, isMobile }) {
   return (
     <div className="p-2 flex justify-between w-full items-center gap-2">
       <div className="flex gap-1">
-        <Popover>
-          <PopoverTrigger asChild>
+        <div className="flex gap-1">
+          {BottombarIcons.map((icon, index) => (
             <Link
+              key={index}
               to="#"
               className={cn(
                 buttonVariants({ variant: 'ghost', size: 'icon' }),
@@ -82,67 +71,10 @@ export default function ChatBottombar({ sendMessage, isMobile }) {
                 'dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white',
               )}
             >
-              <PlusCircle size={20} className="text-muted-foreground" />
+              <icon.icon size={20} className="text-muted-foreground" />
             </Link>
-          </PopoverTrigger>
-          <PopoverContent side="top" className="w-full p-2">
-            {message.trim() || isMobile ? (
-              <div className="flex gap-2">
-                <Link
-                  to="#"
-                  className={cn(
-                    buttonVariants({ variant: 'ghost', size: 'icon' }),
-                    'h-9 w-9',
-                    'dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white',
-                  )}
-                >
-                  <Mic size={20} className="text-muted-foreground" />
-                </Link>
-                {BottombarIcons.map((icon, index) => (
-                  <Link
-                    key={index}
-                    to="#"
-                    className={cn(
-                      buttonVariants({ variant: 'ghost', size: 'icon' }),
-                      'h-9 w-9',
-                      'dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white',
-                    )}
-                  >
-                    <icon.icon size={20} className="text-muted-foreground" />
-                  </Link>
-                ))}
-              </div>
-            ) : (
-              <Link
-                to="#"
-                className={cn(
-                  buttonVariants({ variant: 'ghost', size: 'icon' }),
-                  'h-9 w-9',
-                  'dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white',
-                )}
-              >
-                <Mic size={20} className="text-muted-foreground" />
-              </Link>
-            )}
-          </PopoverContent>
-        </Popover>
-        {!message.trim() && !isMobile && (
-          <div className="flex gap-1">
-            {BottombarIcons.map((icon, index) => (
-              <Link
-                key={index}
-                to="#"
-                className={cn(
-                  buttonVariants({ variant: 'ghost', size: 'icon' }),
-                  'h-9 w-9',
-                  'dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white',
-                )}
-              >
-                <icon.icon size={20} className="text-muted-foreground" />
-              </Link>
-            ))}
-          </div>
-        )}
+          ))}
+        </div>
       </div>
 
       <AnimatePresence initial={false}>
@@ -175,9 +107,9 @@ export default function ChatBottombar({ sendMessage, isMobile }) {
             <EmojiPicker
               onChange={(value) => {
                 setMessage(message + value);
-                if (inputRef.current) {
-                  inputRef.current.focus();
-                }
+                // if (inputRef.current) {
+                //   inputRef.current.focus();
+                // }
               }}
             />
           </div>
