@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { truncateText } from '@/utils/helpers';
 import { MagnetIcon } from 'lucide-react';
 import { useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 const featuredMentors = [
   {
@@ -132,6 +132,17 @@ const browseMentors = [
 export default function Landing() {
   const pathnameID = window.location.hash;
   const params = useParams();
+  const navigate = useNavigate();
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const searchQuery = formData.get('search');
+    console.log('Search Query:', searchQuery);
+    navigate(`/search`, {
+      state: { searchQuery },
+    });
+  };
 
   useEffect(() => {
     if (pathnameID === '#browse-mentors') {
@@ -178,7 +189,7 @@ export default function Landing() {
             />
           </div>
         </section>
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800">
+        <section className="w-full py-12 md:py-20 bg-gray-100 dark:bg-gray-800">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
@@ -246,7 +257,9 @@ export default function Landing() {
                   </CardContent>
                   <CardFooter>
                     <div className="w-full flex items-center justify-between">
-                      <Button>View Profile</Button>
+                      <Link to={`/profile/${mentor.id}`}>
+                        <Button>View Profile</Button>
+                      </Link>
                       {/* Price /hr */}
                       <span className="text-gray-500 dark:text-gray-400">
                         ${mentor.price}/hr
@@ -258,7 +271,7 @@ export default function Landing() {
             </div>
           </div>
         </section>
-        <section id="browse-mentors" className="w-full py-12 md:py-24 lg:py-32">
+        <section id="browse-mentors" className="w-full py-12 md:py-20">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
@@ -271,11 +284,12 @@ export default function Landing() {
                 </p>
               </div>
               <div className="w-full max-w-md space-y-2">
-                <form className="flex space-x-2">
+                <form onSubmit={handleSearch} className="flex space-x-2">
                   <Input
                     className="max-w-lg flex-1"
                     placeholder="Search by expertise or availability"
                     type="text"
+                    name="search"
                   />
                   <Button type="submit">Search</Button>
                 </form>
@@ -336,7 +350,9 @@ export default function Landing() {
                   </CardContent>
                   <CardFooter>
                     <div className="w-full flex justify-between items-center">
-                      <Button>View Profile</Button>
+                      <Link to={`/profile/${mentor.id}`}>
+                        <Button>View Profile</Button>
+                      </Link>
                       {/* Price /hr */}
                       <span className="text-gray-500 dark:text-gray-400">
                         ${mentor.price}/hr

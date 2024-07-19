@@ -9,6 +9,8 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { truncateText } from '@/utils/helpers';
+import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const browseMentors = [
   {
@@ -79,6 +81,9 @@ const browseMentors = [
   },
 ];
 export default function About() {
+  const location = useLocation();
+  const [search, setSearch] = useState(location.state.searchQuery || '');
+
   return (
     <div className="flex flex-col min-h-[100dvh]">
       <PageHeader />
@@ -101,6 +106,8 @@ export default function About() {
                     className="max-w-lg flex-1"
                     placeholder="Search by expertise or availability"
                     type="text"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
                   />
                   <Button type="submit">Search</Button>
                 </form>

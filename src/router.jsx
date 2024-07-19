@@ -13,7 +13,7 @@ const router = createBrowserRouter([
     errorElement: <GeneralError />,
   },
   {
-    path: '/profile',
+    path: '/profile/:id',
     Component: lazy(() => import('./pages/Profile')),
     errorElement: <GeneralError />,
   },
