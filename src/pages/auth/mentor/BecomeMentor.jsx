@@ -1,5 +1,4 @@
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -23,6 +22,7 @@ export default function BecomeMentor() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const logOut = useUserStore((state) => state.logOut);
+  const [isAvailable, setIsAvailable] = useState(false);
 
   const {
     register,
@@ -30,6 +30,16 @@ export default function BecomeMentor() {
     control,
     handleSubmit,
   } = useForm({
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      linkedInProfile: '',
+      bio: '',
+      expertise: '',
+      experience: 'beginner',
+    },
     resolver: zodResolver(
       z.object({
         firstName: z.string().min(2).max(80),
@@ -46,10 +56,17 @@ export default function BecomeMentor() {
 
   const onValid = async (data) => {
     if (isLoading) return;
+    console.log(data);
+    if (!isAvailable) {
+      toast.error('You must be available to mentor at least 2 hours per week.');
+      return;
+    }
     setIsLoading(true);
     try {
       console.log(data);
       logOut();
+      const payload = { ...data };
+      delete payload.availability;
       await api.post('/auth/become-mentor', data);
       navigate('/login', { replace: true, relative: false });
     } catch (error) {
@@ -190,12 +207,7 @@ export default function BecomeMentor() {
                 name="experience"
                 render={({ field }) => {
                   return (
-                    <Select
-                      defaultValue="beginner"
-                      required
-                      onValueChange={field.onChange}
-                      {...field}
-                    >
+                    <Select required onValueChange={field.onChange} {...field}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select" />
                       </SelectTrigger>
@@ -217,10 +229,19 @@ export default function BecomeMentor() {
               )}
             </div>
             <div className="flex items-center">
-              <Checkbox id="availability" className="mx-2" />
+              <input
+                id="availability"
+                name="availability"
+                className="mx-2"
+                type="checkbox"
+                onChange={() => {
+                  console.log('here');
+                  setIsAvailable((prev) => !prev);
+                }}
+              />
               <label
                 htmlFor="availability"
-                className="text-sm text-gray-500 dark:text-gray-400"
+                className="text-sm text-gray-500 dark:text-gray-400 hover:cursor-pointer"
               >
                 I&apos;m available to mentor at least 2 hours per week.
               </label>
