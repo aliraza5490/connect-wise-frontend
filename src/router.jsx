@@ -6,6 +6,8 @@ import NotFoundError from './pages/errors/NotFoundError';
 import UnauthorisedError from './pages/errors/UnauthorisedError';
 import { decodeJWT, getTokenCookie } from './utils/helpers';
 
+const MentorLayout = lazy(() => import('./layouts/DashboardLayout'));
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -87,6 +89,39 @@ const router = createBrowserRouter([
       {
         path: '',
         Component: lazy(() => import('./pages/dashboard/Dashboard')),
+      },
+      {
+        path: 'tasks',
+        Component: lazy(() => import('./pages/tasks/Tasks')),
+      },
+      {
+        path: 'chats',
+        Component: lazy(() => import('./pages/chat/Chat')),
+      },
+    ],
+  },
+  {
+    path: '/mentor/dashboard',
+    errorElement: <GeneralError />,
+    element: <MentorLayout forMentor />,
+    loader: () => {
+      const token = getTokenCookie();
+      if (!token) {
+        return redirect('/login');
+      }
+      const decode = decodeJWT(token);
+      if (decode && decode.exp < Date.now() / 1000) {
+        return redirect('/login');
+      }
+      if (decode && decode.role !== 'mentor') {
+        return redirect('/dashboard');
+      }
+      return null;
+    },
+    children: [
+      {
+        path: '',
+        Component: lazy(() => import('./pages/mentor-dashboard/Dashboard')),
       },
       {
         path: 'tasks',

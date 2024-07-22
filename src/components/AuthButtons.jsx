@@ -16,7 +16,9 @@ function AuthButtons() {
     <div>
       {user ? (
         <>
-          <Link to="/dashboard">
+          <Link
+            to={user?.role == 'mentor' ? '/mentor/dashboard' : '/dashboard'}
+          >
             <Button variant="ghost">Dashboard</Button>
           </Link>
           <Button onClick={handleLogOut} variant="ghost">

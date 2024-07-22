@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import useUserStore from '@/store/userStore';
 import api from '@/utils/api';
+import { decodeJWT } from '@/utils/helpers';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -12,6 +13,7 @@ import { z } from 'zod';
 
 export default function Login() {
   const login = useUserStore((state) => state.login);
+  const user = useUserStore((state) => state.user);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -35,7 +37,12 @@ export default function Login() {
     try {
       const { data: res } = await api.post('/auth/login', data);
       await login(res.token);
-      navigate('/dashboard', { replace: true });
+      let redirectLink = '/dashboard';
+      const decoded = decodeJWT(res.token);
+      if (decoded && decoded.role === 'mentor') {
+        redirectLink = '/mentor/dashboard';
+      }
+      navigate(redirectLink, { replace: true });
     } catch (error) {
       console.error(error);
       toast.error(

@@ -1,4 +1,3 @@
-import { sidelinks } from '@/data/sideLinks';
 import { cn } from '@/lib/utils';
 import { IconChevronsLeft, IconMenu2, IconX } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
@@ -8,7 +7,12 @@ import { Layout } from './custom/layout';
 import MagnetIcon from './MagnetIcon';
 import Nav from './Nav';
 
-export default function Sidebar({ className, isCollapsed, setIsCollapsed }) {
+export default function Sidebar({
+  className,
+  sideLinks,
+  isCollapsed,
+  setIsCollapsed,
+}) {
   const [navOpened, setNavOpened] = useState(false);
 
   /* Make body not scrollable when navBar is opened */
@@ -74,7 +78,7 @@ export default function Sidebar({ className, isCollapsed, setIsCollapsed }) {
           }`}
           closeNav={() => setNavOpened(false)}
           isCollapsed={isCollapsed}
-          links={sidelinks}
+          links={sideLinks}
         />
 
         {/* Scrollbar width toggle button */}

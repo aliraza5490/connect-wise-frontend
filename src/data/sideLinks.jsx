@@ -23,7 +23,7 @@ import {
   IconUsers,
 } from '@tabler/icons-react';
 
-export const sidelinks = [
+export default [
   {
     title: 'Dashboard',
     label: '',
