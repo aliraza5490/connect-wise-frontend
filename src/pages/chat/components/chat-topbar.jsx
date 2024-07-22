@@ -9,7 +9,7 @@ const TopbarIcons = [{ icon: Phone }, { icon: Video }, { icon: Info }];
 export default function ChatTopbar({ selectedUser }) {
   return (
     <div className="w-full h-20 flex p-4 justify-between items-center border-b">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 relative">
         <Avatar className="flex justify-center items-center">
           <AvatarImage
             src={selectedUser.avatar}
@@ -21,8 +21,10 @@ export default function ChatTopbar({ selectedUser }) {
         </Avatar>
         <div className="flex flex-col">
           <span className="font-medium">{selectedUser.name}</span>
-          <span className="text-xs">Active 2 mins ago</span>
+          <span className="text-xs">Active</span>
         </div>
+        {/* green dot */}
+        <div className="absolute top-0 left-[1.8rem] w-3 h-3 bg-green-500 rounded-full border border-white"></div>
       </div>
 
       <div className="flex row gap-1">

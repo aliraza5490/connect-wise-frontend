@@ -2,7 +2,7 @@ import { buttonVariants } from '@/components/ui/button';
 import { loggedInUserData } from '@/data/chat';
 import { cn } from '@/lib/utils';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Paperclip, SendHorizontal, ThumbsUp } from 'lucide-react';
+import { SendHorizontal, ThumbsUp } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { EmojiPicker } from './emoji-picker';
@@ -67,7 +67,7 @@ export default function ChatBottombar({ sendMessage, isMobile }) {
             id="choose-file"
             type="file"
           />
-          <label
+          {/* <label
             className={cn(
               buttonVariants({ variant: 'ghost', size: 'icon' }),
               'h-9 w-9',
@@ -76,7 +76,7 @@ export default function ChatBottombar({ sendMessage, isMobile }) {
             htmlFor="choose-file"
           >
             <Paperclip size={20} className="text-muted-foreground" />
-          </label>
+          </label> */}
         </div>
       </div>
 

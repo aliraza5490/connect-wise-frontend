@@ -17,6 +17,16 @@ export function ChatLayout({
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
   const [selectedUser, setSelectedUser] = useState(userData[0]);
   const [isMobile, setIsMobile] = useState(false);
+  const [messages, setMessages] = useState(userData[0].messages ?? []);
+
+  const sendMessage = (newMessage) => {
+    setMessages((prev) => [...prev, newMessage]);
+  };
+
+  const handleSelectUser = (user) => {
+    setSelectedUser(user);
+    setMessages(user.messages ?? []);
+  };
 
   useEffect(() => {
     const checkScreenWidth = () => {
@@ -81,15 +91,16 @@ export function ChatLayout({
             variant: selectedUser.name === user.name ? 'grey' : 'ghost',
           }))}
           isMobile={isMobile}
-          onSelect={(user) => setSelectedUser(user)}
+          onSelect={handleSelectUser}
         />
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
         <Chat
-          messages={selectedUser.messages}
+          messages={messages}
           selectedUser={selectedUser}
           isMobile={isMobile}
+          sendMessage={sendMessage}
         />
       </ResizablePanel>
     </ResizablePanelGroup>

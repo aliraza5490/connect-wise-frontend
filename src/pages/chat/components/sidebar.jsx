@@ -63,15 +63,19 @@ export function Sidebar({ users, isCollapsed, onSelect }) {
                     )}
                     onClick={() => onSelect(user)}
                   >
-                    <Avatar className="flex justify-center items-center">
-                      <AvatarImage
-                        src={user.avatar}
-                        alt={user.avatar}
-                        width={6}
-                        height={6}
-                        className="w-10 h-10 "
-                      />
-                    </Avatar>{' '}
+                    <div className="relative">
+                      <Avatar className="flex justify-center items-center">
+                        <AvatarImage
+                          src={user.avatar}
+                          alt={user.avatar}
+                          width={6}
+                          height={6}
+                          className="w-10 h-10 "
+                        />
+                      </Avatar>
+                      {/* green dot */}
+                      <div className="absolute top-0 left-[1.8rem] w-3 h-3 bg-green-500 rounded-full border border-white"></div>
+                    </div>{' '}
                     <span className="sr-only">{user.name}</span>
                   </Link>
                 </TooltipTrigger>
@@ -95,15 +99,19 @@ export function Sidebar({ users, isCollapsed, onSelect }) {
               )}
               onClick={() => onSelect(user)}
             >
-              <Avatar className="flex justify-center items-center">
-                <AvatarImage
-                  src={user.avatar}
-                  alt={user.avatar}
-                  width={6}
-                  height={6}
-                  className="w-10 h-10 "
-                />
-              </Avatar>
+              <div className="relative">
+                <Avatar className="flex justify-center items-center">
+                  <AvatarImage
+                    src={user.avatar}
+                    alt={user.avatar}
+                    width={6}
+                    height={6}
+                    className="w-10 h-10 "
+                  />
+                </Avatar>
+                {/* green dot */}
+                <div className="absolute top-0 left-[1.8rem] w-3 h-3 bg-green-500 rounded-full border border-white"></div>
+              </div>
               <div className="flex flex-col max-w-28">
                 <span>{user.name}</span>
                 {user.messages.length > 0 && (
