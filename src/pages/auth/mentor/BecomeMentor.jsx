@@ -32,7 +32,7 @@ export default function BecomeMentor() {
         email: z.string().email(),
         password: z.string().min(6),
         linkedInProfile: z.string().optional().default(''),
-        bio: z.string().optional().default(''),
+        bio: z.string().min(2).max(500),
         expertise: z.string().min(2).max(80),
         experience: z.string().min(2).max(80),
       }),
