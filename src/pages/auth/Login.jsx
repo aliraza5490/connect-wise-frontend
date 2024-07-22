@@ -13,7 +13,6 @@ import { z } from 'zod';
 
 export default function Login() {
   const login = useUserStore((state) => state.login);
-  const user = useUserStore((state) => state.user);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
