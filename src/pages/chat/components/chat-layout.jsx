@@ -85,6 +85,7 @@ export function ChatLayout({
         <Sidebar
           isCollapsed={isCollapsed || isMobile}
           users={userData.map((user) => ({
+            id: user.id,
             name: user.name,
             messages: user.messages ?? [],
             avatar: user.avatar,
