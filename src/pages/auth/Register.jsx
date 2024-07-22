@@ -2,16 +2,19 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import useUserStore from '@/store/userStore';
 import api from '@/utils/api';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { z } from 'zod';
 
 export default function Register() {
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const logOut = useUserStore((state) => state.logOut);
 
   const {
     register,
@@ -35,8 +38,9 @@ export default function Register() {
     setIsLoading(true);
     console.log(data);
     try {
+      logOut();
       await api.post('/auth/register', data);
-      redirect('/login');
+      navigate('/login', { replace: true, relative: false });
     } catch (error) {
       console.error(error);
       toast.error(

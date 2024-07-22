@@ -10,14 +10,19 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import useUserStore from '@/store/userStore';
+import api from '@/utils/api';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { z } from 'zod';
 
 export default function BecomeMentor() {
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const logOut = useUserStore((state) => state.logOut);
 
   const {
     register,
@@ -44,6 +49,9 @@ export default function BecomeMentor() {
     setIsLoading(true);
     try {
       console.log(data);
+      logOut();
+      await api.post('/auth/become-mentor', data);
+      navigate('/login', { replace: true, relative: false });
     } catch (error) {
       console.error(error);
       toast.error(
