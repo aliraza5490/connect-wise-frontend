@@ -15,7 +15,7 @@ export default [
   {
     title: 'Received Orders',
     label: '',
-    href: '/mentor/dashboard/tasks',
+    href: '/mentor/dashboard/orders',
     icon: <IconChecklist size={18} />,
   },
   {

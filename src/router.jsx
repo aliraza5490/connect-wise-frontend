@@ -91,7 +91,7 @@ const router = createBrowserRouter([
         Component: lazy(() => import('./pages/dashboard/Dashboard')),
       },
       {
-        path: 'tasks',
+        path: 'orders',
         Component: lazy(() => import('./pages/dashboard/tasks/Tasks')),
       },
       {
@@ -124,7 +124,7 @@ const router = createBrowserRouter([
         Component: lazy(() => import('./pages/mentor-dashboard/Dashboard')),
       },
       {
-        path: 'tasks',
+        path: 'orders',
         Component: lazy(() => import('./pages/mentor-dashboard/tasks/Tasks')),
       },
       {

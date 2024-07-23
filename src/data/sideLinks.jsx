@@ -13,9 +13,9 @@ export default [
     icon: <IconLayoutDashboard size={18} />,
   },
   {
-    title: 'Tasks',
+    title: 'My Orders',
     label: '',
-    href: '/dashboard/tasks',
+    href: '/dashboard/orders',
     icon: <IconChecklist size={18} />,
   },
   {
