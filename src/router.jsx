@@ -92,11 +92,11 @@ const router = createBrowserRouter([
       },
       {
         path: 'tasks',
-        Component: lazy(() => import('./pages/tasks/Tasks')),
+        Component: lazy(() => import('./pages/dashboard/tasks/Tasks')),
       },
       {
         path: 'chats',
-        Component: lazy(() => import('./pages/chat/Chat')),
+        Component: lazy(() => import('./pages/dashboard/chat/Chat')),
       },
     ],
   },
@@ -125,11 +125,11 @@ const router = createBrowserRouter([
       },
       {
         path: 'tasks',
-        Component: lazy(() => import('./pages/tasks/Tasks')),
+        Component: lazy(() => import('./pages/mentor-dashboard/tasks/Tasks')),
       },
       {
         path: 'chats',
-        Component: lazy(() => import('./pages/chat/Chat')),
+        Component: lazy(() => import('./pages/mentor-dashboard/chat/Chat')),
       },
     ],
   },
