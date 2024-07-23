@@ -2,6 +2,7 @@ export const userData = [
   {
     id: 1,
     avatar: '/chat/User1.png',
+    status: Math.random() > 0.5 ? 'online' : 'offline',
     messages: [
       {
         id: 1,

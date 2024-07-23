@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils';
 import { MoreHorizontal, SquarePen } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-export function Sidebar({ users, isCollapsed, onSelect }) {
+export function Sidebar({ users, selectedUser, isCollapsed, onSelect }) {
   return (
     <div
       data-collapsed={isCollapsed}
@@ -74,7 +74,9 @@ export function Sidebar({ users, isCollapsed, onSelect }) {
                         />
                       </Avatar>
                       {/* green dot */}
-                      <div className="absolute top-0 left-[1.8rem] w-3 h-3 bg-green-500 rounded-full border border-white"></div>
+                      {user.status === 'online' && (
+                        <div className="absolute top-0 left-[1.8rem] w-3 h-3 bg-green-500 rounded-full border border-white"></div>
+                      )}
                     </div>{' '}
                     <span className="sr-only">{user.name}</span>
                   </Link>
@@ -110,7 +112,9 @@ export function Sidebar({ users, isCollapsed, onSelect }) {
                   />
                 </Avatar>
                 {/* green dot */}
-                <div className="absolute top-0 left-[1.8rem] w-3 h-3 bg-green-500 rounded-full border border-white"></div>
+                {user.status === 'online' && (
+                  <div className="absolute top-0 left-[1.8rem] w-3 h-3 bg-green-500 rounded-full border border-white"></div>
+                )}
               </div>
               <div className="flex flex-col max-w-28">
                 <span>{user.name}</span>

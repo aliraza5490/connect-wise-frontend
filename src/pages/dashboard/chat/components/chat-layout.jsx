@@ -90,9 +90,11 @@ export function ChatLayout({
             messages: user.messages ?? [],
             avatar: user.avatar,
             variant: selectedUser.name === user.name ? 'grey' : 'ghost',
+            status: Math.random() > 0.5 ? 'online' : 'offline',
           }))}
           isMobile={isMobile}
           onSelect={handleSelectUser}
+          selectedUser={selectedUser}
         />
       </ResizablePanel>
       <ResizableHandle withHandle />

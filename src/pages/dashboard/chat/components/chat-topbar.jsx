@@ -22,10 +22,14 @@ export default function ChatTopbar({ selectedUser }) {
         </Avatar>
         <div className="flex flex-col">
           <span className="font-medium">{selectedUser.name}</span>
-          <span className="text-xs">Active</span>
+          {selectedUser.status === 'online' && (
+            <span className="text-xs">Active</span>
+          )}
         </div>
         {/* green dot */}
-        <div className="absolute top-0 left-[1.8rem] w-3 h-3 bg-green-500 rounded-full border border-white"></div>
+        {selectedUser.status === 'online' && (
+          <div className="absolute top-0 left-[1.8rem] w-3 h-3 bg-green-500 rounded-full border border-white"></div>
+        )}
       </div>
 
       <div className="flex row gap-1">
