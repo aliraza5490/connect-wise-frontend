@@ -169,9 +169,9 @@ export default function About() {
                   <CardFooter>
                     <div className="w-full flex justify-between items-center">
                       <Button>View Profile</Button>
-                      {/* Price /hr */}
+                      {/* Price /month */}
                       <span className="text-gray-500 dark:text-gray-400">
-                        ${mentor.price}/hr
+                        ${mentor.price}/month
                       </span>
                     </div>
                   </CardFooter>

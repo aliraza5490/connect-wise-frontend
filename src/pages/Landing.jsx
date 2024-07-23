@@ -268,9 +268,9 @@ export default function Landing() {
                       <Link to={`/profile/${mentor.id}`}>
                         <Button>View Profile</Button>
                       </Link>
-                      {/* Price /hr */}
+                      {/* Price /month */}
                       <span className="text-gray-500 dark:text-gray-400">
-                        ${mentor.price}/hr
+                        ${mentor.price}/month
                       </span>
                     </div>
                   </CardFooter>
@@ -361,9 +361,9 @@ export default function Landing() {
                       <Link to={`/profile/${mentor.id}`}>
                         <Button>View Profile</Button>
                       </Link>
-                      {/* Price /hr */}
+                      {/* Price /month */}
                       <span className="text-gray-500 dark:text-gray-400">
-                        ${mentor.price}/hr
+                        ${mentor.price}/month
                       </span>
                     </div>
                   </CardFooter>
