@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 // const TopbarIcons = [{ icon: Phone }, { icon: Video }, { icon: Info }];
 
 export default function ChatTopbar({ selectedUser }) {
-  console.log(selectedUser);
   return (
     <div className="w-full h-20 flex p-4 justify-between items-center border-b">
       <div className="flex items-center gap-2 relative">

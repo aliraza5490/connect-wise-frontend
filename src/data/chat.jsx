@@ -66,6 +66,7 @@ export const userData = [
     id: 2,
     avatar: '/chat/User2.png',
     name: 'John Doe',
+    status: Math.random() > 0.5 ? 'online' : 'offline',
     messages: [
       {
         id: 1,
@@ -128,6 +129,7 @@ export const userData = [
     id: 3,
     avatar: '/chat/User3.png',
     name: 'Elizabeth Smith',
+    status: Math.random() > 0.5 ? 'online' : 'offline',
     messages: [
       {
         id: 1,
@@ -190,6 +192,7 @@ export const userData = [
     id: 4,
     avatar: '/chat/User4.png',
     name: 'John Smith',
+    status: Math.random() > 0.5 ? 'online' : 'offline',
     messages: [
       {
         id: 1,
