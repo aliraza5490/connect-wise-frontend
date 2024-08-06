@@ -1,11 +1,19 @@
 import PageHeader from '@/components/PageHeader';
+import Rating from '@/components/Rating';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import expLevels from '@/data/expLevels';
 import { IconBrandLinkedin } from '@tabler/icons-react';
+import { useEffect } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 
 export default function Profile() {
   const location = useLocation();
   const mentor = location.state?.mentor;
+
+  useEffect(() => {
+    // scroll to top
+    window.scrollTo(0, 0);
+  }, []);
 
   if (!mentor) {
     return <Navigate to={'/'} />;
@@ -45,32 +53,15 @@ export default function Profile() {
               <p className="text-gray-500 dark:text-gray-400">
                 {mentor.expertise}
               </p>
-              <p className="text-primary mb-2">7-10 years of experience</p>
+              <p className="text-primary mb-2">
+                {expLevels[mentor.level]} years of experience
+              </p>
               <div className="flex flex-row items-center gap-4 text-gray-500 dark:text-gray-400 mr-auto">
                 <div className="flex items-center gap-1">
-                  {[...Array(5)].map((_, index) => (
-                    <svg
-                      className="h-4 w-4 text-yellow-500 dark:text-yellow-400"
-                      fill={index < 4 ? 'currentColor' : 'none'}
-                      key={index}
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2"
-                        fill={
-                          index + 1 < mentor.rating ? 'currentColor' : 'none'
-                        }
-                      />
-                    </svg>
-                  ))}
+                  <Rating value={mentor.rating} />
                 </div>
                 <span>
-                  {mentor.rating} ({mentor.reviews} reviews)
+                  {mentor.rating} ({mentor.reviews.length} reviews)
                 </span>
               </div>
             </div>
@@ -90,132 +81,33 @@ export default function Profile() {
         <div className="grid gap-8 p-4 sm:p-8">
           <h2 className="text-2xl font-bold">Reviews</h2>
           <div className="grid gap-6">
-            <div className="flex gap-4">
-              <Avatar className="h-12 w-12 border">
-                <AvatarImage src="https://i.pravatar.cc/150?img=8" />
-                <AvatarFallback>JD</AvatarFallback>
-              </Avatar>
-              <div className="grid gap-2">
-                <div className="flex items-center gap-2">
-                  <h3 className="text-lg font-semibold">Sarah Johnson</h3>
-                  <div className="flex items-center gap-0.5 text-primary">
-                    <StarIcon className="w-5 h-5" />
-                    <StarIcon className="w-5 h-5" />
-                    <StarIcon className="w-5 h-5" />
-                    <StarIcon className="w-5 h-5 fill-muted stroke-muted-foreground" />
-                    <StarIcon className="w-5 h-5 fill-muted stroke-muted-foreground" />
+            {mentor.reviews.map((review) => (
+              <div key={review.id} className="flex gap-4">
+                <Avatar className="h-12 w-12 border">
+                  <AvatarImage
+                    src={`https://i.pravatar.cc/150?img=${Math.random() * 5}`}
+                  />
+                  <AvatarFallback>
+                    {review.name.split(' ')[0][0]}
+                    {review.name.split(' ')[1][0]}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="grid gap-2">
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-lg font-semibold">{review.name}</h3>
+                    <div className="flex items-center gap-0.5 text-primary">
+                      <Rating value={review.rating} />
+                    </div>
+                  </div>
+                  <div className="text-sm leading-loose text-muted-foreground">
+                    <p>{review.review}</p>
                   </div>
                 </div>
-                <div className="text-sm leading-loose text-muted-foreground">
-                  <p>
-                    John is an amazing developer who has helped me with several
-                    projects. His attention to detail and problem-solving skills
-                    are top-notch. I highly recommend him to anyone looking for
-                    a skilled and reliable developer.
-                  </p>
-                </div>
               </div>
-            </div>
-            <div className="flex gap-4">
-              <Avatar className="h-12 w-12 border">
-                <AvatarImage src="/placeholder-user.jpg" />
-                <AvatarFallback>JD</AvatarFallback>
-              </Avatar>
-              <div className="grid gap-2">
-                <div className="flex items-center gap-2">
-                  <h3 className="text-lg font-semibold">Alex Smith</h3>
-                  <div className="flex items-center gap-0.5 text-primary">
-                    <StarIcon className="w-5 h-5" />
-                    <StarIcon className="w-5 h-5" />
-                    <StarIcon className="w-5 h-5" />
-                    <StarIcon className="w-5 h-5 fill-muted stroke-muted-foreground" />
-                    <StarIcon className="w-5 h-5 fill-muted stroke-muted-foreground" />
-                  </div>
-                </div>
-                <div className="text-sm leading-loose text-muted-foreground">
-                  <p>
-                    I&apos;ve had the pleasure of working with John on several
-                    projects, and I can confidently say that he is one of the
-                    most talented and reliable developers I&apos;ve ever
-                    collaborated with. His attention to detail, problem-solving
-                    skills, and ability to deliver high-quality work on time are
-                    truly impressive.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="flex gap-4">
-              <Avatar className="h-12 w-12 border">
-                <AvatarImage src="/placeholder-user.jpg" />
-                <AvatarFallback>JD</AvatarFallback>
-              </Avatar>
-              <div className="grid gap-2">
-                <div className="flex items-center gap-2">
-                  <h3 className="text-lg font-semibold">Emily Parker</h3>
-                  <div className="flex items-center gap-0.5 text-primary">
-                    <StarIcon className="w-5 h-5" />
-                    <StarIcon className="w-5 h-5" />
-                    <StarIcon className="w-5 h-5" />
-                    <StarIcon className="w-5 h-5 fill-muted stroke-muted-foreground" />
-                    <StarIcon className="w-5 h-5 fill-muted stroke-muted-foreground" />
-                  </div>
-                </div>
-                <div className="text-sm leading-loose text-muted-foreground">
-                  <p>
-                    John&apos;s expertise and professionalism have been
-                    invaluable to the success of our project. He consistently
-                    delivers high-quality work and is always willing to go the
-                    extra mile to ensure that our requirements are met. I would
-                    highly recommend him to anyone in need of a skilled and
-                    reliable developer.
-                  </p>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
     </div>
-  );
-}
-
-function StarIcon({ filled = true, ...props }) {
-  return (
-    <svg
-      {...props}
-      className="h-4 w-4 text-yellow-500 dark:text-yellow-400"
-      fill={filled ? 'currentColor' : 'none'}
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2"
-        fill={filled ? 'currentColor' : 'none'}
-      />
-    </svg>
-  );
-}
-
-function XIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M18 6 6 18" />
-      <path d="m6 6 12 12" />
-    </svg>
   );
 }
