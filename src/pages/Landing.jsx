@@ -146,6 +146,13 @@ export default function Landing() {
     });
   };
 
+  const handleProfileView = (mentor) => {
+    console.log('View Profile:', mentor);
+    navigate(`/profile`, {
+      state: { mentor },
+    });
+  };
+
   useEffect(() => {
     if (pathnameID === '#browse-mentors') {
       const browseMentors = document.getElementById('browse-mentors');
@@ -265,9 +272,9 @@ export default function Landing() {
                   </CardContent>
                   <CardFooter>
                     <div className="w-full flex items-center justify-between">
-                      <Link to={`/profile/${mentor.id}`}>
+                      <a href="#" onClick={() => handleProfileView(mentor)}>
                         <Button>View Profile</Button>
-                      </Link>
+                      </a>
                       {/* Price /month */}
                       <span className="text-gray-500 dark:text-gray-400">
                         ${mentor.price}/month

@@ -1,19 +1,16 @@
 import PageHeader from '@/components/PageHeader';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { IconBrandLinkedin } from '@tabler/icons-react';
+import { Navigate, useLocation } from 'react-router-dom';
 
 export default function Profile() {
-  const mentor = {
-    id: 9,
-    name: 'David Wang',
-    expertise: 'Entrepreneurship Mentor',
-    description:
-      "David has founded and scaled multiple successful startups. He's passionate about helping aspiring entrepreneurs turn their ideas into reality. He's available for 1-on-1 mentoring sessions. Book a session with him to get expert advice on your startup idea, fundraising, product development, and more. David has founded and scaled multiple successful startups. He's passionate about helping aspiring entrepreneurs turn their ideas into reality. He's available for 1-on-1 mentoring sessions. Book a session with him to get expert advice on your startup idea, fundraising, product development, and more.",
-    avatar: 'https://i.pravatar.cc/150?img=7',
-    reviews: 21,
-    rating: 4.6,
-    price: 55,
-  };
+  const location = useLocation();
+  const mentor = location.state?.mentor;
+
+  if (!mentor) {
+    return <Navigate to={'/'} />;
+  }
+
   return (
     <div className="flex flex-col min-h-[100dvh]">
       <PageHeader />
@@ -78,7 +75,7 @@ export default function Profile() {
               </div>
             </div>
             <button className="flex items-center gap-2 px-4 py-2 text-white bg-primary rounded-md">
-              <span>Subscribe for $100</span>
+              <span>Subscribe for ${mentor.price}</span>
             </button>
           </div>
         </div>
