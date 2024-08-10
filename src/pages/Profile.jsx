@@ -2,13 +2,16 @@ import PageHeader from '@/components/PageHeader';
 import Rating from '@/components/Rating';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import expLevels from '@/data/expLevels';
+import useUserStore from '@/store/userStore';
 import { IconBrandLinkedin } from '@tabler/icons-react';
 import { useEffect } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 
 export default function Profile() {
   const location = useLocation();
   const mentor = location.state?.mentor;
+  const user = useUserStore((state) => state.user);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // scroll to top
@@ -18,6 +21,15 @@ export default function Profile() {
   if (!mentor) {
     return <Navigate to={'/'} />;
   }
+
+  const handleBuy = () => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    // Add your payment logic here
+    alert('Payment logic goes here');
+  };
 
   return (
     <div className="flex flex-col min-h-[100dvh]">
@@ -65,7 +77,10 @@ export default function Profile() {
                 </span>
               </div>
             </div>
-            <button className="flex items-center gap-2 px-4 py-2 text-white bg-primary rounded-md">
+            <button
+              className="flex items-center gap-2 px-4 py-2 text-white bg-primary rounded-md"
+              onClick={handleBuy}
+            >
               <span>Subscribe for ${mentor.price}</span>
             </button>
           </div>
