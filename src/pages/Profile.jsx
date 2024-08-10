@@ -3,6 +3,7 @@ import Rating from '@/components/Rating';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import expLevels from '@/data/expLevels';
 import useUserStore from '@/store/userStore';
+import api from '@/utils/api';
 import { IconBrandLinkedin } from '@tabler/icons-react';
 import { useEffect } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
@@ -22,13 +23,20 @@ export default function Profile() {
     return <Navigate to={'/'} />;
   }
 
-  const handleBuy = () => {
+  const handleBuy = async () => {
     if (!user) {
       navigate('/login');
       return;
     }
-    // Add your payment logic here
-    alert('Payment logic goes here');
+
+    const { data } = await api.post('/buy', {
+      mentorId: mentor.id,
+      userId: user.id,
+    });
+
+    if (data?.url) {
+      return navigate(data.url);
+    }
   };
 
   return (
