@@ -30,8 +30,7 @@ export default function Profile() {
     }
 
     const { data } = await api.post('/buy', {
-      mentorId: mentor.id,
-      userId: user.id,
+      mentorID: mentor.id,
     });
 
     if (data?.url) {
