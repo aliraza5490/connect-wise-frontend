@@ -59,7 +59,7 @@ const featuredMentors = [
     expertise: 'Product Management Mentor',
     description:
       "Jane has extensive experience in product management and has helped numerous startups and companies launch successful products. She's available for 1-on-1 mentoring sessions.",
-    avatar: 'https://i.pravatar.cc/150?2',
+    avatar: 'https://i.pravatar.cc/150?img=2',
     level: 'intermediate',
     rating: 3.9,
     price: 30,
