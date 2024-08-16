@@ -38,7 +38,7 @@ export default function BecomeMentor() {
       linkedInProfile: '',
       bio: '',
       expertise: '',
-      experience: 'beginner',
+      level: 'beginner',
     },
     resolver: zodResolver(
       z.object({
@@ -49,7 +49,7 @@ export default function BecomeMentor() {
         linkedInProfile: z.string().optional().default(''),
         bio: z.string().min(2).max(500),
         expertise: z.string().min(2).max(80),
-        experience: z.string().min(2).max(80),
+        level: z.string().min(2).max(80),
       }),
     ),
   });
