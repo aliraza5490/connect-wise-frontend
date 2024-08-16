@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/card';
 import { UserNav } from '@/components/UserNav';
 import { Overview } from './Overview';
-import { RecentSales } from './RecentSales';
+import RecentPurchases from './RecentPurchases';
 
 export default function Dashboard() {
   return (
@@ -138,13 +138,11 @@ export default function Dashboard() {
             </Card>
             <Card className="col-span-1 lg:col-span-3">
               <CardHeader>
-                <CardTitle>Recent Sales</CardTitle>
-                <CardDescription>
-                  You made 265 sales this month.
-                </CardDescription>
+                <CardTitle>Recent Purchases</CardTitle>
+                <CardDescription>You have 10 new purchases</CardDescription>
               </CardHeader>
               <CardContent>
-                <RecentSales />
+                <RecentPurchases />
               </CardContent>
             </Card>
           </div>
