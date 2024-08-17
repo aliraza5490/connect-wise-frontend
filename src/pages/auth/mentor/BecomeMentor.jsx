@@ -12,6 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import useUserStore from '@/store/userStore';
 import api from '@/utils/api';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { countries } from 'countries-list';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -23,6 +24,7 @@ export default function BecomeMentor() {
   const navigate = useNavigate();
   const logOut = useUserStore((state) => state.logOut);
   const [isAvailable, setIsAvailable] = useState(false);
+  const countryCodes = Object.keys(countries);
 
   const {
     register,
@@ -36,8 +38,11 @@ export default function BecomeMentor() {
       email: '',
       password: '',
       linkedInProfile: '',
+      country: 'PK',
+      gender: 'Male',
       bio: '',
-      expertise: '',
+      pricePerMonth: 10,
+      title: '',
       level: 'beginner',
     },
     resolver: zodResolver(
@@ -45,10 +50,13 @@ export default function BecomeMentor() {
         firstName: z.string().min(2).max(80),
         lastName: z.string().min(2).max(80),
         email: z.string().email(),
+        gender: z.enum(['Male', 'Female']),
         password: z.string().min(6),
+        country: z.string().min(2).max(4),
         linkedInProfile: z.string().optional().default(''),
+        pricePerMonth: z.number().default(10),
         bio: z.string().min(2).max(500),
-        expertise: z.string().min(2).max(80),
+        title: z.string().min(2).max(80),
         level: z.string().min(2).max(80),
       }),
     ),
@@ -58,7 +66,9 @@ export default function BecomeMentor() {
     if (isLoading) return;
     console.log(data);
     if (!isAvailable) {
-      toast.error('You must be available to mentor at least 2 hours per week.');
+      toast.error(
+        'You must be available for mentorship at least 2 hours per week.',
+      );
       return;
     }
     setIsLoading(true);
@@ -79,8 +89,6 @@ export default function BecomeMentor() {
       setIsLoading(false);
     }
   };
-
-  console.log(errors);
 
   return (
     <div className="mx-auto max-w-md space-y-6">
@@ -157,6 +165,88 @@ export default function BecomeMentor() {
               )}
             </div>
             <div className="space-y-2">
+              <Label htmlFor="gender">Gender</Label>
+              <Controller
+                control={control}
+                id="gender"
+                name="gender"
+                render={({ field }) => {
+                  return (
+                    <Select required onValueChange={field.onChange} {...field}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Male">Male</SelectItem>
+                        <SelectItem value="Female">Female</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  );
+                }}
+              ></Controller>
+
+              {errors?.gender && (
+                <p className="text-red-500 dark:text-red-400">
+                  {errors?.gender.message}
+                </p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="country">Country</Label>
+              <Controller
+                control={control}
+                id="country"
+                name="country"
+                render={({ field }) => {
+                  return (
+                    <Select required onValueChange={field.onChange} {...field}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {countryCodes.map((code) => (
+                          <SelectItem key={code} value={code}>
+                            {countries[code].name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  );
+                }}
+              ></Controller>
+
+              {errors?.experience && (
+                <p className="text-red-500 dark:text-red-400">
+                  {errors?.experience.message}
+                </p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="pricePerMonth">Price Per Month</Label>
+              <Input
+                id="pricePerMonth"
+                placeholder="10"
+                type="number"
+                required
+                {...register('pricePerMonth', {
+                  min: {
+                    value: 10,
+                    message: 'Price must be at least $10',
+                  },
+                  max: {
+                    value: 500,
+                    message: 'Price must be at most $500',
+                  },
+                  valueAsNumber: true,
+                })}
+              />
+              {errors?.pricePerMonth && (
+                <p className="text-red-500 dark:text-red-400">
+                  {errors?.pricePerMonth.message}
+                </p>
+              )}
+            </div>
+            <div className="space-y-2">
               <Label htmlFor="linkedInProfile">LinkedIn Profile</Label>
               <Input
                 id="linkedInProfile"
@@ -170,32 +260,18 @@ export default function BecomeMentor() {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="bio">Bio</Label>
-              <Textarea
-                className="min-h-[100px]"
-                id="bio"
-                placeholder="Tell us about yourself"
-                {...register('bio')}
-              />
-              {errors?.bio && (
-                <p className="text-red-500 dark:text-red-400">
-                  {errors?.bio.message}
-                </p>
-              )}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="expertise">Areas of Expertise</Label>
+              <Label htmlFor="title">Title</Label>
               <Input
-                id="expertise"
-                placeholder="e.g. Web Development, UX Design"
+                id="title"
+                placeholder="e.g. Web Development Mentor, UX Design Mentor"
                 required
-                {...register('expertise', {
-                  required: 'Expertise is required',
+                {...register('title', {
+                  required: 'Title is required',
                 })}
               />
-              {errors?.expertise && (
+              {errors?.title && (
                 <p className="text-red-500 dark:text-red-400">
-                  {errors?.expertise.message}
+                  {errors?.title.message}
                 </p>
               )}
             </div>
@@ -228,6 +304,21 @@ export default function BecomeMentor() {
                 </p>
               )}
             </div>
+            <div className="space-y-2">
+              <Label htmlFor="bio">Bio</Label>
+              <Textarea
+                className="min-h-[100px]"
+                id="bio"
+                placeholder="Tell us about yourself"
+                {...register('bio')}
+              />
+              {errors?.bio && (
+                <p className="text-red-500 dark:text-red-400">
+                  {errors?.bio.message}
+                </p>
+              )}
+            </div>
+
             <div className="flex items-center">
               <input
                 id="availability"
