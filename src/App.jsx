@@ -1,10 +1,15 @@
 import { Suspense, useEffect } from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import { RouterProvider } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import LoadingIcon from './components/LoaderIcon';
 import router from './router';
 import useUserStore from './store/userStore';
+
+// Create a client
+const queryClient = new QueryClient();
 
 function App() {
   const user = useUserStore((state) => state.user);
@@ -25,27 +30,30 @@ function App() {
 
   return (
     <>
-      <Suspense
-        fallback={
-          <div className="flex items-center justify-center h-screen bg-[#020817]">
-            <LoadingIcon />
-          </div>
-        }
-      >
-        <RouterProvider router={router} />
-      </Suspense>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
+      <QueryClientProvider client={queryClient}>
+        <Suspense
+          fallback={
+            <div className="flex items-center justify-center h-screen bg-[#020817]">
+              <LoadingIcon />
+            </div>
+          }
+        >
+          <RouterProvider router={router} />
+          <ReactQueryDevtools initialIsOpen={false} />
+          <ToastContainer
+            position="bottom-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="dark"
+          />
+        </Suspense>
+      </QueryClientProvider>
     </>
   );
 }

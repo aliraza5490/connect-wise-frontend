@@ -1,3 +1,4 @@
+import LoadingIcon from '@/components/LoaderIcon';
 import PageHeader from '@/components/PageHeader';
 import Rating from '@/components/Rating';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -10,392 +11,36 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import useUserStore from '@/store/userStore';
+import api from '@/utils/api';
 import { truncateText } from '@/utils/helpers';
 import { MagnetIcon } from 'lucide-react';
 import { useEffect } from 'react';
+import { useQuery } from 'react-query';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-
-const featuredMentors = [
-  {
-    id: 1,
-    name: 'John Doe',
-    expertise: 'Software Engineering Mentor',
-    description:
-      "John has over 10 years of experience in software engineering and is passionate about helping others grow their skills. He's available for 1-on-1 mentoring sessions.",
-    avatar: 'https://i.pravatar.cc/150?img=1',
-    level: 'expert',
-    rating: 4.8,
-    price: 50,
-    reviews: [
-      {
-        id: 1,
-        name: 'Jane Smith',
-        avatar: 'https://i.pravatar.cc/150',
-        rating: 4.5,
-        review:
-          'John is an amazing mentor! He helped me improve my coding skills and land my dream job as a software engineer.',
-      },
-      {
-        id: 2,
-        name: 'Michael Lee',
-        avatar: 'https://i.pravatar.cc/150',
-        rating: 4.8,
-        review:
-          'John is an excellent mentor who is always willing to go the extra mile to help his students succeed.',
-      },
-      {
-        id: 3,
-        name: 'Sarah Kim',
-        avatar: 'https://i.pravatar.cc/150',
-        rating: 4.2,
-        review:
-          'John is a great mentor who has helped me navigate my career in software engineering.',
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: 'Jane Smith',
-    expertise: 'Product Management Mentor',
-    description:
-      "Jane has extensive experience in product management and has helped numerous startups and companies launch successful products. She's available for 1-on-1 mentoring sessions.",
-    avatar: 'https://i.pravatar.cc/150?img=2',
-    level: 'intermediate',
-    rating: 3.9,
-    price: 30,
-    reviews: [
-      {
-        id: 1,
-        name: 'John Doe',
-        avatar: 'https://i.pravatar.cc/150',
-        rating: 4.5,
-        review:
-          'Jane is an amazing mentor who has helped me grow my product management skills and land a job at a top tech company.',
-      },
-      {
-        id: 2,
-        name: 'Michael Lee',
-        avatar: 'https://i.pravatar.cc/150',
-        rating: 4.8,
-        review:
-          'Jane is a fantastic mentor who has helped me launch my product and grow my startup.',
-      },
-      {
-        id: 3,
-        name: 'Sarah Kim',
-        avatar: 'https://i.pravatar.cc/150',
-        rating: 4.2,
-        review:
-          'Jane is a great mentor who has helped me navigate my career in product management.',
-      },
-    ],
-  },
-  {
-    id: 3,
-    name: 'Michael Lee',
-    expertise: 'Marketing Mentor',
-    description:
-      "Michael has over 15 years of experience in digital marketing and has helped numerous businesses grow their online presence. He's available for 1-on-1 mentoring sessions.",
-    avatar: 'https://i.pravatar.cc/150?img=3',
-    level: 'pro',
-    rating: 4.5,
-    price: 40,
-    reviews: [
-      {
-        id: 1,
-        name: 'John Doe',
-        avatar: 'https://i.pravatar.cc/150',
-        rating: 4.5,
-        review:
-          'Michael is an amazing mentor who has helped me grow my marketing skills and land a job at a top tech company.',
-      },
-      {
-        id: 2,
-        name: 'Jane Smith',
-        avatar: 'https://i.pravatar.cc/150',
-        rating: 4.8,
-        review:
-          'Michael is a fantastic mentor who has helped me launch my marketing campaigns and grow my business.',
-      },
-      {
-        id: 3,
-        name: 'Sarah Kim',
-        avatar: 'https://i.pravatar.cc/150',
-        rating: 4.2,
-        review:
-          'Michael is a great mentor who has helped me navigate my career in digital marketing.',
-      },
-    ],
-  },
-  {
-    id: 4,
-    name: 'Sarah Kim',
-    expertise: 'Career Transition Mentor',
-    description:
-      "Sarah has helped numerous professionals navigate career transitions and find their dream jobs. She's available for 1-on-1 mentoring sessions.",
-    avatar: 'https://i.pravatar.cc/150?img=4',
-    level: 'beginner',
-    rating: 4.2,
-    price: 45,
-    reviews: [
-      {
-        id: 1,
-        name: 'John Doe',
-        avatar: 'https://i.pravatar.cc/150',
-        rating: 4.5,
-        review:
-          'Sarah is an amazing mentor who has helped me transition into a new career and find my dream job.',
-      },
-      {
-        id: 2,
-        name: 'Jane Smith',
-        avatar: 'https://i.pravatar.cc/150',
-        rating: 4.8,
-        review:
-          'Sarah is a fantastic mentor who has helped me navigate my career transition and find a job that I love.',
-      },
-      {
-        id: 3,
-        name: 'Michael Lee',
-        avatar: 'https://i.pravatar.cc/150',
-        rating: 4.2,
-        review:
-          'Sarah is a great mentor who has helped me transition into a new career and find my passion.',
-      },
-    ],
-  },
-];
-
-const browseMentors = [
-  {
-    id: 5,
-    name: 'John Doe',
-    expertise: 'Software Engineering Mentor',
-    description:
-      "John has over 10 years of experience in software engineering and is passionate about helping others grow their skills. He's available for 1-on-1 mentoring sessions.",
-    avatar: 'https://i.pravatar.cc/150?img=5',
-    level: 'expert',
-    rating: 4.8,
-    price: 50,
-    reviews: [
-      {
-        id: 1,
-        name: 'Jane Smith',
-        avatar: 'https://i.pravatar.cc/150',
-        rating: 4.5,
-        review:
-          'John is an amazing mentor! He helped me improve my coding skills and land my dream job as a software engineer.',
-      },
-      {
-        id: 2,
-        name: 'Michael Lee',
-        avatar: 'https://i.pravatar.cc/150',
-        rating: 4.8,
-        review:
-          'John is an excellent mentor who is always willing to go the extra mile to help his students succeed.',
-      },
-      {
-        id: 3,
-        name: 'Sarah Kim',
-        avatar: 'https://i.pravatar.cc/150',
-        rating: 4.2,
-        review:
-          'John is a great mentor who has helped me navigate my career in software engineering.',
-      },
-    ],
-  },
-  {
-    id: 6,
-    name: 'Jane Smith',
-    expertise: 'Product Management Mentor',
-    description:
-      "Jane has extensive experience in product management and has helped numerous startups and companies launch successful products. She's available for 1-on-1 mentoring sessions.",
-    avatar: 'https://i.pravatar.cc/150?img=6',
-    level: 'intermediate',
-    rating: 3.9,
-    price: 30,
-    reviews: [
-      {
-        id: 1,
-        name: 'John Doe',
-        avatar: 'https://i.pravatar.cc/150',
-        rating: 4.5,
-        review:
-          'Jane is an amazing mentor who has helped me grow my product management skills and land a job at a top tech company.',
-      },
-      {
-        id: 2,
-        name: 'Michael Lee',
-        avatar: 'https://i.pravatar.cc/150',
-        rating: 4.8,
-        review:
-          'Jane is a fantastic mentor who has helped me launch my product and grow my startup.',
-      },
-      {
-        id: 3,
-        name: 'Sarah Kim',
-        avatar: 'https://i.pravatar.cc/150',
-        rating: 4.2,
-        review:
-          'Jane is a great mentor who has helped me navigate my career in product management.',
-      },
-    ],
-  },
-  {
-    id: 7,
-    name: 'Michael Lee',
-    expertise: 'Marketing Mentor',
-    description:
-      "Michael has over 15 years of experience in digital marketing and has helped numerous businesses grow their online presence. He's available for 1-on-1 mentoring sessions.",
-    avatar: 'https://i.pravatar.cc/150?img=7',
-    level: 'pro',
-    rating: 4.5,
-    price: 40,
-    reviews: [
-      {
-        id: 1,
-        name: 'John Doe',
-        avatar: 'https://i.pravatar.cc/150',
-        rating: 4.5,
-        review:
-          'Michael is an amazing mentor who has helped me grow my marketing skills and land a job at a top tech company.',
-      },
-      {
-        id: 2,
-        name: 'Jane Smith',
-        avatar: 'https://i.pravatar.cc/150',
-        rating: 4.8,
-        review:
-          'Michael is a fantastic mentor who has helped me launch my marketing campaigns and grow my business.',
-      },
-      {
-        id: 3,
-        name: 'Sarah Kim',
-        avatar: 'https://i.pravatar.cc/150',
-        rating: 4.2,
-        review:
-          'Michael is a great mentor who has helped me navigate my career in digital marketing.',
-      },
-    ],
-  },
-  {
-    id: 8,
-    name: 'Sarah Kim',
-    expertise: 'Career Transition Mentor',
-    description:
-      "Sarah has helped numerous professionals navigate career transitions and find their dream jobs. She's available for 1-on-1 mentoring sessions.",
-    avatar: 'https://i.pravatar.cc/150?img=8',
-    level: 'beginner',
-    rating: 4.2,
-    price: 45,
-    reviews: [
-      {
-        id: 1,
-        name: 'John Doe',
-        avatar: 'https://i.pravatar.cc/150',
-        rating: 4.5,
-        review:
-          'Sarah is an amazing mentor who has helped me transition into a new career and find my dream job.',
-      },
-      {
-        id: 2,
-        name: 'Jane Smith',
-        avatar: 'https://i.pravatar.cc/150',
-        rating: 4.8,
-        review:
-          'Sarah is a fantastic mentor who has helped me navigate my career transition and find a job that I love.',
-      },
-      {
-        id: 3,
-        name: 'Michael Lee',
-        avatar: 'https://i.pravatar.cc/150',
-        rating: 4.2,
-        review:
-          'Sarah is a great mentor who has helped me transition into a new career and find my passion.',
-      },
-    ],
-  },
-  {
-    id: 9,
-    name: 'David Wang',
-    expertise: 'Entrepreneurship Mentor',
-    description:
-      "David has founded and scaled multiple successful startups. He's passionate about helping aspiring entrepreneurs turn their ideas into reality. He's available for 1-on-1 mentoring sessions.",
-    avatar: 'https://i.pravatar.cc/150?img=9',
-    level: 'expert',
-    rating: 4.6,
-    price: 55,
-    reviews: [
-      {
-        id: 1,
-        name: 'John Doe',
-        avatar: 'https://i.pravatar.cc/150',
-        rating: 4.5,
-        review:
-          'David is an amazing mentor who has helped me launch my startup and raise funding.',
-      },
-      {
-        id: 2,
-        name: 'Jane Smith',
-        avatar: 'https://i.pravatar.cc/150',
-        rating: 4.8,
-        review:
-          'David is a fantastic mentor who has helped me turn my idea into a successful business.',
-      },
-      {
-        id: 3,
-        name: 'Michael Lee',
-        avatar: 'https://i.pravatar.cc/150',
-        rating: 4.2,
-        review:
-          'David is a great mentor who has helped me navigate the challenges of entrepreneurship.',
-      },
-    ],
-  },
-  {
-    id: 10,
-    name: 'Emily Chen',
-    expertise: 'UX Design Mentor',
-    description:
-      "Emily is a seasoned UX designer with a passion for creating delightful user experiences. She's available for 1-on-1 mentoring sessions.",
-    avatar: 'https://i.pravatar.cc/150?img=10',
-    level: 'intermediate',
-    rating: 4.7,
-    price: 60,
-    reviews: [
-      {
-        id: 1,
-        name: 'John Doe',
-        avatar: 'https://i.pravatar.cc/150',
-        rating: 4.5,
-        review:
-          'Emily is an amazing mentor who has helped me improve my UX design skills and land a job at a top tech company.',
-      },
-      {
-        id: 2,
-        name: 'Jane Smith',
-        avatar: 'https://i.pravatar.cc/150',
-        rating: 4.8,
-        review:
-          'Emily is a fantastic mentor who has helped me create user-friendly designs for my projects.',
-      },
-      {
-        id: 3,
-        name: 'Michael Lee',
-        avatar: 'https://i.pravatar.cc/150',
-        rating: 4.2,
-        review:
-          'Emily is a great mentor who has helped me navigate my career in UX design.',
-      },
-    ],
-  },
-];
 
 export default function Landing() {
   const pathnameID = window.location.hash;
   const params = useParams();
   const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
+
+  const { isLoading: mentorsIsLoading, data: mentors = [] } = useQuery({
+    queryKey: 'mentors',
+    queryFn: async () => {
+      const { data } = await api.get('/mentor/list');
+      return data;
+    },
+  });
+
+  const { isLoading: featuredIsLoading, data: featuredMentors = [] } = useQuery(
+    {
+      queryKey: 'featuredMentors',
+      queryFn: async () => {
+        const { data } = await api.get('/mentor/featured');
+        return data;
+      },
+    },
+  );
 
   const handleSearch = (event) => {
     event.preventDefault();
@@ -478,6 +123,11 @@ export default function Landing() {
                 </p>
               </div>
             </div>
+            {featuredIsLoading && (
+              <div className="flex justify-center items-center w-full h-32">
+                <LoadingIcon />
+              </div>
+            )}
             <div className="mx-auto grid max-w-5xl items-start gap-6 py-12 lg:grid-cols-2 lg:gap-12">
               {featuredMentors.map((mentor) => (
                 <Card key={mentor.id}>
@@ -486,28 +136,32 @@ export default function Landing() {
                       <Avatar>
                         <AvatarImage alt={mentor.name} src={mentor.avatar} />
                         <AvatarFallback>
-                          {mentor.name.split(' ').map((name) => name[0])}
+                          {mentor.firstName[0]}
+                          {mentor.lastName[0]}
                         </AvatarFallback>
                       </Avatar>
                       <div>
-                        <h3 className="text-xl font-bold">{mentor.name}</h3>
+                        <h3 className="text-xl font-bold">
+                          {mentor.firstName} {mentor.lastName}
+                        </h3>
                         <p className="text-gray-500 dark:text-gray-400">
-                          {mentor.expertise}
+                          {mentor.title}
                         </p>
                       </div>
                     </div>
                     <div className="flex flex-row items-center gap-4 text-gray-500 dark:text-gray-400">
                       <div className="flex items-center gap-1">
-                        <Rating value={mentor.rating} />
+                        <Rating value={mentor.rating || 5} />
                       </div>
                       <span>
-                        {mentor.rating} ({mentor.reviews.length} reviews)
+                        {mentor.rating || 5} ({mentor.reviews.length || 0}{' '}
+                        reviews)
                       </span>
                     </div>
                   </CardHeader>
                   <CardContent>
                     <p className="text-gray-500 dark:text-gray-400">
-                      {truncateText(mentor.description, 150)}
+                      {truncateText(mentor.bio, 150)}
                     </p>
                   </CardContent>
                   <CardFooter>
@@ -520,7 +174,7 @@ export default function Landing() {
                       </a>
                       {/* Price /month */}
                       <span className="text-gray-500 dark:text-gray-400">
-                        ${mentor.price}/month
+                        ${mentor.pricePerMonth}/month
                       </span>
                     </div>
                   </CardFooter>
@@ -553,21 +207,29 @@ export default function Landing() {
                 </form>
               </div>
             </div>
+            {mentorsIsLoading && (
+              <div className="flex justify-center items-center w-full h-32">
+                <LoadingIcon />
+              </div>
+            )}
             <div className="mx-auto grid max-w-5xl items-start gap-6 py-12 lg:grid-cols-3 lg:gap-8">
-              {browseMentors.map((mentor) => (
+              {mentors.map((mentor) => (
                 <Card key={mentor.id}>
                   <CardHeader className="flex flex-col gap-2">
                     <div className="flex flex-row items-center gap-4">
                       <Avatar>
                         <AvatarImage alt={mentor.name} src={mentor.avatar} />
                         <AvatarFallback>
-                          {mentor.name.split(' ').map((name) => name[0])}
+                          {mentor.firstName[0]}
+                          {mentor.lastName[0]}
                         </AvatarFallback>
                       </Avatar>
                       <div>
-                        <h3 className="text-xl font-bold">{mentor.name}</h3>
+                        <h3 className="text-xl font-bold">
+                          {mentor.firstName} {mentor.lastName}
+                        </h3>
                         <p className="text-gray-500 dark:text-gray-400">
-                          {mentor.expertise}
+                          {mentor.title}
                         </p>
                       </div>
                     </div>
@@ -582,7 +244,7 @@ export default function Landing() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-gray-500 dark:text-gray-400">
-                      {truncateText(mentor.description, 120)}
+                      {truncateText(mentor.bio, 120)}
                     </p>
                   </CardContent>
                   <CardFooter>
@@ -595,7 +257,7 @@ export default function Landing() {
                       </a>
                       {/* Price /month */}
                       <span className="text-gray-500 dark:text-gray-400">
-                        ${mentor.price}/month
+                        ${mentor.pricePerMonth}/month
                       </span>
                     </div>
                   </CardFooter>

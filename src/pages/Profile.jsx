@@ -6,7 +6,7 @@ import useUserStore from '@/store/userStore';
 import api from '@/utils/api';
 import { IconBrandLinkedin } from '@tabler/icons-react';
 import { useEffect } from 'react';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 
 export default function Profile() {
   const location = useLocation();
@@ -30,7 +30,7 @@ export default function Profile() {
     }
 
     const { data } = await api.post('/buy', {
-      mentorID: mentor.id,
+      mentorID: mentor._id,
     });
 
     if (data?.url) {
@@ -53,34 +53,36 @@ export default function Profile() {
           <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-background to-transparent p-6 sm:p-8 flex items-end justify-between">
             <div className="flex items-center gap-4 justify-start">
               <Avatar className="h-24 w-24 sm:h-32 sm:w-32">
-                <AvatarImage alt={mentor.name} src={mentor.avatar} />
+                <AvatarImage alt={mentor.firstName} src={mentor.avatar} />
                 <AvatarFallback>
-                  {mentor.name.split(' ').map((name) => name[0])}
+                  {mentor.firstName[0]} {mentor.lastName[0]}
                 </AvatarFallback>
               </Avatar>
             </div>
-            <div className=" rounded py-3 pl-5">
-              <IconBrandLinkedin className="w-10 h-10 text-white" />
-            </div>
+            <Link to={mentor.linkedInProfile} target="_blank">
+              <div className=" rounded py-3 pl-5">
+                <IconBrandLinkedin className="w-10 h-10 text-white" />
+              </div>
+            </Link>
           </div>
         </div>
         <div className="grid gap-8 p-4 sm:p-8">
           {/* Buy */}
           <div className="flex items-center justify-between mt-8">
             <div>
-              <h3 className="text-4xl mb-2 font-bold">{mentor.name}</h3>
-              <p className="text-gray-500 dark:text-gray-400">
-                {mentor.expertise}
-              </p>
+              <h3 className="text-4xl mb-2 font-bold">
+                {mentor.firstName} {mentor.lastName}
+              </h3>
+              <p className="text-gray-500 dark:text-gray-400">{mentor.title}</p>
               <p className="text-primary mb-2">
                 {expLevels[mentor.level]} years of experience
               </p>
               <div className="flex flex-row items-center gap-4 text-gray-500 dark:text-gray-400 mr-auto">
                 <div className="flex items-center gap-1">
-                  <Rating value={mentor.rating} />
+                  <Rating value={mentor.rating || 5} />
                 </div>
                 <span>
-                  {mentor.rating} ({mentor.reviews.length} reviews)
+                  {mentor.rating || 5} ({mentor.reviews.length || 0} reviews)
                 </span>
               </div>
             </div>
@@ -88,7 +90,7 @@ export default function Profile() {
               className="flex items-center gap-2 px-4 py-2 text-white bg-primary rounded-md"
               onClick={handleBuy}
             >
-              <span>Subscribe for ${mentor.price}</span>
+              <span>Subscribe for ${mentor.pricePerMonth}</span>
             </button>
           </div>
         </div>
@@ -96,29 +98,39 @@ export default function Profile() {
           <h2 className="text-2xl font-bold">About</h2>
           <div>
             <p className="text-lg leading-normal text-muted-foreground">
-              {mentor.description}
+              {mentor.bio}
             </p>
           </div>
         </div>
         <div className="grid gap-8 p-4 sm:p-8">
           <h2 className="text-2xl font-bold">Reviews</h2>
           <div className="grid gap-6">
+            {
+              // Show a message if there are no reviews
+              mentor.reviews.length === 0 && (
+                <p className="text-lg leading-normal text-muted-foreground">
+                  No reviews yet
+                </p>
+              )
+            }
             {mentor.reviews.map((review) => (
-              <div key={review.id} className="flex gap-4">
+              <div key={review._id} className="flex gap-4">
                 <Avatar className="h-12 w-12 border">
                   <AvatarImage
                     src={`https://i.pravatar.cc/150?img=${Math.random() * 5}`}
                   />
                   <AvatarFallback>
-                    {review.name.split(' ')[0][0]}
-                    {review.name.split(' ')[1][0]}
+                    {review.firstName[0]}
+                    {review.lastName[0]}
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid gap-2">
                   <div className="flex items-center gap-2">
-                    <h3 className="text-lg font-semibold">{review.name}</h3>
+                    <h3 className="text-lg font-semibold">
+                      {review.firstName} {review.lastName}
+                    </h3>
                     <div className="flex items-center gap-0.5 text-primary">
-                      <Rating value={review.rating} />
+                      <Rating value={review.rating || 5} />
                     </div>
                   </div>
                   <div className="text-sm leading-loose text-muted-foreground">
