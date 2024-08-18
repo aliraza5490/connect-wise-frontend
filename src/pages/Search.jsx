@@ -9,8 +9,17 @@ import {
   CardHeader,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
 import api from '@/utils/api';
-import { truncateText } from '@/utils/helpers';
+import { paginationNumbers, truncateText } from '@/utils/helpers';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -18,15 +27,15 @@ import { useLocation, useNavigate } from 'react-router-dom';
 export default function About() {
   const location = useLocation();
   const [search, setSearch] = useState(location.state.searchQuery || '');
-  const [page, setPage] = useState(1);
+  const [pageNumber, setPageNumber] = useState(1);
   const [query, setQuery] = useState(location.state.searchQuery || '');
   const navigate = useNavigate();
 
   const { isLoading, data: mentors = [] } = useQuery({
-    queryKey: ['search', query, page],
+    queryKey: ['search', query, pageNumber],
     queryFn: async () => {
       const { data } = await api.post(`/mentor/search`, {
-        page,
+        page: pageNumber,
         query,
       });
       return data;
@@ -47,7 +56,7 @@ export default function About() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (search.length < 3) return;
-    setPage(1);
+    setPageNumber(1);
     setQuery(search);
   };
 
@@ -172,6 +181,52 @@ export default function About() {
                 </Card>
               ))}
             </div>
+            <Pagination>
+              <PaginationContent>
+                {mentors?.hasPrevPage && (
+                  <PaginationItem>
+                    <PaginationPrevious
+                      className={'hover:bg-gray-900'}
+                      href="javascript:void(0)"
+                      onClick={() => setPageNumber((prev) => prev - 1)}
+                    />
+                  </PaginationItem>
+                )}
+
+                {mentors?.totalPages > 1 &&
+                  paginationNumbers(pageNumber, mentors.totalPages).map(
+                    (page, index) => (
+                      <PaginationItem key={index}>
+                        {page === '...' ? (
+                          <PaginationEllipsis />
+                        ) : (
+                          <PaginationLink
+                            className={
+                              page === pageNumber
+                                ? 'bg-gray-900'
+                                : 'hover:bg-gray-900'
+                            }
+                            href="javascript:void(0)"
+                            onClick={() => setPageNumber(page)}
+                          >
+                            {page}
+                          </PaginationLink>
+                        )}
+                      </PaginationItem>
+                    ),
+                  )}
+
+                {mentors?.hasNextPage && (
+                  <PaginationItem>
+                    <PaginationNext
+                      className={'hover:bg-gray-900'}
+                      href="javascript:void(0)"
+                      onClick={() => setPageNumber((prev) => prev + 1)}
+                    />
+                  </PaginationItem>
+                )}
+              </PaginationContent>
+            </Pagination>
           </div>
         </section>
       </main>
