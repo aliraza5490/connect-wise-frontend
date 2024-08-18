@@ -7,11 +7,10 @@ export const columns = [
   {
     accessorKey: '_id',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Name" />
+      <DataTableColumnHeader column={column} title="ID" />
     ),
     cell: ({ row }) => <div className="">{row.getValue('_id')}</div>,
     enableSorting: false,
-    enableHiding: false,
   },
   {
     accessorKey: 'userName',
@@ -19,8 +18,6 @@ export const columns = [
       <DataTableColumnHeader column={column} title="Name" />
     ),
     cell: ({ row }) => <div className="">{row.getValue('userName')}</div>,
-    enableSorting: false,
-    enableHiding: false,
   },
   {
     accessorKey: 'email',
