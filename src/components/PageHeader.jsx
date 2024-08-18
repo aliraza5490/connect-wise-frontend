@@ -1,11 +1,23 @@
+import useUserStore from '@/store/userStore';
 import { Link } from 'react-router-dom';
 import AuthButtons from './AuthButtons';
 import MagnetIcon from './MagnetIcon';
 
 function PageHeader() {
+  const user = useUserStore((state) => state.user);
+
   return (
     <header className="container py-4 px-4 md:px-6 flex items-center justify-between">
-      <Link className="flex items-center" to="/">
+      <Link
+        className="flex items-center"
+        to={
+          user
+            ? user?.role == 'mentor'
+              ? '/mentor/dashboard'
+              : '/dashboard'
+            : '/'
+        }
+      >
         <MagnetIcon className="h-6 w-6" />
         <span className="ml-2 text-xl font-bold">Connect Wise</span>
       </Link>
