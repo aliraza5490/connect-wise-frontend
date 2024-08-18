@@ -33,8 +33,8 @@ export default function Profile() {
       mentorID: mentor._id,
     });
 
-    if (data?.url) {
-      return navigate(data.url);
+    if (data?.redirectURL) {
+      window.location.href = data.redirectURL;
     }
   };
 
