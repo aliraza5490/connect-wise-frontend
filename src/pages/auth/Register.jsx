@@ -1,12 +1,19 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import useUserStore from '@/store/userStore';
 import api from '@/utils/api';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { z } from 'zod';
@@ -19,6 +26,7 @@ export default function Register() {
   const {
     register,
     formState: { errors },
+    control,
     handleSubmit,
   } = useForm({
     resolver: zodResolver(
@@ -29,6 +37,7 @@ export default function Register() {
         password: z.string().min(6),
         linkedInProfile: z.string().optional().default(''),
         bio: z.string().optional().default(''),
+        gender: z.enum(['Male', 'Female']),
       }),
     ),
   });
@@ -126,6 +135,33 @@ export default function Register() {
               {errors?.password && (
                 <p className="text-red-500 dark:text-red-400">
                   {errors?.password.message}
+                </p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="gender">Gender</Label>
+              <Controller
+                control={control}
+                id="gender"
+                name="gender"
+                render={({ field }) => {
+                  return (
+                    <Select required onValueChange={field.onChange} {...field}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Male">Male</SelectItem>
+                        <SelectItem value="Female">Female</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  );
+                }}
+              ></Controller>
+
+              {errors?.gender && (
+                <p className="text-red-500 dark:text-red-400">
+                  {errors?.gender.message}
                 </p>
               )}
             </div>
