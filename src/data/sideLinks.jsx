@@ -13,7 +13,7 @@ export default [
     icon: <IconLayoutDashboard size={18} />,
   },
   {
-    title: 'My Orders',
+    title: 'Orders',
     label: '',
     href: '/dashboard/orders',
     icon: <IconChecklist size={18} />,
