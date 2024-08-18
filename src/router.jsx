@@ -40,6 +40,20 @@ const router = createBrowserRouter([
   {
     path: '/pricing',
     Component: lazy(() => import('./pages/Premium')),
+    loader: () => {
+      const token = getTokenCookie();
+      if (!token) {
+        return redirect('/login');
+      }
+      const decode = decodeJWT(token);
+      if (decode && decode.exp < Date.now() / 1000) {
+        return redirect('/login');
+      }
+      if (decode && decode.role !== 'mentor') {
+        return redirect('/dashboard');
+      }
+      return null;
+    },
     errorElement: <GeneralError />,
   },
   {
