@@ -1,3 +1,4 @@
+import LoadingIcon from '@/components/LoaderIcon';
 import PageHeader from '@/components/PageHeader';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -8,81 +9,54 @@ import {
   CardHeader,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import api from '@/utils/api';
 import { truncateText } from '@/utils/helpers';
-import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-const browseMentors = [
-  {
-    id: 5,
-    name: 'John Doe',
-    expertise: 'Software Engineering Mentor',
-    description:
-      "John has over 10 years of experience in software engineering and is passionate about helping others grow their skills. He's available for 1-on-1 mentoring sessions.",
-    avatar: 'https://i.pravatar.cc/150?img=5',
-    reviews: 24,
-    rating: 4.8,
-    price: 50,
-  },
-  {
-    id: 6,
-    name: 'Jane Smith',
-    expertise: 'Product Management Mentor',
-    description:
-      "Jane has extensive experience in product management and has helped numerous startups and companies launch successful products. She's available for 1-on-1 mentoring sessions.",
-    avatar: 'https://i.pravatar.cc/150?img=6',
-    reviews: 13,
-    rating: 3.9,
-    price: 30,
-  },
-  {
-    id: 7,
-    name: 'Michael Lee',
-    expertise: 'Marketing Mentor',
-    description:
-      "Michael has over 15 years of experience in digital marketing and has helped numerous businesses grow their online presence. He's available for 1-on-1 mentoring sessions.",
-    avatar: 'https://i.pravatar.cc/150?img=7',
-    reviews: 32,
-    rating: 4.5,
-    price: 40,
-  },
-  {
-    id: 8,
-    name: 'Sarah Kim',
-    expertise: 'Career Transition Mentor',
-    description:
-      "Sarah has helped numerous professionals navigate career transitions and find their dream jobs. She's available for 1-on-1 mentoring sessions.",
-    avatar: 'https://i.pravatar.cc/150?img=8',
-    reviews: 17,
-    rating: 4.2,
-    price: 45,
-  },
-  {
-    id: 9,
-    name: 'David Wang',
-    expertise: 'Entrepreneurship Mentor',
-    description:
-      "David has founded and scaled multiple successful startups. He's passionate about helping aspiring entrepreneurs turn their ideas into reality. He's available for 1-on-1 mentoring sessions.",
-    avatar: 'https://i.pravatar.cc/150?img=9',
-    reviews: 21,
-    rating: 4.6,
-    price: 55,
-  },
-  {
-    id: 10,
-    name: 'Emily Chen',
-    expertise: 'UX Design Mentor',
-    description:
-      "Emily is a seasoned UX designer with a passion for creating delightful user experiences. She's available for 1-on-1 mentoring sessions.",
-    avatar: 'https://i.pravatar.cc/150?img=10',
-    reviews: 28,
-    rating: 4.7,
-    price: 60,
-  },
-];
 export default function About() {
   const location = useLocation();
   const [search, setSearch] = useState(location.state.searchQuery || '');
+  const [page, setPage] = useState(1);
+  const [query, setQuery] = useState(location.state.searchQuery || '');
+  const navigate = useNavigate();
+
+  const { isLoading, data: mentors = [] } = useQuery({
+    queryKey: ['search', query, page],
+    queryFn: async () => {
+      const { data } = await api.post(`/mentor/search`, {
+        page,
+        query,
+      });
+      return data;
+    },
+    keepPreviousData: true,
+    refetchInterval: false,
+    enabled: query?.length > 2,
+  });
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (search.length < 3) return;
+    setPage(1);
+    setQuery(search);
+  };
+
+  const handleProfileView = (mentor) => {
+    console.log('View Profile:', mentor);
+    navigate(`/profile`, {
+      state: { mentor },
+    });
+  };
 
   return (
     <div className="flex flex-col min-h-[100dvh]">
@@ -101,33 +75,51 @@ export default function About() {
                 </p>
               </div>
               <div className="w-full max-w-md space-y-2">
-                <form className="flex space-x-2">
+                <form onSubmit={handleSubmit} className="flex space-x-2">
                   <Input
                     className="max-w-lg flex-1"
                     placeholder="Search by expertise or availability"
                     type="text"
                     value={search}
-                    onChange={(e) => setSearch(e.target.value)}
+                    onChange={handleSearchChange}
                   />
                   <Button type="submit">Search</Button>
                 </form>
               </div>
             </div>
+            {isLoading && (
+              <div className="flex justify-center items-center w-full h-32">
+                <LoadingIcon />
+              </div>
+            )}
+            {(mentors?.docs?.length === 0 || query?.length < 3) && (
+              <div className="flex justify-center items-center w-full h-32">
+                <p className="text-gray-500 dark:text-gray-400">
+                  No mentors found. Try searching for something else.
+                </p>
+              </div>
+            )}
             <div className="mx-auto grid max-w-5xl items-start gap-6 py-12 lg:grid-cols-3 lg:gap-8">
-              {browseMentors.map((mentor) => (
+              {mentors?.docs?.map((mentor) => (
                 <Card key={mentor.id}>
                   <CardHeader className="flex flex-col gap-2">
                     <div className="flex flex-row items-center gap-4">
                       <Avatar>
-                        <AvatarImage alt={mentor.name} src={mentor.avatar} />
+                        <AvatarImage
+                          alt={mentor.firstName}
+                          src={mentor.avatar}
+                        />
                         <AvatarFallback>
-                          {mentor.name.split(' ').map((name) => name[0])}
+                          {mentor.firstName[0]}
+                          {mentor.lastName[0]}
                         </AvatarFallback>
                       </Avatar>
                       <div>
-                        <h3 className="text-xl font-bold">{mentor.name}</h3>
+                        <h3 className="text-xl font-bold">
+                          {mentor.firstName} {mentor.lastName}
+                        </h3>
                         <p className="text-gray-500 dark:text-gray-400">
-                          {mentor.expertise}
+                          {mentor.title}
                         </p>
                       </div>
                     </div>
@@ -157,21 +149,23 @@ export default function About() {
                         ))}
                       </div>
                       <span>
-                        {mentor.rating} ({mentor.reviews} reviews)
+                        {mentor.rating || 5} ({mentor.reviews.length} reviews)
                       </span>
                     </div>
                   </CardHeader>
                   <CardContent>
                     <p className="text-gray-500 dark:text-gray-400">
-                      {truncateText(mentor.description, 120)}
+                      {truncateText(mentor.bio, 120)}
                     </p>
                   </CardContent>
                   <CardFooter>
                     <div className="w-full flex justify-between items-center">
-                      <Button>View Profile</Button>
+                      <Button onClick={() => handleProfileView(mentor)}>
+                        View Profile
+                      </Button>
                       {/* Price /month */}
                       <span className="text-gray-500 dark:text-gray-400">
-                        ${mentor.price}/month
+                        ${mentor.pricePerMonth}/month
                       </span>
                     </div>
                   </CardFooter>
