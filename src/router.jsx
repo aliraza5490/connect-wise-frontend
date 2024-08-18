@@ -12,6 +12,14 @@ const router = createBrowserRouter([
   {
     path: '/',
     Component: lazy(() => import('./pages/Landing')),
+    loader: () => {
+      const token = getTokenCookie();
+      const decode = decodeJWT(token);
+      if (decode && decode?.role === 'mentor') {
+        return redirect('/mentor/dashboard');
+      }
+      return null;
+    },
     errorElement: <GeneralError />,
   },
   {
