@@ -147,7 +147,7 @@ export default function Landing() {
             )}
             <div className="mx-auto grid max-w-5xl items-start gap-6 py-12 lg:grid-cols-2 lg:gap-12">
               {featuredMentors?.docs?.map((mentor) => (
-                <Card key={mentor.id}>
+                <Card key={mentor._id}>
                   <CardHeader className="flex flex-col gap-2">
                     <div className="flex flex-row items-center gap-4">
                       <Avatar>
@@ -278,7 +278,7 @@ export default function Landing() {
             )}
             <div className="mx-auto grid max-w-5xl items-start gap-6 py-12 lg:grid-cols-3 lg:gap-8">
               {mentors?.docs?.map((mentor) => (
-                <Card key={mentor.id}>
+                <Card key={mentor._id}>
                   <CardHeader className="flex flex-col gap-2">
                     <div className="flex flex-row items-center gap-4">
                       <Avatar>

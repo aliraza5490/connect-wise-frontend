@@ -96,7 +96,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '',
-        Component: lazy(() => import('./pages/dashboard/Dashboard')),
+        Component: lazy(() => import('./pages/dashboard/Search')),
       },
       {
         path: 'orders',

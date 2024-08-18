@@ -7,7 +7,7 @@ import {
 
 export default [
   {
-    title: 'Dashboard',
+    title: 'Search',
     label: '',
     href: '/dashboard',
     icon: <IconLayoutDashboard size={18} />,

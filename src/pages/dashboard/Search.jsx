@@ -1,5 +1,6 @@
+import { Layout } from '@/components/custom/layout';
 import LoadingIcon from '@/components/LoaderIcon';
-import PageHeader from '@/components/PageHeader';
+import Rating from '@/components/Rating';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -18,46 +19,35 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
+import { UserNav } from '@/components/UserNav';
 import api from '@/utils/api';
 import { paginationNumbers, truncateText } from '@/utils/helpers';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useQuery } from 'react-query';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-export default function About() {
-  const location = useLocation();
-  const [search, setSearch] = useState(location.state.searchQuery || '');
-  const [pageNumber, setPageNumber] = useState(1);
-  const [query, setQuery] = useState(location.state.searchQuery || '');
+export default function Search() {
   const navigate = useNavigate();
+  const [browsePage, setBrowsePage] = useState(1);
 
-  const { isLoading, data: mentors = [] } = useQuery({
-    queryKey: ['search', query, pageNumber],
+  const { isLoading: mentorsIsLoading, data: mentors = [] } = useQuery({
+    queryKey: ['mentors', browsePage],
     queryFn: async () => {
-      const { data } = await api.post(`/mentor/search`, {
-        page: pageNumber,
-        query,
-      });
+      const { data } = await api.get(`/mentor/list?limit=6&page=${browsePage}`);
       return data;
     },
     keepPreviousData: true,
-    refetchInterval: false,
-    enabled: query?.length > 2,
+    staleTime: 5000,
   });
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  const handleSearchChange = (e) => {
-    setSearch(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (search.length < 3) return;
-    setPageNumber(1);
-    setQuery(search);
+  const handleSearch = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const searchQuery = formData.get('search');
+    console.log('Search Query:', searchQuery);
+    navigate(`/search`, {
+      state: { searchQuery },
+    });
   };
 
   const handleProfileView = (mentor) => {
@@ -68,10 +58,18 @@ export default function About() {
   };
 
   return (
-    <div className="flex flex-col min-h-[100dvh]">
-      <PageHeader />
-      <main className="flex-1">
-        <section id="browse-mentors" className="w-full py-6">
+    <Layout>
+      {/* ===== Top Heading ===== */}
+      <Layout.Header>
+        <h1 className="text-xl font-semibold font-mono">Balance: 100,00$</h1>
+        <div className="ml-auto flex items-center space-x-4">
+          <UserNav />
+        </div>
+      </Layout.Header>
+
+      {/* ===== Main ===== */}
+      <Layout.Body>
+        <section id="browse-mentors" className="w-full py-8">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
@@ -84,28 +82,20 @@ export default function About() {
                 </p>
               </div>
               <div className="w-full max-w-md space-y-2">
-                <form onSubmit={handleSubmit} className="flex space-x-2">
+                <form onSubmit={handleSearch} className="flex space-x-2">
                   <Input
                     className="max-w-lg flex-1"
                     placeholder="Search by expertise or availability"
                     type="text"
-                    value={search}
-                    onChange={handleSearchChange}
+                    name="search"
                   />
                   <Button type="submit">Search</Button>
                 </form>
               </div>
             </div>
-            {isLoading && (
+            {mentorsIsLoading && (
               <div className="flex justify-center items-center w-full h-32">
                 <LoadingIcon />
-              </div>
-            )}
-            {(mentors?.docs?.length === 0 || query?.length < 3) && (
-              <div className="flex justify-center items-center w-full h-32">
-                <p className="text-gray-500 dark:text-gray-400">
-                  No mentors found. Try searching for something else.
-                </p>
               </div>
             )}
             <div className="mx-auto grid max-w-5xl items-start gap-6 py-12 lg:grid-cols-3 lg:gap-8">
@@ -114,10 +104,7 @@ export default function About() {
                   <CardHeader className="flex flex-col gap-2">
                     <div className="flex flex-row items-center gap-4">
                       <Avatar>
-                        <AvatarImage
-                          alt={mentor.firstName}
-                          src={mentor.avatar}
-                        />
+                        <AvatarImage alt={mentor.name} src={mentor.avatar} />
                         <AvatarFallback>
                           {mentor.firstName[0]}
                           {mentor.lastName[0]}
@@ -134,31 +121,10 @@ export default function About() {
                     </div>
                     <div className="flex flex-row items-center gap-4 text-gray-500 dark:text-gray-400">
                       <div className="flex items-center gap-1">
-                        {[...Array(5)].map((_, index) => (
-                          <svg
-                            className="h-4 w-4 text-yellow-500 dark:text-yellow-400"
-                            fill={index < 4 ? 'currentColor' : 'none'}
-                            key={index}
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2"
-                              fill={
-                                index + 1 < mentor.rating
-                                  ? 'currentColor'
-                                  : 'none'
-                              }
-                            />
-                          </svg>
-                        ))}
+                        <Rating value={mentor.rating} />
                       </div>
                       <span>
-                        {mentor.rating || 5} ({mentor.reviews.length} reviews)
+                        {mentor.rating} ({mentor.reviews.length} reviews)
                       </span>
                     </div>
                   </CardHeader>
@@ -169,9 +135,12 @@ export default function About() {
                   </CardContent>
                   <CardFooter>
                     <div className="w-full flex justify-between items-center">
-                      <Button onClick={() => handleProfileView(mentor)}>
-                        View Profile
-                      </Button>
+                      <a
+                        href="javascript:void(0)"
+                        onClick={() => handleProfileView(mentor)}
+                      >
+                        <Button>View Profile</Button>
+                      </a>
                       {/* Price /month */}
                       <span className="text-gray-500 dark:text-gray-400">
                         ${mentor.pricePerMonth}/month
@@ -188,13 +157,13 @@ export default function About() {
                     <PaginationPrevious
                       className={'hover:bg-gray-900'}
                       href="javascript:void(0)"
-                      onClick={() => setPageNumber((prev) => prev - 1)}
+                      onClick={() => setBrowsePage((prev) => prev - 1)}
                     />
                   </PaginationItem>
                 )}
 
                 {mentors?.totalPages > 1 &&
-                  paginationNumbers(pageNumber, mentors.totalPages).map(
+                  paginationNumbers(browsePage, mentors.totalPages).map(
                     (page, index) => (
                       <PaginationItem key={index}>
                         {page === '...' ? (
@@ -202,12 +171,12 @@ export default function About() {
                         ) : (
                           <PaginationLink
                             className={
-                              page === pageNumber
+                              page === browsePage
                                 ? 'bg-gray-900'
                                 : 'hover:bg-gray-900'
                             }
                             href="javascript:void(0)"
-                            onClick={() => setPageNumber(page)}
+                            onClick={() => setBrowsePage(page)}
                           >
                             {page}
                           </PaginationLink>
@@ -221,7 +190,7 @@ export default function About() {
                     <PaginationNext
                       className={'hover:bg-gray-900'}
                       href="javascript:void(0)"
-                      onClick={() => setPageNumber((prev) => prev + 1)}
+                      onClick={() => setBrowsePage((prev) => prev + 1)}
                     />
                   </PaginationItem>
                 )}
@@ -229,7 +198,7 @@ export default function About() {
             </Pagination>
           </div>
         </section>
-      </main>
-    </div>
+      </Layout.Body>
+    </Layout>
   );
 }
