@@ -10,11 +10,20 @@ import {
   CardHeader,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
 import useUserStore from '@/store/userStore';
 import api from '@/utils/api';
-import { truncateText } from '@/utils/helpers';
+import { paginationNumbers, truncateText } from '@/utils/helpers';
 import { MagnetIcon } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
@@ -23,24 +32,32 @@ export default function Landing() {
   const params = useParams();
   const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
-
-  const { isLoading: mentorsIsLoading, data: mentors = [] } = useQuery({
-    queryKey: 'mentors',
-    queryFn: async () => {
-      const { data } = await api.get('/mentor/list');
-      return data;
-    },
-  });
+  const [featuredPage, setFeaturedPage] = useState(1);
+  const [browsePage, setBrowsePage] = useState(1);
 
   const { isLoading: featuredIsLoading, data: featuredMentors = [] } = useQuery(
     {
-      queryKey: 'featuredMentors',
+      queryKey: ['featuredMentors', featuredPage],
       queryFn: async () => {
-        const { data } = await api.get('/mentor/featured');
+        const { data } = await api.get(
+          `/mentor/featured?limit=4&page=${featuredPage}`,
+        );
         return data;
       },
+      keepPreviousData: true,
+      staleTime: 5000,
     },
   );
+
+  const { isLoading: mentorsIsLoading, data: mentors = [] } = useQuery({
+    queryKey: ['mentors', browsePage],
+    queryFn: async () => {
+      const { data } = await api.get(`/mentor/list?limit=6&page=${browsePage}`);
+      return data;
+    },
+    keepPreviousData: true,
+    staleTime: 5000,
+  });
 
   const handleSearch = (event) => {
     event.preventDefault();
@@ -129,7 +146,7 @@ export default function Landing() {
               </div>
             )}
             <div className="mx-auto grid max-w-5xl items-start gap-6 py-12 lg:grid-cols-2 lg:gap-12">
-              {featuredMentors.map((mentor) => (
+              {featuredMentors?.docs?.map((mentor) => (
                 <Card key={mentor.id}>
                   <CardHeader className="flex flex-col gap-2">
                     <div className="flex flex-row items-center gap-4">
@@ -181,6 +198,53 @@ export default function Landing() {
                 </Card>
               ))}
             </div>
+            <Pagination>
+              <PaginationContent>
+                {featuredMentors?.hasPrevPage && (
+                  <PaginationItem>
+                    <PaginationPrevious
+                      className={'hover:bg-gray-900'}
+                      href="javascript:void(0)"
+                      onClick={() => setFeaturedPage((prev) => prev - 1)}
+                    />
+                  </PaginationItem>
+                )}
+
+                {featuredMentors?.totalPages > 1 &&
+                  paginationNumbers(
+                    featuredPage,
+                    featuredMentors.totalPages,
+                  ).map((page, index) => (
+                    <PaginationItem key={index}>
+                      {page === '...' ? (
+                        <PaginationEllipsis />
+                      ) : (
+                        <PaginationLink
+                          className={
+                            page === featuredPage
+                              ? 'bg-gray-900'
+                              : 'hover:bg-gray-900'
+                          }
+                          href="javascript:void(0)"
+                          onClick={() => setFeaturedPage(page)}
+                        >
+                          {page}
+                        </PaginationLink>
+                      )}
+                    </PaginationItem>
+                  ))}
+
+                {featuredMentors?.hasNextPage && (
+                  <PaginationItem>
+                    <PaginationNext
+                      className={'hover:bg-gray-900'}
+                      href="javascript:void(0)"
+                      onClick={() => setFeaturedPage((prev) => prev + 1)}
+                    />
+                  </PaginationItem>
+                )}
+              </PaginationContent>
+            </Pagination>
           </div>
         </section>
         <section id="browse-mentors" className="w-full py-12 md:py-20">
@@ -213,7 +277,7 @@ export default function Landing() {
               </div>
             )}
             <div className="mx-auto grid max-w-5xl items-start gap-6 py-12 lg:grid-cols-3 lg:gap-8">
-              {mentors.map((mentor) => (
+              {mentors?.docs?.map((mentor) => (
                 <Card key={mentor.id}>
                   <CardHeader className="flex flex-col gap-2">
                     <div className="flex flex-row items-center gap-4">
@@ -264,6 +328,52 @@ export default function Landing() {
                 </Card>
               ))}
             </div>
+            <Pagination>
+              <PaginationContent>
+                {mentors?.hasPrevPage && (
+                  <PaginationItem>
+                    <PaginationPrevious
+                      className={'hover:bg-gray-900'}
+                      href="javascript:void(0)"
+                      onClick={() => setBrowsePage((prev) => prev - 1)}
+                    />
+                  </PaginationItem>
+                )}
+
+                {mentors?.totalPages > 1 &&
+                  paginationNumbers(browsePage, mentors.totalPages).map(
+                    (page, index) => (
+                      <PaginationItem key={index}>
+                        {page === '...' ? (
+                          <PaginationEllipsis />
+                        ) : (
+                          <PaginationLink
+                            className={
+                              page === browsePage
+                                ? 'bg-gray-900'
+                                : 'hover:bg-gray-900'
+                            }
+                            href="javascript:void(0)"
+                            onClick={() => setBrowsePage(page)}
+                          >
+                            {page}
+                          </PaginationLink>
+                        )}
+                      </PaginationItem>
+                    ),
+                  )}
+
+                {mentors?.hasNextPage && (
+                  <PaginationItem>
+                    <PaginationNext
+                      className={'hover:bg-gray-900'}
+                      href="javascript:void(0)"
+                      onClick={() => setBrowsePage((prev) => prev + 1)}
+                    />
+                  </PaginationItem>
+                )}
+              </PaginationContent>
+            </Pagination>
           </div>
         </section>
         {/* a horizontal line fading on the both left and right corners */}
