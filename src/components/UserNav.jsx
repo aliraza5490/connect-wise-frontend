@@ -7,7 +7,6 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import useUserStore from '@/store/userStore';
@@ -37,7 +36,7 @@ export function UserNav() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
-        <DropdownMenuLabel className="font-normal">
+        <DropdownMenuLabel className="font-normal cursor-default">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">
               {user?.firstName} {user?.lastName}
@@ -62,7 +61,6 @@ export function UserNav() {
           onClick={handleLogOut}
         >
           Log out
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
