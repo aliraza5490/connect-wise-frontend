@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { UserNav } from '@/components/UserNav';
+import { Link } from 'react-router-dom';
 import { Overview } from './Overview';
 import { RecentSales } from './RecentSales';
 
@@ -17,6 +18,13 @@ export default function Dashboard() {
       <Layout.Header>
         <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
         <div className="ml-auto flex items-center space-x-4">
+          <Link
+            className="text-sm font-medium hover:underline underline-offset-4 text-transparent bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text"
+            to="/pricing"
+          >
+            + Go Premium
+          </Link>
+
           <UserNav />
         </div>
       </Layout.Header>

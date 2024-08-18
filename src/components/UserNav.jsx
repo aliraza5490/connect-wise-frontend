@@ -49,11 +49,18 @@ export function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>Profile</DropdownMenuItem>
-          <DropdownMenuItem>Settings</DropdownMenuItem>
+          <DropdownMenuItem className="hover:cursor-pointer">
+            Profile
+          </DropdownMenuItem>
+          <DropdownMenuItem className="hover:cursor-pointer">
+            Settings
+          </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleLogOut}>
+        <DropdownMenuItem
+          className="hover:cursor-pointer"
+          onClick={handleLogOut}
+        >
           Log out
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>

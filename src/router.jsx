@@ -91,6 +91,9 @@ const router = createBrowserRouter([
       if (decode && decode.exp < Date.now() / 1000) {
         return redirect('/login');
       }
+      if (decode && decode.role !== 'user') {
+        return redirect('/mentor/dashboard');
+      }
       return null;
     },
     children: [
