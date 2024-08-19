@@ -33,7 +33,7 @@ export default function ChatTopbar({ selectedUser }) {
 
       <div className="flex row gap-1">
         <Link
-          to={'/profile/' + selectedUser.id}
+          to={'/profile/' + selectedUser._id}
           className={cn(
             buttonVariants({ variant: 'ghost', size: 'icon' }),
             'h-9 w-9',
