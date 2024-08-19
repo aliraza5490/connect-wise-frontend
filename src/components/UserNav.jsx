@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import useUserStore from '@/store/userStore';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export function UserNav() {
   const navigate = useNavigate();
@@ -27,7 +27,10 @@ export function UserNav() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
-            <AvatarImage src="/avatars/01.png" alt="@shadcn" />
+            <AvatarImage
+              src={user?.avatar}
+              alt={`Profile picture of${user?.firstName} ${user?.lastName}.`}
+            />
             <AvatarFallback>
               {user?.firstName?.charAt(0).toUpperCase() +
                 user?.lastName?.charAt(0).toUpperCase()}
@@ -48,12 +51,17 @@ export function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem className="hover:cursor-pointer">
-            Profile
-          </DropdownMenuItem>
-          <DropdownMenuItem className="hover:cursor-pointer">
-            Settings
-          </DropdownMenuItem>
+          <Link
+            to={
+              user?.role === 'mentor'
+                ? '/mentor/dashboard/settings'
+                : '/dashboard/settings'
+            }
+          >
+            <DropdownMenuItem className="hover:cursor-pointer">
+              Settings
+            </DropdownMenuItem>
+          </Link>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem
