@@ -30,8 +30,19 @@ export default function About() {
   const [pageNumber, setPageNumber] = useState(1);
   const [query, setQuery] = useState(location.state.searchQuery || '');
   const navigate = useNavigate();
+  const [mentors, setMentors] = useState([]);
 
-  const { isLoading, data: mentors = [] } = useQuery({
+  const { data: mentorsList = [] } = useQuery({
+    queryKey: ['mentors', 1],
+    queryFn: async () => {
+      const { data } = await api.get(`/mentor/list?limit=6&page=${1}`);
+      return data;
+    },
+    keepPreviousData: true,
+    staleTime: 5000,
+  });
+
+  const { isLoading, data: mentorsSearch = [] } = useQuery({
     queryKey: ['search', query, pageNumber],
     queryFn: async () => {
       const { data } = await api.post(`/mentor/search`, {
@@ -46,6 +57,12 @@ export default function About() {
   });
 
   useEffect(() => {
+    if (mentorsSearch?.docs?.length) {
+      setMentors(mentorsSearch);
+    }
+  }, [mentorsSearch]);
+
+  useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
@@ -55,7 +72,9 @@ export default function About() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (search.length < 3) return;
+    if (search.length < 3) {
+      return setMentors(mentorsList);
+    }
     setPageNumber(1);
     setQuery(search);
   };
