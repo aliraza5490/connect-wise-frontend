@@ -116,8 +116,12 @@ const router = createBrowserRouter([
         Component: lazy(() => import('./pages/dashboard/Search')),
       },
       {
-        path: 'orders',
-        Component: lazy(() => import('./pages/dashboard/tasks/Tasks')),
+        path: 'transactions',
+        Component: lazy(() => import('./pages/dashboard/tasks/Transactions')),
+      },
+      {
+        path: 'settings',
+        Component: lazy(() => import('./pages/dashboard/Settings')),
       },
       {
         path: 'chats',

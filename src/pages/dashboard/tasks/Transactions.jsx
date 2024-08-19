@@ -611,7 +611,7 @@ export default function Tasks() {
     <Layout>
       {/* ===== Top Heading ===== */}
       <Layout.Header sticky>
-        <h1 className="text-2xl font-bold tracking-tight">My Orders</h1>
+        <h1 className="text-2xl font-bold tracking-tight">Transactions</h1>
         <div className="ml-auto flex items-center space-x-4">
           <UserNav />
         </div>

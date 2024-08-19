@@ -13,9 +13,9 @@ export default [
     icon: <IconLayoutDashboard size={18} />,
   },
   {
-    title: 'Orders',
+    title: 'Transactions',
     label: '',
-    href: '/dashboard/orders',
+    href: '/dashboard/transactions',
     icon: <IconChecklist size={18} />,
   },
   {
@@ -27,7 +27,7 @@ export default [
   {
     title: 'Settings',
     label: '',
-    href: '/settings',
+    href: '/dashboard/settings',
     icon: <IconSettings size={18} />,
   },
 ];
