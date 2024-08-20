@@ -33,7 +33,7 @@ export default function Premium() {
               </h1>
 
               <p className="text-4xl font-bold text-center text-gray-800 dark:text-gray-100">
-                Buy Premium to get access to all features and unlimited storage.
+                Buy Premium to unlock all features
               </p>
             </div>
             <div className="relative p-6 shadow-lg rounded-lg dark:bg-zinc-850 border border-purple-500">
@@ -43,24 +43,16 @@ export default function Premium() {
               <div>
                 <h3 className="text-2xl font-bold">Pro</h3>
                 <div className="mt-4 text-zinc-600 dark:text-zinc-400">
-                  <span className="text-4xl font-bold">$59</span>/ month
+                  <span className="text-4xl font-bold">$5</span>/ month
                 </div>
                 <ul className="mt-4 space-y-2">
                   <li className="flex items-center">
                     <CheckIcon className="text-white text-2xs bg-green-500 rounded-full mr-2 p-1" />
-                    Call Recording
+                    Unlimited Withdrawals
                   </li>
                   <li className="flex items-center">
-                    <CheckIcon className="text-white text-xs bg-green-500 rounded-full mr-2 p-1" />
-                    10GB Cloud Storage
-                  </li>
-                  <li className="flex items-center">
-                    <CheckIcon className="text-white text-xs bg-green-500 rounded-full mr-2 p-1" />
-                    Access to AI Chat Bot
-                  </li>
-                  <li className="flex items-center">
-                    <CheckIcon className="text-white text-xs bg-green-500 rounded-full mr-2 p-1" />
-                    Collaboration Tools
+                    <CheckIcon className="text-white text-2xs bg-green-500 rounded-full mr-2 p-1" />
+                    List as featured
                   </li>
                 </ul>
               </div>
