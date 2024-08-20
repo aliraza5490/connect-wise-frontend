@@ -156,7 +156,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'orders',
-        Component: lazy(() => import('./pages/mentor-dashboard/tasks/Tasks')),
+        Component: lazy(() => import('./pages/mentor-dashboard/orders/Orders')),
       },
       {
         path: 'chats',
