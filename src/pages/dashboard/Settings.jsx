@@ -34,6 +34,7 @@ export default function Settings() {
     console.log(data);
     try {
       await api.post('/settings/update', data);
+      toast.success('Password updated successfully');
     } catch (error) {
       console.error(error);
       toast.error(
