@@ -13,7 +13,7 @@ import useUserStore from '@/store/userStore';
 import api from '@/utils/api';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { countries } from 'countries-list';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -25,6 +25,7 @@ export default function BecomeMentor() {
   const logOut = useUserStore((state) => state.logOut);
   const [isAvailable, setIsAvailable] = useState(false);
   const countryCodes = Object.keys(countries);
+  const formElement = useRef(null);
 
   const {
     register,
@@ -47,6 +48,17 @@ export default function BecomeMentor() {
     },
     resolver: zodResolver(
       z.object({
+        avatar: z
+          .any()
+          .refine(
+            (file) =>
+              file[0].type.includes('image/png') ||
+              file[0].type.includes('image/jpeg') ||
+              file[0].size < 5000000,
+            {
+              message: 'Avatar must be an image',
+            },
+          ),
         firstName: z.string().min(2).max(80),
         lastName: z.string().min(2).max(80),
         email: z.string().email(),
@@ -77,7 +89,12 @@ export default function BecomeMentor() {
       logOut();
       const payload = { ...data };
       delete payload.availability;
-      await api.post('/auth/become-mentor', data);
+      const formData = new FormData(formElement.current);
+      await api.post('/auth/become-mentor', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       navigate('/login', { replace: true, relative: false });
     } catch (error) {
       console.error(error);
@@ -100,7 +117,30 @@ export default function BecomeMentor() {
       </div>
       <div className="px-4 md:px-0">
         <div>
-          <form onSubmit={handleSubmit(onValid)} className="space-y-4">
+          <form
+            ref={formElement}
+            onSubmit={handleSubmit(onValid)}
+            className="space-y-4"
+          >
+            <div className="space-y-2">
+              <Label htmlFor="avatar">Avatar</Label>
+              <Input
+                id="avatar"
+                name="avatar"
+                type="file"
+                placeholder="Enter your First Name"
+                className="cursor-pointer"
+                required
+                {...register('avatar', {
+                  required: 'First Name is required',
+                })}
+              />
+              {errors?.avatar && (
+                <p className="text-red-500 dark:text-red-400">
+                  {errors?.avatar.message}
+                </p>
+              )}
+            </div>
             <div className="space-y-2">
               <Label htmlFor="firstName">First Name</Label>
               <Input
@@ -276,11 +316,11 @@ export default function BecomeMentor() {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="experience">Years of Experience</Label>
+              <Label htmlFor="level">Years of Experience</Label>
               <Controller
                 control={control}
-                id="experience"
-                name="experience"
+                id="level"
+                name="level"
                 render={({ field }) => {
                   return (
                     <Select required onValueChange={field.onChange} {...field}>
@@ -300,7 +340,7 @@ export default function BecomeMentor() {
 
               {errors?.experience && (
                 <p className="text-red-500 dark:text-red-400">
-                  {errors?.experience.message}
+                  {errors?.level.message}
                 </p>
               )}
             </div>

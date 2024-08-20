@@ -12,7 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import useUserStore from '@/store/userStore';
 import api from '@/utils/api';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -22,6 +22,7 @@ export default function Register() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const logOut = useUserStore((state) => state.logOut);
+  const formElement = useRef(null);
 
   const {
     register,
@@ -31,6 +32,17 @@ export default function Register() {
   } = useForm({
     resolver: zodResolver(
       z.object({
+        avatar: z
+          .any()
+          .refine(
+            (file) =>
+              file[0].type.includes('image/png') ||
+              file[0].type.includes('image/jpeg') ||
+              file[0].size < 5000000,
+            {
+              message: 'Avatar must be an image',
+            },
+          ),
         firstName: z.string().min(2).max(80),
         lastName: z.string().min(2).max(80),
         email: z.string().email(),
@@ -48,7 +60,12 @@ export default function Register() {
     console.log(data);
     try {
       logOut();
-      await api.post('/auth/register', data);
+      const formData = new FormData(formElement.current);
+      await api.post('/auth/register', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       navigate('/login', { replace: true, relative: false });
     } catch (error) {
       console.error(error);
@@ -74,7 +91,30 @@ export default function Register() {
       </div>
       <div className="px-4 md:px-0">
         <div>
-          <form onSubmit={handleSubmit(onValid)} className="space-y-4">
+          <form
+            ref={formElement}
+            onSubmit={handleSubmit(onValid)}
+            className="space-y-4"
+          >
+            <div className="space-y-2">
+              <Label htmlFor="avatar">Avatar</Label>
+              <Input
+                id="avatar"
+                name="avatar"
+                type="file"
+                placeholder="Enter your First Name"
+                className="cursor-pointer"
+                required
+                {...register('avatar', {
+                  required: 'First Name is required',
+                })}
+              />
+              {errors?.avatar && (
+                <p className="text-red-500 dark:text-red-400">
+                  {errors?.avatar.message}
+                </p>
+              )}
+            </div>
             <div className="space-y-2">
               <Label htmlFor="firstName">First Name</Label>
               <Input

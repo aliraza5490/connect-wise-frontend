@@ -87,3 +87,12 @@ body::-webkit-scrollbar-thumb,
   background-color: #1e293b;
   outline: none;
 }
+
+input[type='file']::file-selector-button {
+  color: #9ca3af;
+}
+
+input[type='file']::file-selector-button:hover {
+  color: #9ca3af;
+  cursor: pointer;
+}
