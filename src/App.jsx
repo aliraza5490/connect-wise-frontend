@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import LoadingIcon from './components/LoaderIcon';
 import router from './router';
 import useUserStore from './store/userStore';
+import { socket } from './utils/socket';
 
 // Create a client
 const queryClient = new QueryClient();
@@ -14,6 +15,7 @@ const queryClient = new QueryClient();
 function App() {
   const user = useUserStore((state) => state.user);
   const refresh = useUserStore((state) => state.refresh);
+  const updateStatus = useUserStore((state) => state.updateStatus);
 
   useEffect(() => {
     let ctrl;
@@ -27,6 +29,12 @@ function App() {
       }
     };
   }, [user, refresh]);
+
+  useEffect(() => {
+    socket.on('disconnect', () => {
+      updateStatus(false);
+    });
+  }, [updateStatus]);
 
   return (
     <>

@@ -5,11 +5,13 @@ import {
   removeTokenCookie,
   setTokenCookie,
 } from '@/utils/helpers';
+import { socket } from '@/utils/socket';
 import { create } from 'zustand';
 
 const useUserStore = create((set, get) => ({
   user: null,
   isLoading: false,
+  isOnline: false,
   login: async (token, signal) => {
     try {
       setTokenCookie(token);
@@ -17,6 +19,12 @@ const useUserStore = create((set, get) => ({
         signal: signal,
       });
       set({ user: data });
+      if (socket.connected) {
+        console.log('emit join', data._id);
+        socket.emit('join', data._id, () => {
+          set({ isOnline: true });
+        });
+      }
     } catch (err) {
       console.error(err);
       if (
@@ -47,6 +55,11 @@ const useUserStore = create((set, get) => ({
     } finally {
       set({ isLoading: false });
     }
+  },
+  updateStatus: (status) => {
+    set((state) => {
+      state.user.isOnline = status;
+    });
   },
 }));
 
