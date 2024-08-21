@@ -27,7 +27,7 @@ export default [
   {
     title: 'Settings',
     label: '',
-    href: '/settings',
+    href: '/mentor/dashboard/settings',
     icon: <IconSettings size={18} />,
   },
 ];
