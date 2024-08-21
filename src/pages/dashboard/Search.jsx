@@ -63,9 +63,7 @@ export default function Search() {
       <Layout.Header>
         <h1 className="text-2xl font-bold tracking-tight">Search</h1>
 
-        <div className="ml-auto flex items-center space-x-4">
-          <UserNav />
-        </div>
+        <UserNav />
       </Layout.Header>
 
       {/* ===== Main ===== */}

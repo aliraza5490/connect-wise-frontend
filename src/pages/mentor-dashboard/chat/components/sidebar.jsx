@@ -7,7 +7,6 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
-import { MoreHorizontal, SquarePen } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export function Sidebar({ users, isCollapsed, onSelect }) {
@@ -23,7 +22,7 @@ export function Sidebar({ users, isCollapsed, onSelect }) {
             <span className="text-zinc-300">({users.length})</span>
           </div>
 
-          <div>
+          {/* <div>
             <Link
               to="#"
               className={cn(
@@ -43,7 +42,7 @@ export function Sidebar({ users, isCollapsed, onSelect }) {
             >
               <SquarePen size={20} />
             </Link>
-          </div>
+          </div> */}
         </div>
       )}
       <nav className="grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
