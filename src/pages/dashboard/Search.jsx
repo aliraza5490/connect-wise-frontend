@@ -62,7 +62,6 @@ export default function Search() {
       {/* ===== Top Heading ===== */}
       <Layout.Header>
         <h1 className="text-2xl font-bold tracking-tight">Search</h1>
-
         <UserNav />
       </Layout.Header>
 
@@ -134,10 +133,7 @@ export default function Search() {
                   </CardContent>
                   <CardFooter>
                     <div className="w-full flex justify-between items-center">
-                      <a
-                        href="javascript:void(0)"
-                        onClick={() => handleProfileView(mentor)}
-                      >
+                      <a href="#" onClick={() => handleProfileView(mentor)}>
                         <Button>View Profile</Button>
                       </a>
                       {/* Price /month */}
@@ -155,7 +151,7 @@ export default function Search() {
                   <PaginationItem>
                     <PaginationPrevious
                       className={'hover:bg-gray-900'}
-                      href="javascript:void(0)"
+                      href="#"
                       onClick={() => setBrowsePage((prev) => prev - 1)}
                     />
                   </PaginationItem>
@@ -174,7 +170,7 @@ export default function Search() {
                                 ? 'bg-gray-900'
                                 : 'hover:bg-gray-900'
                             }
-                            href="javascript:void(0)"
+                            href="#"
                             onClick={() => setBrowsePage(page)}
                           >
                             {page}
@@ -188,7 +184,7 @@ export default function Search() {
                   <PaginationItem>
                     <PaginationNext
                       className={'hover:bg-gray-900'}
-                      href="javascript:void(0)"
+                      href="#"
                       onClick={() => setBrowsePage((prev) => prev + 1)}
                     />
                   </PaginationItem>

@@ -183,10 +183,7 @@ export default function Landing() {
                   </CardContent>
                   <CardFooter>
                     <div className="w-full flex items-center justify-between">
-                      <a
-                        href="javascript:void(0)"
-                        onClick={() => handleProfileView(mentor)}
-                      >
+                      <a href="#" onClick={() => handleProfileView(mentor)}>
                         <Button>View Profile</Button>
                       </a>
                       {/* Price /month */}
@@ -204,7 +201,7 @@ export default function Landing() {
                   <PaginationItem>
                     <PaginationPrevious
                       className={'hover:bg-gray-900'}
-                      href="javascript:void(0)"
+                      href="#"
                       onClick={() => setFeaturedPage((prev) => prev - 1)}
                     />
                   </PaginationItem>
@@ -225,7 +222,7 @@ export default function Landing() {
                               ? 'bg-gray-900'
                               : 'hover:bg-gray-900'
                           }
-                          href="javascript:void(0)"
+                          href="#"
                           onClick={() => setFeaturedPage(page)}
                         >
                           {page}
@@ -238,7 +235,7 @@ export default function Landing() {
                   <PaginationItem>
                     <PaginationNext
                       className={'hover:bg-gray-900'}
-                      href="javascript:void(0)"
+                      href="#"
                       onClick={() => setFeaturedPage((prev) => prev + 1)}
                     />
                   </PaginationItem>
@@ -313,10 +310,7 @@ export default function Landing() {
                   </CardContent>
                   <CardFooter>
                     <div className="w-full flex justify-between items-center">
-                      <a
-                        href="javascript:void(0)"
-                        onClick={() => handleProfileView(mentor)}
-                      >
+                      <a href="#" onClick={() => handleProfileView(mentor)}>
                         <Button>View Profile</Button>
                       </a>
                       {/* Price /month */}
@@ -334,7 +328,7 @@ export default function Landing() {
                   <PaginationItem>
                     <PaginationPrevious
                       className={'hover:bg-gray-900'}
-                      href="javascript:void(0)"
+                      href="#"
                       onClick={() => setBrowsePage((prev) => prev - 1)}
                     />
                   </PaginationItem>
@@ -353,7 +347,7 @@ export default function Landing() {
                                 ? 'bg-gray-900'
                                 : 'hover:bg-gray-900'
                             }
-                            href="javascript:void(0)"
+                            href="#"
                             onClick={() => setBrowsePage(page)}
                           >
                             {page}
@@ -367,7 +361,7 @@ export default function Landing() {
                   <PaginationItem>
                     <PaginationNext
                       className={'hover:bg-gray-900'}
-                      href="javascript:void(0)"
+                      href="#"
                       onClick={() => setBrowsePage((prev) => prev + 1)}
                     />
                   </PaginationItem>

@@ -206,7 +206,7 @@ export default function About() {
                   <PaginationItem>
                     <PaginationPrevious
                       className={'hover:bg-gray-900'}
-                      href="javascript:void(0)"
+                      href="#"
                       onClick={() => setPageNumber((prev) => prev - 1)}
                     />
                   </PaginationItem>
@@ -225,7 +225,7 @@ export default function About() {
                                 ? 'bg-gray-900'
                                 : 'hover:bg-gray-900'
                             }
-                            href="javascript:void(0)"
+                            href="#"
                             onClick={() => setPageNumber(page)}
                           >
                             {page}
@@ -239,7 +239,7 @@ export default function About() {
                   <PaginationItem>
                     <PaginationNext
                       className={'hover:bg-gray-900'}
-                      href="javascript:void(0)"
+                      href="#"
                       onClick={() => setPageNumber((prev) => prev + 1)}
                     />
                   </PaginationItem>
