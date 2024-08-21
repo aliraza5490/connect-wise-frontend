@@ -1,5 +1,8 @@
 import PageHeader from '@/components/PageHeader';
 import { Button } from '@/components/ui/button';
+import useUserStore from '@/store/userStore';
+import api from '@/utils/api';
+import { useNavigate } from 'react-router-dom';
 
 function CheckIcon(props) {
   return (
@@ -21,6 +24,24 @@ function CheckIcon(props) {
 }
 
 export default function Premium() {
+  const user = useUserStore((state) => state.user);
+  const navigate = useNavigate();
+
+  const handleBuy = async () => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
+    const { data } = await api.post('/buy/premium', {
+      mentorID: user._id,
+    });
+
+    if (data?.redirectURL) {
+      window.location.href = data.redirectURL;
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-[100dvh]">
       <PageHeader />
@@ -57,7 +78,10 @@ export default function Premium() {
                 </ul>
               </div>
               <div className="mt-6">
-                <Button className="w-full bg-gradient-to-r from-pink-500 to-purple-500">
+                <Button
+                  className="w-full bg-gradient-to-r from-pink-500 to-purple-500"
+                  onClick={handleBuy}
+                >
                   Get Started
                 </Button>
               </div>
