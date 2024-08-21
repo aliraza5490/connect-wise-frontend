@@ -51,9 +51,7 @@ export default function Settings() {
       {/* ===== Top Heading ===== */}
       <Layout.Header sticky>
         <h1 className="text-2xl font-bold tracking-tight">Settings</h1>
-        <div className="ml-auto flex items-center space-x-4">
-          <UserNav />
-        </div>
+        <UserNav />
       </Layout.Header>
 
       <Layout.Body>

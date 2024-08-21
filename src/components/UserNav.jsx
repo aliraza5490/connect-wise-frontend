@@ -23,54 +23,64 @@ export function UserNav() {
   };
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-          <Avatar className="h-8 w-8">
-            <AvatarImage
-              src={user?.avatar}
-              alt={`Profile picture of${user?.firstName} ${user?.lastName}.`}
-            />
-            <AvatarFallback>
-              {user?.firstName?.charAt(0).toUpperCase() +
-                user?.lastName?.charAt(0).toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="end" forceMount>
-        <DropdownMenuLabel className="font-normal cursor-default">
-          <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">
-              {user?.firstName} {user?.lastName}
-            </p>
-            <p className="text-xs leading-none text-muted-foreground">
-              {user?.email}
-            </p>
-          </div>
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <Link
-            to={
-              user?.role === 'mentor'
-                ? '/mentor/dashboard/settings'
-                : '/dashboard/settings'
-            }
-          >
-            <DropdownMenuItem className="hover:cursor-pointer">
-              Settings
-            </DropdownMenuItem>
-          </Link>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem
-          className="hover:cursor-pointer"
-          onClick={handleLogOut}
+    <div className="ml-auto flex items-center space-x-4">
+      {user?.role === 'mentor' && !user?.isFeatured && (
+        <Link
+          className="text-sm font-medium hover:underline underline-offset-4 text-transparent bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text"
+          to="/pricing"
         >
-          Log out
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+          + Go Premium
+        </Link>
+      )}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+            <Avatar className="h-8 w-8">
+              <AvatarImage
+                src={user?.avatar}
+                alt={`Profile picture of${user?.firstName} ${user?.lastName}.`}
+              />
+              <AvatarFallback>
+                {user?.firstName?.charAt(0).toUpperCase() +
+                  user?.lastName?.charAt(0).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-56" align="end" forceMount>
+          <DropdownMenuLabel className="font-normal cursor-default">
+            <div className="flex flex-col space-y-1">
+              <p className="text-sm font-medium leading-none">
+                {user?.firstName} {user?.lastName}
+              </p>
+              <p className="text-xs leading-none text-muted-foreground">
+                {user?.email}
+              </p>
+            </div>
+          </DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <Link
+              to={
+                user?.role === 'mentor'
+                  ? '/mentor/dashboard/settings'
+                  : '/dashboard/settings'
+              }
+            >
+              <DropdownMenuItem className="hover:cursor-pointer">
+                Settings
+              </DropdownMenuItem>
+            </Link>
+          </DropdownMenuGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            className="hover:cursor-pointer"
+            onClick={handleLogOut}
+          >
+            Log out
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   );
 }
