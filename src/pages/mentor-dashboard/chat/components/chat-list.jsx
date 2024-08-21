@@ -1,11 +1,13 @@
-import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
+import useUserStore from '@/store/userStore';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef } from 'react';
 import ChatBottombar from './chat-bottombar';
 
 export function ChatList({ messages, selectedUser, sendMessage, isMobile }) {
   const messagesContainerRef = useRef(null);
+  const user = useUserStore((state) => state.user);
 
   useEffect(() => {
     if (messagesContainerRef.current) {
@@ -64,11 +66,15 @@ export function ChatList({ messages, selectedUser, sendMessage, isMobile }) {
                 {message.name !== selectedUser.name && (
                   <Avatar className="flex justify-center items-center">
                     <AvatarImage
-                      src={message.avatar}
+                      src={user.avatar}
                       alt={message.name}
                       width={6}
                       height={6}
                     />
+                    <AvatarFallback>
+                      {user?.firstName?.charAt(0).toUpperCase() +
+                        user?.lastName?.charAt(0).toUpperCase()}
+                    </AvatarFallback>
                   </Avatar>
                 )}
               </div>
