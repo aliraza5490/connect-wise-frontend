@@ -18,12 +18,22 @@ const useUserStore = create((set, get) => ({
       const { data } = await api.get('/info/me', {
         signal: signal,
       });
+      if (!data) {
+        set({ user: null, isOnline: false });
+      }
       set({ user: data });
+      if (!socket.connected) {
+        socket.connect();
+      }
       if (socket.connected) {
         console.log('emit join', data._id);
-        socket.emit('join', data._id, () => {
-          set({ isOnline: true });
+        socket.emit('join', data._id, (res) => {
+          console.log(res);
+          if (res.status === 'ok') {
+            set({ isOnline: true });
+          }
         });
+        console.log('connected');
       }
     } catch (err) {
       console.error(err);
@@ -58,7 +68,8 @@ const useUserStore = create((set, get) => ({
   },
   updateStatus: (status) => {
     set((state) => {
-      state.user.isOnline = status;
+      state.isOnline = status;
+      console.log('status update:', status);
     });
   },
 }));

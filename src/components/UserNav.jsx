@@ -16,6 +16,7 @@ export function UserNav() {
   const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
   const logOut = useUserStore((state) => state.logOut);
+  const isOnline = useUserStore((state) => state.isOnline);
 
   const handleLogOut = () => {
     logOut();
@@ -45,6 +46,11 @@ export function UserNav() {
                   user?.lastName?.charAt(0).toUpperCase()}
               </AvatarFallback>
             </Avatar>
+            <div
+              className={`absolute top-0 left-[1.6rem] w-3 h-3 rounded-full border border-white ${
+                isOnline ? 'bg-green-500' : 'bg-slate-600'
+              }`}
+            ></div>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56" align="end" forceMount>

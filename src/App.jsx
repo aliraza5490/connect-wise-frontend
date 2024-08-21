@@ -13,9 +13,9 @@ import { socket } from './utils/socket';
 const queryClient = new QueryClient();
 
 function App() {
-  const user = useUserStore((state) => state.user);
-  const refresh = useUserStore((state) => state.refresh);
-  const updateStatus = useUserStore((state) => state.updateStatus);
+  const user = useUserStore((state) => state?.user);
+  const refresh = useUserStore((state) => state?.refresh);
+  const updateStatus = useUserStore((state) => state?.updateStatus);
 
   useEffect(() => {
     let ctrl;
@@ -33,6 +33,11 @@ function App() {
   useEffect(() => {
     socket.on('disconnect', () => {
       updateStatus(false);
+      console.log('disconnected');
+    });
+    socket.on('connected', () => {
+      updateStatus(true);
+      console.log('connected');
     });
   }, [updateStatus]);
 
