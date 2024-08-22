@@ -39,6 +39,10 @@ function App() {
       updateStatus(true);
       console.log('connected');
     });
+    socket.on('reconnect', () => {
+      updateStatus(true);
+      console.log('reconnected');
+    });
   }, [updateStatus]);
 
   return (
