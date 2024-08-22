@@ -1,11 +1,13 @@
+import LoadingIcon from '@/components/LoaderIcon';
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from '@/components/ui/resizable';
-import { userData } from '@/data/chat';
 import { cn } from '@/lib/utils';
+import api from '@/utils/api';
 import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import { Chat } from './chat';
 import { Sidebar } from './sidebar';
 
@@ -15,16 +17,28 @@ export function ChatLayout({
   navCollapsedSize,
 }) {
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
-  const [selectedUser, setSelectedUser] = useState(userData[0]);
+  const [selectedChat, setSelectedChat] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
-  const [messages, setMessages] = useState(userData[0].messages ?? []);
+  const [messages, setMessages] = useState([]);
+  const [history] = useState([]);
+
+  const { data } = useQuery({
+    queryKey: ['chat', 'history'],
+    queryFn: async () => {
+      const { data } = await api.get(`/chat/history`);
+      return data;
+    },
+    staleTime: 5000,
+  });
+
+  console.log('chat history: \n', data);
 
   const sendMessage = (newMessage) => {
     setMessages((prev) => [...prev, newMessage]);
   };
 
   const handleSelectUser = (user) => {
-    setSelectedUser(user);
+    setSelectedChat(user);
     setMessages(user.messages ?? []);
   };
 
@@ -48,6 +62,14 @@ export function ChatLayout({
       window.removeEventListener('resize', checkScreenWidth);
     };
   }, []);
+
+  if (!history.length || !history) {
+    return (
+      <div className="flex w-full justify-center items-center h-full">
+        <LoadingIcon />
+      </div>
+    );
+  }
 
   return (
     <ResizablePanelGroup
@@ -84,24 +106,24 @@ export function ChatLayout({
       >
         <Sidebar
           isCollapsed={isCollapsed || isMobile}
-          users={userData.map((user) => ({
-            id: user.id,
-            name: user.name,
-            messages: user.messages ?? [],
-            avatar: user.avatar,
-            variant: selectedUser.name === user.name ? 'grey' : 'ghost',
-            status: user.status,
+          users={history.map((chat) => ({
+            id: chat._id,
+            name: chat.mentor.firstName + ' ' + chat.mentor.lastName,
+            messages: chat.messages ?? [],
+            avatar: chat.avatar,
+            variant: selectedChat === chat._id ? 'grey' : 'ghost',
+            status: chat.status,
           }))}
           isMobile={isMobile}
           onSelect={handleSelectUser}
-          selectedUser={selectedUser}
+          selectedUser={selectedChat}
         />
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
         <Chat
           messages={messages}
-          selectedUser={selectedUser}
+          selectedUser={selectedChat}
           isMobile={isMobile}
           sendMessage={sendMessage}
         />

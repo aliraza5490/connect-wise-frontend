@@ -1,3 +1,4 @@
+import LoadingIcon from '@/components/LoaderIcon';
 import {
   ResizableHandle,
   ResizablePanel,
@@ -5,7 +6,9 @@ import {
 } from '@/components/ui/resizable';
 import { userData } from '@/data/chat';
 import { cn } from '@/lib/utils';
+import api from '@/utils/api';
 import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import { Chat } from './chat';
 import { Sidebar } from './sidebar';
 
@@ -15,9 +18,23 @@ export function ChatLayout({
   navCollapsedSize,
 }) {
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
-  const [selectedUser, setSelectedUser] = useState(userData[0]);
+  const [selectedUser, setSelectedUser] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
-  const [messages, setMessages] = useState(userData[0].messages ?? []);
+  const [messages, setMessages] = useState([]);
+  const [history] = useState([]);
+
+  const { data } = useQuery({
+    queryKey: ['chat', 'history'],
+    queryFn: async () => {
+      const { data } = await api.get(`/chat/history`);
+      return data;
+    },
+    staleTime: 5000,
+  });
+
+  useEffect(() => {
+    console.log('chat history: \n', data);
+  }, [data]);
 
   const sendMessage = (newMessage) => {
     setMessages((prev) => [...prev, newMessage]);
@@ -48,6 +65,14 @@ export function ChatLayout({
       window.removeEventListener('resize', checkScreenWidth);
     };
   }, []);
+
+  if (!history.length || !history) {
+    return (
+      <div className="flex w-full justify-center items-center h-full">
+        <LoadingIcon />
+      </div>
+    );
+  }
 
   return (
     <ResizablePanelGroup
