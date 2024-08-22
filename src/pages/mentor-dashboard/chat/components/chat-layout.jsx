@@ -4,7 +4,6 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from '@/components/ui/resizable';
-import { userData } from '@/data/chat';
 import { cn } from '@/lib/utils';
 import api from '@/utils/api';
 import { useEffect, useState } from 'react';
@@ -21,7 +20,7 @@ export function ChatLayout({
   const [selectedUser, setSelectedUser] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
   const [messages, setMessages] = useState([]);
-  const [history] = useState([]);
+  const [history, setHistory] = useState([]);
 
   const { data } = useQuery({
     queryKey: ['chat', 'history'],
@@ -34,9 +33,21 @@ export function ChatLayout({
 
   useEffect(() => {
     console.log('chat history: \n', data);
+    setHistory(data);
+    if (data?.length > 0) {
+      const chat = data[0];
+      setSelectedUser({
+        id: chat._id,
+        name: chat.user.firstName + ' ' + chat.user.lastName,
+        messages: chat.messages ?? [],
+        avatar: chat.user.avatar,
+        variant: 'ghost',
+      });
+      setMessages(chat.messages ?? []);
+    }
   }, [data]);
 
-  const sendMessage = (newMessage) => {
+  const sendMessage = async (newMessage) => {
     setMessages((prev) => [...prev, newMessage]);
   };
 
@@ -66,7 +77,7 @@ export function ChatLayout({
     };
   }, []);
 
-  if (!history.length || !history) {
+  if (!history?.length || !history || !selectedUser) {
     return (
       <div className="flex w-full justify-center items-center h-full">
         <LoadingIcon />
@@ -109,12 +120,12 @@ export function ChatLayout({
       >
         <Sidebar
           isCollapsed={isCollapsed || isMobile}
-          users={userData.map((user) => ({
-            id: user.id,
-            name: user.name,
-            messages: user.messages ?? [],
-            avatar: user.avatar,
-            variant: selectedUser.name === user.name ? 'grey' : 'ghost',
+          users={history.map((chat) => ({
+            id: chat._id,
+            name: chat.user.firstName + ' ' + chat.user.lastName,
+            messages: chat.messages ?? [],
+            avatar: chat.user.avatar,
+            variant: selectedUser.id === chat._id ? 'grey' : 'ghost',
           }))}
           isMobile={isMobile}
           onSelect={handleSelectUser}

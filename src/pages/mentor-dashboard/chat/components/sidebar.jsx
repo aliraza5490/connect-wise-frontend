@@ -1,4 +1,4 @@
-import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { buttonVariants } from '@/components/ui/button';
 import {
   Tooltip,
@@ -71,6 +71,10 @@ export function Sidebar({ users, isCollapsed, onSelect }) {
                           height={6}
                           className="w-10 h-10 "
                         />
+                        <AvatarFallback>
+                          {user?.name?.split(' ')[0][0]}
+                          {user?.name?.split(' ')[1][0]}
+                        </AvatarFallback>
                       </Avatar>
                       {/* green dot */}
                       <div className="absolute top-0 left-[1.8rem] w-3 h-3 bg-green-500 rounded-full border border-white"></div>
@@ -107,6 +111,10 @@ export function Sidebar({ users, isCollapsed, onSelect }) {
                     height={6}
                     className="w-10 h-10 "
                   />
+                  <AvatarFallback>
+                    {user?.name?.split(' ')[0][0]}
+                    {user?.name?.split(' ')[1][0]}
+                  </AvatarFallback>
                 </Avatar>
                 {/* green dot */}
                 <div className="absolute top-0 left-[1.8rem] w-3 h-3 bg-green-500 rounded-full border border-white"></div>

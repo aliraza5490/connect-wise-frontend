@@ -1,4 +1,4 @@
-import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Info } from 'lucide-react';
@@ -19,6 +19,10 @@ export default function ChatTopbar({ selectedUser }) {
             height={6}
             className="w-10 h-10 "
           />
+          <AvatarFallback>
+            {selectedUser?.name?.split(' ')[0][0]}
+            {selectedUser?.name?.split(' ')[1][0]}
+          </AvatarFallback>
         </Avatar>
         <div className="flex flex-col">
           <span className="font-medium">{selectedUser.name}</span>
