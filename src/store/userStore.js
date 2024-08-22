@@ -22,19 +22,23 @@ const useUserStore = create((set, get) => ({
         set({ user: null, isOnline: false });
       }
       set({ user: data });
-      if (!socket.connected) {
+      if (socket.disconnected) {
+        socket.auth.token = token;
         socket.connect();
       }
-      if (socket.connected) {
-        console.log('emit join', data._id);
-        socket.emit('join', data._id, (res) => {
-          console.log(res);
-          if (res.status === 'ok') {
-            set({ isOnline: true });
-          }
-        });
-        console.log('connected');
-      }
+      setTimeout(() => {
+        // recheck if socket is connected
+        if (socket.connected) {
+          console.log('emit join', data._id);
+          socket.emit('join', data._id, (res) => {
+            console.log(res);
+            if (res.status === 'ok') {
+              set({ isOnline: true });
+            }
+          });
+          console.log('connected');
+        }
+      }, 1000);
     } catch (err) {
       console.error(err);
       if (

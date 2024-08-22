@@ -4,7 +4,6 @@ import { Label } from '@/components/ui/label';
 import useUserStore from '@/store/userStore';
 import api from '@/utils/api';
 import { decodeJWT } from '@/utils/helpers';
-import { socket } from '@/utils/socket';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -41,9 +40,6 @@ export default function Login() {
       const decoded = decodeJWT(res.token);
       if (decoded && decoded.role === 'mentor') {
         redirectLink = '/mentor/dashboard';
-      }
-      if (socket.disconnected) {
-        socket.connect();
       }
       navigate(redirectLink, { replace: true });
     } catch (error) {
