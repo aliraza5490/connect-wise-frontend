@@ -28,7 +28,6 @@ export function ChatLayout({
       const { data } = await api.get(`/chat/history`);
       return data;
     },
-    staleTime: 5000,
   });
 
   useEffect(() => {
