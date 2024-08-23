@@ -1,5 +1,4 @@
 import { buttonVariants } from '@/components/ui/button';
-import { loggedInUserData } from '@/data/chat';
 import { cn } from '@/lib/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import { SendHorizontal, ThumbsUp } from 'lucide-react';
@@ -7,7 +6,7 @@ import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { EmojiPicker } from './emoji-picker';
 
-export default function ChatBottombar({ sendMessage, isMobile }) {
+export default function ChatBottombar({ chatID, sendMessage, isMobile }) {
   const [message, setMessage] = useState('');
   const inputRef = useRef(null);
 
@@ -17,9 +16,7 @@ export default function ChatBottombar({ sendMessage, isMobile }) {
 
   const handleThumbsUp = () => {
     const newMessage = {
-      id: message.length + 1,
-      name: loggedInUserData.name,
-      avatar: loggedInUserData.avatar,
+      chatID,
       message: '👍',
     };
     sendMessage(newMessage);
@@ -29,9 +26,7 @@ export default function ChatBottombar({ sendMessage, isMobile }) {
   const handleSend = () => {
     if (message.trim()) {
       const newMessage = {
-        id: message.length + 1,
-        name: loggedInUserData.name,
-        avatar: loggedInUserData.avatar,
+        chatID,
         message: message.trim(),
       };
       sendMessage(newMessage);

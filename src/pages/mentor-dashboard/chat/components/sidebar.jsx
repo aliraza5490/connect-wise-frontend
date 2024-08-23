@@ -131,8 +131,7 @@ export function Sidebar({ users, isCollapsed, onSelect }) {
                 <span>{user.name}</span>
                 {user.messages.length > 0 && (
                   <span className="text-zinc-300 text-xs truncate ">
-                    {user.messages[user.messages.length - 1].name.split(' ')[0]}
-                    : {user.messages[user.messages.length - 1].message}
+                    {user.messages[user.messages.length - 1].message}
                   </span>
                 )}
               </div>

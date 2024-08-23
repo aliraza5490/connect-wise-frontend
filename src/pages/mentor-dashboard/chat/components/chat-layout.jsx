@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import api from '@/utils/api';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
+import { toast } from 'react-toastify';
 import { Chat } from './chat';
 import { Sidebar } from './sidebar';
 
@@ -19,7 +20,6 @@ export function ChatLayout({
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
   const [selectedUser, setSelectedUser] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
-  const [messages, setMessages] = useState([]);
   const [history, setHistory] = useState([]);
 
   const { data } = useQuery({
@@ -33,7 +33,7 @@ export function ChatLayout({
   useEffect(() => {
     console.log('chat history: \n', data);
     setHistory(data);
-    if (data?.length > 0) {
+    if (data?.length > 0 && !selectedUser) {
       const chat = data[0];
       setSelectedUser({
         id: chat._id,
@@ -43,17 +43,35 @@ export function ChatLayout({
         variant: 'ghost',
         isOnline: chat.status === 'online',
       });
-      setMessages(chat.messages ?? []);
     }
-  }, [data]);
+  }, [data, selectedUser]);
 
   const sendMessage = async (newMessage) => {
-    setMessages((prev) => [...prev, newMessage]);
+    try {
+      const { data } = await api.post('/chat/message', newMessage);
+      setHistory((prev) => {
+        const chatIndex = prev.findIndex(
+          (chat) => chat._id === newMessage.chatID,
+        );
+        const chat = prev[chatIndex];
+        chat.messages.push(data);
+        return [...prev];
+      });
+      setTimeout(() => {
+        const messageContainer = document.getElementById('messages-container');
+        console.log('message container: \n', messageContainer);
+        if (messageContainer) {
+          messageContainer.scrollTop = messageContainer.scrollHeight;
+        }
+      }, 100);
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to send message');
+    }
   };
 
   const handleSelectUser = (user) => {
     setSelectedUser(user);
-    setMessages(user.messages ?? []);
   };
 
   useEffect(() => {
@@ -135,7 +153,7 @@ export function ChatLayout({
       <ResizableHandle withHandle />
       <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
         <Chat
-          messages={messages}
+          messages={selectedUser?.messages || []}
           selectedUser={selectedUser}
           isMobile={isMobile}
           sendMessage={sendMessage}

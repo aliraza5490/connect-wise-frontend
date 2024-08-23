@@ -14,13 +14,14 @@ export function ChatList({ messages, selectedUser, sendMessage, isMobile }) {
       messagesContainerRef.current.scrollTop =
         messagesContainerRef.current.scrollHeight;
     }
-  }, [messages, messagesContainerRef]);
+  }, []);
 
   return (
     <div className="w-full overflow-y-auto overflow-x-hidden h-full flex flex-col">
       <div
         ref={messagesContainerRef}
         className="w-full overflow-y-auto overflow-x-hidden h-full flex flex-col scroll-styles"
+        id="messages-container"
       >
         <AnimatePresence>
           {messages?.map((message, index) => (
@@ -82,7 +83,11 @@ export function ChatList({ messages, selectedUser, sendMessage, isMobile }) {
           ))}
         </AnimatePresence>
       </div>
-      <ChatBottombar sendMessage={sendMessage} isMobile={isMobile} />
+      <ChatBottombar
+        chatID={selectedUser.id}
+        sendMessage={sendMessage}
+        isMobile={isMobile}
+      />
     </div>
   );
 }
