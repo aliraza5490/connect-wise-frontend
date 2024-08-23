@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import api from '@/utils/api';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
+import { toast } from 'react-toastify';
 import { Chat } from './chat';
 import { Sidebar } from './sidebar';
 
@@ -17,10 +18,9 @@ export function ChatLayout({
   navCollapsedSize,
 }) {
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
-  const [selectedChat, setSelectedChat] = useState(null);
+  const [selectedUser, setSelectedUser] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
-  const [messages, setMessages] = useState([]);
-  const [history] = useState([]);
+  const [history, setHistory] = useState([]);
 
   const { data } = useQuery({
     queryKey: ['chat', 'history'],
@@ -28,18 +28,50 @@ export function ChatLayout({
       const { data } = await api.get(`/chat/history`);
       return data;
     },
-    staleTime: 5000,
   });
 
-  console.log('chat history: \n', data);
+  useEffect(() => {
+    console.log('chat history: \n', data);
+    setHistory(data);
+    if (data?.length > 0 && !selectedUser) {
+      const chat = data[0];
+      setSelectedUser({
+        id: chat._id,
+        name: chat.mentor.firstName + ' ' + chat.mentor.lastName,
+        messages: chat.messages ?? [],
+        avatar: chat.mentor.avatar,
+        variant: 'ghost',
+        isOnline: chat.status === 'online',
+      });
+    }
+  }, [data, selectedUser]);
 
-  const sendMessage = (newMessage) => {
-    setMessages((prev) => [...prev, newMessage]);
+  const sendMessage = async (newMessage) => {
+    try {
+      const { data } = await api.post('/chat/message', newMessage);
+      setHistory((prev) => {
+        const chatIndex = prev.findIndex(
+          (chat) => chat._id === newMessage.chatID,
+        );
+        const chat = prev[chatIndex];
+        chat.messages.push(data);
+        return [...prev];
+      });
+      setTimeout(() => {
+        const messageContainer = document.getElementById('messages-container');
+        console.log('message container: \n', messageContainer);
+        if (messageContainer) {
+          messageContainer.scrollTop = messageContainer.scrollHeight;
+        }
+      }, 100);
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to send message');
+    }
   };
 
   const handleSelectUser = (user) => {
-    setSelectedChat(user);
-    setMessages(user.messages ?? []);
+    setSelectedUser(user);
   };
 
   useEffect(() => {
@@ -63,7 +95,7 @@ export function ChatLayout({
     };
   }, []);
 
-  if (!history.length || !history) {
+  if (!history?.length || !history || !selectedUser) {
     return (
       <div className="flex w-full justify-center items-center h-full">
         <LoadingIcon />
@@ -110,20 +142,19 @@ export function ChatLayout({
             id: chat._id,
             name: chat.mentor.firstName + ' ' + chat.mentor.lastName,
             messages: chat.messages ?? [],
-            avatar: chat.avatar,
-            variant: selectedChat === chat._id ? 'grey' : 'ghost',
-            status: chat.status,
+            avatar: chat.mentor.avatar,
+            variant: selectedUser.id === chat._id ? 'grey' : 'ghost',
+            isOnline: chat.status === 'online',
           }))}
           isMobile={isMobile}
           onSelect={handleSelectUser}
-          selectedUser={selectedChat}
         />
       </ResizablePanel>
       <ResizableHandle withHandle />
       <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
         <Chat
-          messages={messages}
-          selectedUser={selectedChat}
+          messages={selectedUser?.messages || []}
+          selectedUser={selectedUser}
           isMobile={isMobile}
           sendMessage={sendMessage}
         />

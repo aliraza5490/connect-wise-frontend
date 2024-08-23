@@ -45,13 +45,11 @@ export function ChatList({ messages, selectedUser, sendMessage, isMobile }) {
               }}
               className={cn(
                 'flex flex-col gap-2 p-4 whitespace-pre-wrap',
-                message.name !== selectedUser.name
-                  ? 'items-end'
-                  : 'items-start',
+                message.by === user._id ? 'items-end' : 'items-start',
               )}
             >
               <div className="flex gap-3 items-center">
-                {message.name === selectedUser.name && (
+                {message.by !== user._id && (
                   <Avatar className="flex justify-center items-center">
                     <AvatarImage
                       src={message.avatar}
@@ -59,12 +57,16 @@ export function ChatList({ messages, selectedUser, sendMessage, isMobile }) {
                       width={6}
                       height={6}
                     />
+                    <AvatarFallback>
+                      {selectedUser?.name?.split(' ')[0][0].toUpperCase() +
+                        selectedUser?.name?.split(' ')[1][0].toUpperCase()}
+                    </AvatarFallback>
                   </Avatar>
                 )}
                 <span className=" bg-accent p-3 rounded-md max-w-xs">
                   {message.message}
                 </span>
-                {message.name !== selectedUser.name && (
+                {message.by === user._id && (
                   <Avatar className="flex justify-center items-center">
                     <AvatarImage
                       src={user.avatar}

@@ -1,4 +1,4 @@
-import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { buttonVariants } from '@/components/ui/button';
 import {
   Tooltip,
@@ -9,7 +9,7 @@ import {
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 
-export function Sidebar({ users, selectedUser, isCollapsed, onSelect }) {
+export function Sidebar({ users, isCollapsed, onSelect }) {
   return (
     <div
       data-collapsed={isCollapsed}
@@ -21,6 +21,28 @@ export function Sidebar({ users, selectedUser, isCollapsed, onSelect }) {
             <p className="font-medium">Chats</p>
             <span className="text-zinc-300">({users.length})</span>
           </div>
+
+          {/* <div>
+            <Link
+              to="#"
+              className={cn(
+                buttonVariants({ variant: 'ghost', size: 'icon' }),
+                'h-9 w-9',
+              )}
+            >
+              <MoreHorizontal size={20} />
+            </Link>
+
+            <Link
+              to="#"
+              className={cn(
+                buttonVariants({ variant: 'ghost', size: 'icon' }),
+                'h-9 w-9',
+              )}
+            >
+              <SquarePen size={20} />
+            </Link>
+          </div> */}
         </div>
       )}
       <nav className="grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
@@ -49,11 +71,17 @@ export function Sidebar({ users, selectedUser, isCollapsed, onSelect }) {
                           height={6}
                           className="w-10 h-10 "
                         />
+                        <AvatarFallback>
+                          {user?.name?.split(' ')[0][0]}
+                          {user?.name?.split(' ')[1][0]}
+                        </AvatarFallback>
                       </Avatar>
                       {/* green dot */}
-                      {user.status === 'online' && (
-                        <div className="absolute top-0 left-[1.8rem] w-3 h-3 bg-green-500 rounded-full border border-white"></div>
-                      )}
+                      <div
+                        className={`absolute top-0 left-[1.8rem] w-3 h-3 ${
+                          user?.isOnline ? 'bg-green-500' : 'bg-slate-500'
+                        }  rounded-full border border-white`}
+                      ></div>
                     </div>{' '}
                     <span className="sr-only">{user.name}</span>
                   </Link>
@@ -87,18 +115,23 @@ export function Sidebar({ users, selectedUser, isCollapsed, onSelect }) {
                     height={6}
                     className="w-10 h-10 "
                   />
+                  <AvatarFallback>
+                    {user?.name?.split(' ')[0][0]}
+                    {user?.name?.split(' ')[1][0]}
+                  </AvatarFallback>
                 </Avatar>
                 {/* green dot */}
-                {user.status === 'online' && (
-                  <div className="absolute top-0 left-[1.8rem] w-3 h-3 bg-green-500 rounded-full border border-white"></div>
-                )}
+                <div
+                  className={`absolute top-0 left-[1.8rem] w-3 h-3 ${
+                    user?.isOnline ? 'bg-green-500' : 'bg-slate-500'
+                  }  rounded-full border border-white`}
+                ></div>
               </div>
               <div className="flex flex-col max-w-28">
                 <span>{user.name}</span>
                 {user.messages.length > 0 && (
                   <span className="text-zinc-300 text-xs truncate ">
-                    {user.messages[user.messages.length - 1].name.split(' ')[0]}
-                    : {user.messages[user.messages.length - 1].message}
+                    {user.messages[user.messages.length - 1].message}
                   </span>
                 )}
               </div>
