@@ -42,6 +42,7 @@ export function ChatLayout({
         messages: chat.messages ?? [],
         avatar: chat.user.avatar,
         variant: 'ghost',
+        isOnline: chat.status === 'online',
       });
       setMessages(chat.messages ?? []);
     }
@@ -126,6 +127,7 @@ export function ChatLayout({
             messages: chat.messages ?? [],
             avatar: chat.user.avatar,
             variant: selectedUser.id === chat._id ? 'grey' : 'ghost',
+            isOnline: chat.status === 'online',
           }))}
           isMobile={isMobile}
           onSelect={handleSelectUser}
