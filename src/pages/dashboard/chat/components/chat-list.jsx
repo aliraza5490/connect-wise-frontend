@@ -24,6 +24,13 @@ export function ChatList({
     });
   };
 
+  const handleReview = (mentor) => {
+    console.log('Add Review:', mentor);
+    navigate(`/review`, {
+      state: { mentor: { ...mentor, chatID: selectedUser.id } },
+    });
+  };
+
   useEffect(() => {
     if (messagesContainerRef.current) {
       messagesContainerRef.current.scrollTop =
@@ -102,13 +109,19 @@ export function ChatList({
       </div>
       {/* chat is paused */}
       {selectedUser?.isPaused && (
-        <div className="flex justify-center items-center h-32">
+        <div className="flex flex-col gap-2 my-4 justify-center items-center h-32">
           <p className="text-gray-400 text-lg mr-4">Subscription Expired</p>
           <button
             className="flex items-center gap-2 px-4 py-2 text-white bg-primary rounded-md"
             onClick={() => handleProfileView(mentorInfo)}
           >
             <span>Subscribe Again</span>
+          </button>
+          <button
+            className="mx-auto flex items-center gap-2 px-4 py-2 text-white bg-secondary rounded-md"
+            onClick={() => handleReview(mentorInfo)}
+          >
+            <span>Add Review</span>
           </button>
         </div>
       )}

@@ -44,6 +44,7 @@ export function ChatLayout({
           mentorID: chat.mentor._id,
           variant: selectedUser?.id === chat._id ? 'grey' : 'ghost',
           isOnline: chat.status === 'online',
+          isPaused: chat.isPaused,
         });
       } else {
         setHistory(data);
@@ -167,6 +168,7 @@ export function ChatLayout({
             mentorID: chat.mentor._id,
             variant: selectedUser.id === chat._id ? 'grey' : 'ghost',
             isOnline: chat.status === 'online',
+            isPaused: chat.isPaused,
           }))}
           isMobile={isMobile}
           onSelect={handleSelectUser}

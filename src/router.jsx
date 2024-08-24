@@ -28,6 +28,11 @@ const router = createBrowserRouter([
     errorElement: <GeneralError />,
   },
   {
+    path: '/review',
+    Component: lazy(() => import('./pages/ReviewMentor')),
+    errorElement: <GeneralError />,
+  },
+  {
     path: '/search',
     Component: lazy(() => import('./pages/Search')),
     errorElement: <GeneralError />,
