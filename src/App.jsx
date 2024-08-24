@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import LoadingIcon from './components/LoaderIcon';
 import router from './router';
 import useUserStore from './store/userStore';
+import { getTokenCookie } from './utils/helpers';
 import { socket } from './utils/socket';
 
 // Create a client
@@ -33,6 +34,14 @@ function App() {
   useEffect(() => {
     socket.on('disconnect', () => {
       updateStatus(false);
+      if (getTokenCookie()) {
+        const interval = setInterval(() => {
+        socket.auth.token = getTokenCookie();
+        socket.connect();
+        if (socket.connected) {
+          clearInterval(interval);
+        }
+      }, 5000);
       console.log('disconnected');
     });
     socket.on('connected', () => {
