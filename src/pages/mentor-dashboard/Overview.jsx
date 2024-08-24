@@ -1,3 +1,4 @@
+import LoadingIcon from '@/components/LoaderIcon';
 import api from '@/utils/api';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
@@ -6,7 +7,7 @@ import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 export function Overview() {
   const [rows, setRows] = useState([]);
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['mentor', 'overview'],
     queryFn: async () => {
       const { data } = await api.get(`/mentor/overview`);
@@ -20,11 +21,17 @@ export function Overview() {
     }
   }, [data]);
 
-  console.log(rows);
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center w-full h-[350px]">
+        <LoadingIcon />
+      </div>
+    );
+  }
 
   return (
     <ResponsiveContainer width="100%" height={350}>
-      <BarChart data={data}>
+      <BarChart data={rows}>
         <XAxis
           dataKey="name"
           stroke="#888888"
