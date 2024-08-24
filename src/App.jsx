@@ -40,6 +40,7 @@ function App() {
           socket.connect();
           if (socket.connected) {
             clearInterval(interval);
+            updateStatus(true);
           }
         }, 5000);
         console.log('disconnected');
