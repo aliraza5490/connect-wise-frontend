@@ -133,9 +133,12 @@ export default function Search() {
                   </CardContent>
                   <CardFooter>
                     <div className="w-full flex justify-between items-center">
-                      <a href="#" onClick={() => handleProfileView(mentor)}>
+                      <button
+                        className="bg-none text-white border-none"
+                        onClick={() => handleProfileView(mentor)}
+                      >
                         <Button>View Profile</Button>
-                      </a>
+                      </button>
                       {/* Price /month */}
                       <span className="text-gray-500 dark:text-gray-400">
                         ${mentor.pricePerMonth}/month
