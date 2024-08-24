@@ -1,6 +1,3 @@
-import { Badge } from '@/components/ui/badge';
-
-import { labels } from '../data/data';
 import { DataTableColumnHeader } from './data-table-column-header';
 
 export const columns = [
@@ -9,29 +6,55 @@ export const columns = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="ID" />
     ),
-    cell: ({ row }) => <div className="">{row.getValue('_id')}</div>,
+    cell: ({ row }) => (
+      <div className="">
+        {row.getValue('_id').slice(0, 4)}
+        ...
+        {row.getValue('_id').slice(-4)}
+      </div>
+    ),
     enableSorting: false,
   },
   {
-    accessorKey: 'userName',
+    accessorKey: 'mentor',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Name" />
-    ),
-    cell: ({ row }) => <div className="">{row.getValue('userName')}</div>,
-  },
-  {
-    accessorKey: 'email',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Email" />
+      <DataTableColumnHeader column={column} title="Mentor Name" />
     ),
     cell: ({ row }) => {
-      const label = labels.find((label) => label.value === row.original.label);
-
       return (
         <div className="flex space-x-2">
-          {label && <Badge variant="outline">{label.label}</Badge>}
           <span className="max-w-[500px] truncate font-medium">
-            {row.getValue('email')}
+            {row.getValue('mentor').firstName} {row.getValue('mentor').lastName}
+          </span>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: 'price',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Price" />
+    ),
+    cell: ({ row }) => {
+      return (
+        <div className="flex space-x-2">
+          <span className="max-w-[500px] truncate font-medium">
+            ${row.getValue('price')}
+          </span>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: 'expiringOn',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Expiring At" />
+    ),
+    cell: ({ row }) => {
+      return (
+        <div className="flex space-x-2">
+          <span className="max-w-[500px] truncate font-medium">
+            {new Date(row.getValue('expiringOn')).toLocaleString()}
           </span>
         </div>
       );
@@ -43,11 +66,8 @@ export const columns = [
       <DataTableColumnHeader column={column} title="Created At" />
     ),
     cell: ({ row }) => {
-      const label = labels.find((label) => label.value === row.original.label);
-
       return (
         <div className="flex space-x-2">
-          {label && <Badge variant="outline">{label.label}</Badge>}
           <span className="max-w-[500px] truncate font-medium">
             {new Date(row.getValue('createdAt')).toLocaleString()}
           </span>
