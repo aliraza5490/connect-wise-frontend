@@ -48,13 +48,18 @@ export const columns = [
   {
     accessorKey: 'expiringOn',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Expiring At" />
+      <DataTableColumnHeader column={column} title="Active" />
     ),
     cell: ({ row }) => {
+      const isActive = new Date(row.getValue('expiringOn')) > new Date();
       return (
-        <div className="flex space-x-2">
+        <div
+          className={`flex space-x-2 ${
+            isActive ? 'text-green-600' : 'text-slate-600'
+          }`}
+        >
           <span className="max-w-[500px] truncate font-medium">
-            {new Date(row.getValue('expiringOn')).toLocaleString()}
+            {isActive ? 'Yes' : 'No'}
           </span>
         </div>
       );
