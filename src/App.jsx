@@ -36,13 +36,14 @@ function App() {
       updateStatus(false);
       if (getTokenCookie()) {
         const interval = setInterval(() => {
-        socket.auth.token = getTokenCookie();
-        socket.connect();
-        if (socket.connected) {
-          clearInterval(interval);
-        }
-      }, 5000);
-      console.log('disconnected');
+          socket.auth.token = getTokenCookie();
+          socket.connect();
+          if (socket.connected) {
+            clearInterval(interval);
+          }
+        }, 5000);
+        console.log('disconnected');
+      }
     });
     socket.on('connected', () => {
       updateStatus(true);
