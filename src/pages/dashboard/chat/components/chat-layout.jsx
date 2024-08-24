@@ -41,6 +41,7 @@ export function ChatLayout({
           name: chat.mentor.firstName + ' ' + chat.mentor.lastName,
           messages: chat.messages ?? [],
           avatar: chat.mentor.avatar,
+          mentorID: chat.mentor._id,
           variant: selectedUser?.id === chat._id ? 'grey' : 'ghost',
           isOnline: chat.status === 'online',
         });
@@ -163,6 +164,7 @@ export function ChatLayout({
             name: chat.mentor.firstName + ' ' + chat.mentor.lastName,
             messages: chat.messages ?? [],
             avatar: chat.mentor.avatar,
+            mentorID: chat.mentor._id,
             variant: selectedUser.id === chat._id ? 'grey' : 'ghost',
             isOnline: chat.status === 'online',
           }))}

@@ -3,11 +3,26 @@ import { cn } from '@/lib/utils';
 import useUserStore from '@/store/userStore';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ChatBottombar from './chat-bottombar';
 
-export function ChatList({ messages, selectedUser, sendMessage, isMobile }) {
+export function ChatList({
+  messages,
+  selectedUser,
+  mentorInfo,
+  sendMessage,
+  isMobile,
+}) {
   const messagesContainerRef = useRef(null);
   const user = useUserStore((state) => state.user);
+  const navigate = useNavigate();
+
+  const handleProfileView = (mentor) => {
+    console.log('View Profile:', mentor);
+    navigate(`/profile`, {
+      state: { mentor },
+    });
+  };
 
   useEffect(() => {
     if (messagesContainerRef.current) {
@@ -89,7 +104,10 @@ export function ChatList({ messages, selectedUser, sendMessage, isMobile }) {
       {selectedUser?.isPaused && (
         <div className="flex justify-center items-center h-32">
           <p className="text-gray-400 text-lg mr-4">Subscription Expired</p>
-          <button className="flex items-center gap-2 px-4 py-2 text-white bg-primary rounded-md">
+          <button
+            className="flex items-center gap-2 px-4 py-2 text-white bg-primary rounded-md"
+            onClick={() => handleProfileView(mentorInfo)}
+          >
             <span>Subscribe Again</span>
           </button>
         </div>

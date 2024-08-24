@@ -2,12 +2,21 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Info, Video } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 // const TopbarIcons = [{ icon: Phone }, { icon: Video }, { icon: Info }];
 
-export default function ChatTopbar({ selectedUser }) {
+export default function ChatTopbar({ selectedUser, mentorInfo }) {
   console.log(selectedUser);
+  const navigate = useNavigate();
+
+  const handleProfileView = (mentor) => {
+    console.log('View Profile:', mentor);
+    navigate(`/profile`, {
+      state: { mentor },
+    });
+  };
+
   return (
     <div className="w-full h-20 flex p-4 justify-between items-center border-b">
       <div className="flex items-center gap-2 relative">
@@ -49,16 +58,16 @@ export default function ChatTopbar({ selectedUser }) {
         >
           <Video size={20} className="text-muted-foreground" />
         </Link>
-        <Link
-          to={'/profile/' + selectedUser.id}
+        <a
           className={cn(
             buttonVariants({ variant: 'ghost', size: 'icon' }),
             'h-9 w-9',
-            'dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white',
+            'dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white cursor-pointer',
           )}
+          onClick={() => handleProfileView(mentorInfo)}
         >
           <Info size={20} className="text-muted-foreground" />
-        </Link>
+        </a>
       </div>
     </div>
   );
