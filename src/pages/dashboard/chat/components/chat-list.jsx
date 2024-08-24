@@ -85,11 +85,22 @@ export function ChatList({ messages, selectedUser, sendMessage, isMobile }) {
           ))}
         </AnimatePresence>
       </div>
-      <ChatBottombar
-        chatID={selectedUser.id}
-        sendMessage={sendMessage}
-        isMobile={isMobile}
-      />
+      {/* chat is paused */}
+      {selectedUser?.isPaused && (
+        <div className="flex justify-center items-center h-32">
+          <p className="text-gray-400 text-lg mr-4">Subscription Expired</p>
+          <button className="flex items-center gap-2 px-4 py-2 text-white bg-primary rounded-md">
+            <span>Subscribe Again</span>
+          </button>
+        </div>
+      )}
+      {!selectedUser?.isPaused && (
+        <ChatBottombar
+          chatID={selectedUser.id}
+          sendMessage={sendMessage}
+          isMobile={isMobile}
+        />
+      )}
     </div>
   );
 }
