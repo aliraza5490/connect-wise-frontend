@@ -1,4 +1,5 @@
 import { Layout } from '@/components/custom/layout';
+import LoadingIcon from '@/components/LoaderIcon';
 import {
   Card,
   CardContent,
@@ -7,10 +8,23 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { UserNav } from '@/components/UserNav';
+import api from '@/utils/api';
+import { formatMoney } from '@/utils/helpers';
+import { useQuery } from 'react-query';
 import { Overview } from './Overview';
 import { RecentSales } from './RecentSales';
 
 export default function Dashboard() {
+  const { data, isLoading } = useQuery({
+    queryKey: ['mentor', 'stats'],
+    queryFn: async () => {
+      const { data } = await api.get(`/mentor/stats`);
+      return data;
+    },
+  });
+
+  console.log(data);
+
   return (
     <Layout>
       {/* ===== Top Heading ===== */}
@@ -42,16 +56,15 @@ export default function Dashboard() {
                 </svg>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">$45,231.89</div>
-                <p className="text-xs text-muted-foreground">
-                  +20.1% from last month
-                </p>
+                <div className="text-2xl font-bold">
+                  {isLoading ? 'Loading...' : formatMoney(data?.totalRevenue)}
+                </div>
               </CardContent>
             </Card>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">
-                  Subscriptions
+                  Monthly Revenue
                 </CardTitle>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -69,15 +82,16 @@ export default function Dashboard() {
                 </svg>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">+2350</div>
-                <p className="text-xs text-muted-foreground">
-                  +180.1% from last month
-                </p>
+                <div className="text-2xl font-bold">
+                  {isLoading ? 'Loading...' : formatMoney(data?.monthlyRevenue)}
+                </div>
               </CardContent>
             </Card>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Sales</CardTitle>
+                <CardTitle className="text-sm font-medium">
+                  Monthly Sales
+                </CardTitle>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -93,10 +107,9 @@ export default function Dashboard() {
                 </svg>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">+12,234</div>
-                <p className="text-xs text-muted-foreground">
-                  +19% from last month
-                </p>
+                <div className="text-2xl font-bold">
+                  {isLoading ? 'Loading...' : data?.currentMonthSalesCount}
+                </div>
               </CardContent>
             </Card>
             <Card>
@@ -118,10 +131,9 @@ export default function Dashboard() {
                 </svg>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">+573</div>
-                <p className="text-xs text-muted-foreground">
-                  +201 since last hour
-                </p>
+                <div className="text-2xl font-bold">
+                  {isLoading ? 'Loading...' : data?.activeOrders.length}
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -138,11 +150,22 @@ export default function Dashboard() {
               <CardHeader>
                 <CardTitle>Recent Sales</CardTitle>
                 <CardDescription>
-                  You made 265 sales this month.
+                  You made{' '}
+                  {isLoading ? 'Loading...' : data?.currentMonthSalesCount}{' '}
+                  sales this month.
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <RecentSales />
+                {isLoading && (
+                  <div className="flex justify-center items-center w-full h-[350px]">
+                    <LoadingIcon />
+                  </div>
+                )}
+                {!isLoading && (
+                  <RecentSales
+                    recentSales={isLoading ? [] : data?.lastFiveSales}
+                  />
+                )}
               </CardContent>
             </Card>
           </div>

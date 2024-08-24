@@ -60,3 +60,10 @@ export function paginationNumbers(start, total) {
 
   return rangeWithDots;
 }
+
+export function formatMoney(amount) {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  }).format(amount);
+}
