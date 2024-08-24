@@ -1,4 +1,5 @@
 import { Layout } from '@/components/custom/layout';
+import LoadingIcon from '@/components/LoaderIcon';
 import { UserNav } from '@/components/UserNav';
 import api from '@/utils/api';
 import { useEffect, useState } from 'react';
@@ -9,7 +10,7 @@ import { DataTable } from './components/data-table';
 export default function Tasks() {
   const [rows, setRows] = useState([]);
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['info', 'orders'],
     queryFn: async () => {
       const { data } = await api.get(`/info/orders`);
@@ -33,7 +34,13 @@ export default function Tasks() {
 
       <Layout.Body>
         <div className="-mx-4 flex-1 overflow-auto px-4 py-1 lg:flex-row lg:space-x-12 lg:space-y-0">
-          <DataTable data={rows} columns={columns} />
+          {isLoading ? (
+            <div className="flex justify-center items-center w-full h-32">
+              <LoadingIcon />
+            </div>
+          ) : (
+            <DataTable data={rows} columns={columns} />
+          )}
         </div>
       </Layout.Body>
     </Layout>
