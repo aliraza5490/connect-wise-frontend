@@ -116,18 +116,16 @@ export default function Profile() {
             {mentor.reviews.map((review) => (
               <div key={review._id} className="flex gap-4">
                 <Avatar className="h-12 w-12 border">
-                  <AvatarImage
-                    src={`https://i.pravatar.cc/150?img=${Math.random() * 5}`}
-                  />
+                  <AvatarImage src={review?.user?.avatar} />
                   <AvatarFallback>
-                    {review.firstName[0]}
-                    {review.lastName[0]}
+                    {review?.user?.firstName[0]}
+                    {review?.user?.lastName[0]}
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid gap-2">
                   <div className="flex items-center gap-2">
                     <h3 className="text-lg font-semibold">
-                      {review.firstName} {review.lastName}
+                      {review?.user?.firstName} {review?.user?.lastName}
                     </h3>
                     <div className="flex items-center gap-0.5 text-primary">
                       <Rating value={review.rating || 5} />
