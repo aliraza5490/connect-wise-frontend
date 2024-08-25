@@ -38,6 +38,14 @@ export function ChatList({
     }
   }, []);
 
+  if (!selectedUser) {
+    return (
+      <div className="w-full h-full flex justify-center items-center">
+        <p className="text-gray-400 text-lg">Select a chat to start</p>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full overflow-y-auto overflow-x-hidden h-full flex flex-col">
       <div
@@ -125,9 +133,9 @@ export function ChatList({
           </button>
         </div>
       )}
-      {!selectedUser?.isPaused && (
+      {selectedUser && !selectedUser?.isPaused && (
         <ChatBottombar
-          chatID={selectedUser.id}
+          chatID={selectedUser?.id}
           sendMessage={sendMessage}
           isMobile={isMobile}
         />

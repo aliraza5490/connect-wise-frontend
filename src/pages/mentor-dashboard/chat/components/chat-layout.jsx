@@ -23,7 +23,7 @@ export function ChatLayout({
   const [isMobile, setIsMobile] = useState(false);
   const [history, setHistory] = useState([]);
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['chat', 'history'],
     queryFn: async () => {
       const { data } = await api.get(`/chat/history`);
@@ -114,7 +114,7 @@ export function ChatLayout({
     };
   }, []);
 
-  if (!history?.length || !history || !selectedUser) {
+  if (isLoading) {
     return (
       <div className="flex w-full justify-center items-center h-full">
         <LoadingIcon />
