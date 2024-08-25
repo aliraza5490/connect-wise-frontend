@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { Info, Video } from 'lucide-react';
+import { Video } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 // const TopbarIcons = [{ icon: Phone }, { icon: Video }, { icon: Info }];
@@ -53,7 +53,7 @@ export default function ChatTopbar({ selectedUser }) {
             >
               <Video size={20} className="text-muted-foreground" />
             </Link>
-            <Link
+            {/* <Link
               to={'/profile/' + selectedUser.id}
               className={cn(
                 buttonVariants({ variant: 'ghost', size: 'icon' }),
@@ -62,7 +62,7 @@ export default function ChatTopbar({ selectedUser }) {
               )}
             >
               <Info size={20} className="text-muted-foreground" />
-            </Link>
+            </Link> */}
           </div>
         </>
       )}

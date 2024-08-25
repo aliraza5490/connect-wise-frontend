@@ -61,7 +61,7 @@ export default function ChatTopbar({ selectedUser, mentorInfo }) {
             >
               <Video size={20} className="text-muted-foreground" />
             </Link>
-            <a
+            <button
               className={cn(
                 buttonVariants({ variant: 'ghost', size: 'icon' }),
                 'h-9 w-9',
@@ -70,7 +70,7 @@ export default function ChatTopbar({ selectedUser, mentorInfo }) {
               onClick={() => handleProfileView(mentorInfo)}
             >
               <Info size={20} className="text-muted-foreground" />
-            </a>
+            </button>
           </div>
         </>
       )}
