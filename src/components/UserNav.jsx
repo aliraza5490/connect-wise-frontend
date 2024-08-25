@@ -77,6 +77,13 @@ export function UserNav() {
                 Settings
               </DropdownMenuItem>
             </Link>
+            {user?.role === 'mentor' && user?.manageSubscriptions && (
+              <Link to={user?.manageSubscriptions}>
+                <DropdownMenuItem className="hover:cursor-pointer">
+                  Manage Subscription
+                </DropdownMenuItem>
+              </Link>
+            )}
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem
