@@ -60,8 +60,8 @@ export function ChatList({ messages, selectedUser, sendMessage, isMobile }) {
                 {message.by !== user._id && (
                   <Avatar className="flex justify-center items-center">
                     <AvatarImage
-                      src={message.avatar}
-                      alt={message.name}
+                      src={selectedUser.avatar}
+                      alt={selectedUser.name}
                       width={6}
                       height={6}
                     />
