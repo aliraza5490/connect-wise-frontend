@@ -35,7 +35,7 @@ export default function About() {
   const { data: mentorsList = [] } = useQuery({
     queryKey: ['mentors', 1],
     queryFn: async () => {
-      const { data } = await api.get(`/mentor/list?limit=6&page=${1}`);
+      const { data } = await api.get(`/mentor/featured?limit=6&page=${1}`);
       return data;
     },
     keepPreviousData: true,
