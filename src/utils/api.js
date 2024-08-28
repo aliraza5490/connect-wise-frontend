@@ -2,7 +2,7 @@ import axios from 'axios';
 import { decodeJWT, getTokenCookie } from './helpers';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_URL,
+  baseURL: import.meta.env.VITE_BACKEND_URL + '/api/v1',
   headers: {
     'Content-Type': 'application/json',
   },
