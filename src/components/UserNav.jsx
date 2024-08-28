@@ -39,7 +39,7 @@ export function UserNav() {
             <Avatar className="h-8 w-8">
               <AvatarImage
                 src={user?.avatar}
-                alt={`Profile picture of${user?.firstName} ${user?.lastName}.`}
+                alt={`Profile picture of ${user?.firstName} ${user?.lastName}.`}
               />
               <AvatarFallback>
                 {user?.firstName?.charAt(0).toUpperCase() +
