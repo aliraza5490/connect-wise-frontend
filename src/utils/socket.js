@@ -7,6 +7,7 @@ const url = import.meta.env.PROD
 
 export const socket = connect(url, {
   path: '/api/v1/socket',
+  addTrailingSlash: false,
   timeout: 120000,
   withCredentials: true,
   auth: {
