@@ -71,6 +71,17 @@ const useUserStore = create((set, get) => ({
     }
   },
   updateStatus: (status) => {
+    if (status && socket.connected) {
+      const data = get().user;
+      console.log('emit join', data._id);
+      socket.emit('join', data._id, (res) => {
+        console.log(res);
+        if (res.status === 'ok') {
+          set({ isOnline: true });
+        }
+      });
+      console.log('connected');
+    }
     set((state) => {
       state.isOnline = status;
       console.log('status update:', status);
