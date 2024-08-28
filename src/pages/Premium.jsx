@@ -33,9 +33,7 @@ export default function Premium() {
       return;
     }
 
-    const { data } = await api.post('/buy/premium', {
-      mentorID: user._id,
-    });
+    const { data } = await api.get('/buy/premium');
 
     if (data?.redirectURL) {
       window.location.href = data.redirectURL;

@@ -54,9 +54,6 @@ const router = createBrowserRouter([
       if (decode && decode.exp < Date.now() / 1000) {
         return redirect('/login');
       }
-      if (decode && decode.role !== 'mentor') {
-        return redirect('/dashboard');
-      }
       return null;
     },
     errorElement: <GeneralError />,

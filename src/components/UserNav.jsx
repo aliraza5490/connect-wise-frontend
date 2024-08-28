@@ -25,7 +25,7 @@ export function UserNav() {
 
   return (
     <div className="ml-auto flex items-center space-x-4">
-      {user?.role === 'mentor' && !user?.isFeatured && (
+      {!user?.isFeatured && (
         <Link
           className="text-sm font-medium hover:underline underline-offset-4 text-transparent bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text"
           to="/pricing"
@@ -77,7 +77,7 @@ export function UserNav() {
                 Settings
               </DropdownMenuItem>
             </Link>
-            {user?.role === 'mentor' && user?.manageSubscriptions && (
+            {user?.manageSubscriptions && (
               <Link to={user?.manageSubscriptions}>
                 <DropdownMenuItem className="hover:cursor-pointer">
                   Manage Subscription
