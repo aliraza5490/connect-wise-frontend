@@ -67,7 +67,7 @@ export default function Nav({ links, isCollapsed, className, closeNav }) {
               label: '',
               href:
                 user?.role == 'mentor'
-                  ? '/dashboard/mentor/assistant'
+                  ? '/mentor/dashboard/assistant'
                   : '/dashboard/assistant',
               icon: <IconRobot size={18} />,
             })}
