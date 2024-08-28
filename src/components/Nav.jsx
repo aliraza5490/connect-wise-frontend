@@ -65,7 +65,10 @@ export default function Nav({ links, isCollapsed, className, closeNav }) {
             renderLink({
               title: 'AI Assistant',
               label: '',
-              href: '/assistant',
+              href:
+                user?.role == 'mentor'
+                  ? '/dashboard/mentor/assistant'
+                  : '/dashboard/assistant',
               icon: <IconRobot size={18} />,
             })}
         </nav>
