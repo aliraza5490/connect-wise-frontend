@@ -1,6 +1,7 @@
 import useCheckActiveNav from '@/hooks/use-check-active-nav';
 import { cn } from '@/lib/utils';
-import { IconChevronDown } from '@tabler/icons-react';
+import useUserStore from '@/store/userStore';
+import { IconChevronDown, IconRobot } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 import { Button, buttonVariants } from './custom/button';
 import {
@@ -24,6 +25,8 @@ import {
 } from './ui/tooltip';
 
 export default function Nav({ links, isCollapsed, className, closeNav }) {
+  const user = useUserStore((state) => state.user);
+
   const renderLink = ({ sub, ...rest }) => {
     const key = `${rest.title}-${rest.href}`;
     if (isCollapsed && sub)
@@ -46,6 +49,7 @@ export default function Nav({ links, isCollapsed, className, closeNav }) {
 
     return <NavLink {...rest} key={key} closeNav={closeNav} />;
   };
+
   return (
     <div
       data-collapsed={isCollapsed}
@@ -57,6 +61,13 @@ export default function Nav({ links, isCollapsed, className, closeNav }) {
       <TooltipProvider delayDuration={0}>
         <nav className="grid gap-1 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2">
           {links.map(renderLink)}
+          {user?.isFeatured &&
+            renderLink({
+              title: 'AI Assistant',
+              label: '',
+              href: '/assistant',
+              icon: <IconRobot size={18} />,
+            })}
         </nav>
       </TooltipProvider>
     </div>
