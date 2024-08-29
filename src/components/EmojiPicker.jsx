@@ -7,7 +7,7 @@ import data from '@emoji-mart/data';
 import Picker from '@emoji-mart/react';
 import { SmileIcon } from 'lucide-react';
 
-export const EmojiPicker = ({ onChange }) => {
+const EmojiPicker = ({ onChange }) => {
   return (
     <Popover>
       <PopoverTrigger>
@@ -25,3 +25,5 @@ export const EmojiPicker = ({ onChange }) => {
     </Popover>
   );
 };
+
+export default EmojiPicker;

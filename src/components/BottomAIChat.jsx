@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { SendHorizontal } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { EmojiPicker } from './emoji-picker';
+import EmojiPicker from './EmojiPicker';
 
 export default function BottomAIChat({ sendMessage }) {
   const [message, setMessage] = useState('');
