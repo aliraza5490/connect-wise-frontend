@@ -3,7 +3,7 @@ import { UserNav } from '@/components/UserNav';
 import Cookies from 'js-cookie';
 import ChatLayout from './components/ChatLayout';
 
-export default function Tasks() {
+export default function Chat() {
   const layout = Cookies.get('react-resizable-panels:layout');
   const defaultLayout = layout ? JSON.parse(layout) : undefined;
 

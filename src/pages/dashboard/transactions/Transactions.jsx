@@ -7,7 +7,7 @@ import { useQuery } from 'react-query';
 import { columns } from './components/columns';
 import { DataTable } from './components/data-table';
 
-export default function Tasks() {
+export default function Transactions() {
   const [rows, setRows] = useState([]);
 
   const { data, isLoading } = useQuery({
