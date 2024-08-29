@@ -36,7 +36,7 @@ export default function ChatList({
       messagesContainerRef.current.scrollTop =
         messagesContainerRef.current.scrollHeight;
     }
-  }, []);
+  }, [messages]);
 
   if (!selectedUser) {
     return (
@@ -93,7 +93,7 @@ export default function ChatList({
                     </AvatarFallback>
                   </Avatar>
                 )}
-                <span className=" bg-accent p-3 rounded-md max-w-xs">
+                <span className="bg-accent p-3 rounded-md max-w-xs text-wrap break-all">
                   {message.message}
                 </span>
                 {message.by === user._id && (
