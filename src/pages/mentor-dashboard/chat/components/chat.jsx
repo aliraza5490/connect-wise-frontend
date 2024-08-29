@@ -4,7 +4,7 @@ import ChatTopbar from './chat-topbar';
 export function Chat({ messages, sendMessage, selectedUser, isMobile }) {
   return (
     <div className="flex flex-col justify-between w-full h-full">
-      <ChatTopbar selectedUser={selectedUser} />
+      <ChatTopbar selectedUser={selectedUser} sendMessage={sendMessage} />
 
       <ChatList
         messages={messages}
