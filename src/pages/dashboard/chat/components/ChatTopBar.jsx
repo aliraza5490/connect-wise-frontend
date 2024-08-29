@@ -8,7 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 // const TopbarIcons = [{ icon: Phone }, { icon: Video }, { icon: Info }];
 
-export default function ChatTopbar({ selectedUser, mentorInfo, sendMessage }) {
+export default function ChatTopBar({ selectedUser, mentorInfo, sendMessage }) {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 

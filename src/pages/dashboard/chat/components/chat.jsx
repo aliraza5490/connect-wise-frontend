@@ -1,9 +1,14 @@
 import api from '@/utils/api';
 import { useQuery } from 'react-query';
-import { ChatList } from './chat-list';
-import ChatTopbar from './chat-topbar';
+import ChatList from './ChatList';
+import ChatTopBar from './ChatTopBar';
 
-export function Chat({ messages, sendMessage, selectedUser, isMobile }) {
+export default function Chat({
+  messages,
+  sendMessage,
+  selectedUser,
+  isMobile,
+}) {
   const { data: mentorInfo } = useQuery({
     queryKey: ['mentor', selectedUser?.mentorID],
     queryFn: async () => {
@@ -17,7 +22,7 @@ export function Chat({ messages, sendMessage, selectedUser, isMobile }) {
 
   return (
     <div className="flex flex-col justify-between w-full h-full">
-      <ChatTopbar
+      <ChatTopBar
         mentorInfo={mentorInfo}
         selectedUser={selectedUser}
         sendMessage={sendMessage}

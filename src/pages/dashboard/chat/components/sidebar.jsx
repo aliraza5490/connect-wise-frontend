@@ -9,7 +9,7 @@ import {
 import { cn } from '@/lib/utils';
 import { Link } from 'react-router-dom';
 
-export function Sidebar({ users, isCollapsed, onSelect }) {
+export default function SideBar({ users, isCollapsed, onSelect }) {
   return (
     <div
       data-collapsed={isCollapsed}

@@ -4,9 +4,9 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { SendHorizontal, ThumbsUp } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { EmojiPicker } from './emoji-picker';
+import EmojiPicker from './EmojiPicker';
 
-export default function ChatBottombar({ chatID, sendMessage }) {
+export default function ChatBottomBar({ chatID, sendMessage }) {
   const [message, setMessage] = useState('');
   const inputRef = useRef(null);
 

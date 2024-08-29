@@ -4,9 +4,9 @@ import useUserStore from '@/store/userStore';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ChatBottombar from './chat-bottombar';
+import ChatBottomBar from './ChatBottomBar';
 
-export function ChatList({
+export default function ChatList({
   messages,
   selectedUser,
   mentorInfo,
@@ -134,7 +134,7 @@ export function ChatList({
         </div>
       )}
       {selectedUser && !selectedUser?.isPaused && (
-        <ChatBottombar
+        <ChatBottomBar
           chatID={selectedUser?.id}
           sendMessage={sendMessage}
           isMobile={isMobile}

@@ -10,10 +10,10 @@ import { socket } from '@/utils/socket';
 import { useCallback, useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { toast } from 'react-toastify';
-import { Chat } from './chat';
-import { Sidebar } from './sidebar';
+import Chat from './Chat';
+import Sidebar from './SideBar';
 
-export function ChatLayout({
+export default function ChatLayout({
   defaultLayout = [320, 480],
   defaultCollapsed = false,
   navCollapsedSize,
