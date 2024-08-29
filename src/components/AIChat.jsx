@@ -61,7 +61,7 @@ export function AIChat({ messages, sendMessage, isMobile }) {
                     <AvatarFallback>AI</AvatarFallback>
                   </Avatar>
                 )}
-                <span className=" bg-accent px-3 rounded-md max-w-xl">
+                <span className=" bg-accent px-3 rounded-md max-w-lg">
                   {typeof message[1] === 'string' ? (
                     <Markdown className={'markdown my-1'}>
                       {message[1]}
