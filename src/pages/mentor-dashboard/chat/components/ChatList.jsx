@@ -3,9 +3,14 @@ import { cn } from '@/lib/utils';
 import useUserStore from '@/store/userStore';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef } from 'react';
-import ChatBottombar from './chat-bottombar';
+import ChatBottomBar from './ChatBottomBar';
 
-export function ChatList({ messages, selectedUser, sendMessage, isMobile }) {
+export default function ChatList({
+  messages,
+  selectedUser,
+  sendMessage,
+  isMobile,
+}) {
   const messagesContainerRef = useRef(null);
   const user = useUserStore((state) => state.user);
 
@@ -93,7 +98,7 @@ export function ChatList({ messages, selectedUser, sendMessage, isMobile }) {
           ))}
         </AnimatePresence>
       </div>
-      <ChatBottombar
+      <ChatBottomBar
         chatID={selectedUser.id}
         sendMessage={sendMessage}
         isMobile={isMobile}

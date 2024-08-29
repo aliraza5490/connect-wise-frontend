@@ -10,10 +10,10 @@ import { socket } from '@/utils/socket';
 import { useCallback, useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { toast } from 'react-toastify';
-import { Chat } from './chat';
-import { Sidebar } from './sidebar';
+import Chat from './Chat';
+import SideBar from './SideBar';
 
-export function ChatLayout({
+export default function ChatLayout({
   defaultLayout = [320, 480],
   defaultCollapsed = false,
   navCollapsedSize,
@@ -155,7 +155,7 @@ export function ChatLayout({
             'min-w-[50px] md:min-w-[70px] transition-all duration-300 ease-in-out',
         )}
       >
-        <Sidebar
+        <SideBar
           isCollapsed={isCollapsed || isMobile}
           users={history.map((chat) => ({
             id: chat._id,

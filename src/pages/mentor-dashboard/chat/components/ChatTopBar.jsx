@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 
 // const TopbarIcons = [{ icon: Phone }, { icon: Video }, { icon: Info }];
 
-export default function ChatTopbar({ selectedUser, sendMessage }) {
+export default function ChatTopBar({ selectedUser, sendMessage }) {
   const [isLoading, setIsLoading] = useState(false);
 
   const createMeeting = async () => {

@@ -1,10 +1,15 @@
-import { ChatList } from './chat-list';
-import ChatTopbar from './chat-topbar';
+import ChatList from './ChatList';
+import ChatTopBar from './ChatTopBar';
 
-export function Chat({ messages, sendMessage, selectedUser, isMobile }) {
+export default function Chat({
+  messages,
+  sendMessage,
+  selectedUser,
+  isMobile,
+}) {
   return (
     <div className="flex flex-col justify-between w-full h-full">
-      <ChatTopbar selectedUser={selectedUser} sendMessage={sendMessage} />
+      <ChatTopBar selectedUser={selectedUser} sendMessage={sendMessage} />
 
       <ChatList
         messages={messages}
