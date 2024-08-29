@@ -421,10 +421,10 @@ export default function Landing() {
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <h2 className="text-xl flex items-center justify-center font-bold tracking-tighter">
               <MagnetIcon className="h-8 w-8" />
-              Connect Wise
+              ConnectWise
             </h2>
             <div className="text-gray-500 dark:text-gray-400">
-              &copy; 2024 Connect Wise. All rights reserved.
+              &copy; 2024 ConnectWise. All rights reserved.
             </div>
           </div>
         </div>

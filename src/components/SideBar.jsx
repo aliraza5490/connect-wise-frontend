@@ -51,7 +51,7 @@ export default function Sidebar({
             <Link className="flex items-center" to="/">
               <MagnetIcon className="h-6 w-6" />
               {!isCollapsed && (
-                <span className="ml-2 text-xl font-bold">Connect Wise</span>
+                <span className="ml-2 text-xl font-bold">ConnectWise</span>
               )}
             </Link>
           </div>

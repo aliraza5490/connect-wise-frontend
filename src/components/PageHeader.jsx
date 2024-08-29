@@ -19,7 +19,7 @@ function PageHeader() {
         }
       >
         <MagnetIcon className="h-6 w-6" />
-        <span className="ml-2 text-xl font-bold">Connect Wise</span>
+        <span className="ml-2 text-xl font-bold">ConnectWise</span>
       </Link>
       <nav className="hidden lg:flex gap-4 sm:gap-6">
         <Link
