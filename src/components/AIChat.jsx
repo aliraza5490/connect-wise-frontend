@@ -53,7 +53,7 @@ export function AIChat({ messages, sendMessage, isMobile }) {
                 {message[0] !== 'human' && (
                   <Avatar className="flex justify-center items-center">
                     <AvatarImage
-                      src={''}
+                      src={'/assets/images/robot.svg'}
                       alt={'AI Assistant'}
                       width={6}
                       height={6}
