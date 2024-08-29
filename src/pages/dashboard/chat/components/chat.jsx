@@ -17,7 +17,11 @@ export function Chat({ messages, sendMessage, selectedUser, isMobile }) {
 
   return (
     <div className="flex flex-col justify-between w-full h-full">
-      <ChatTopbar mentorInfo={mentorInfo} selectedUser={selectedUser} />
+      <ChatTopbar
+        mentorInfo={mentorInfo}
+        selectedUser={selectedUser}
+        sendMessage={sendMessage}
+      />
 
       <ChatList
         messages={messages}

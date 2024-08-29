@@ -1,19 +1,44 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import api from '@/utils/api';
 import { Info, Video } from 'lucide-react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 // const TopbarIcons = [{ icon: Phone }, { icon: Video }, { icon: Info }];
 
-export default function ChatTopbar({ selectedUser, mentorInfo }) {
+export default function ChatTopbar({ selectedUser, mentorInfo, sendMessage }) {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleProfileView = (mentor) => {
     console.log('View Profile:', mentor);
     navigate(`/profile`, {
       state: { mentor },
     });
+  };
+
+  const createMeeting = async () => {
+    if (isLoading) return;
+    setIsLoading(true);
+
+    try {
+      const { data } = await api.post('/meeting/create', {
+        chatID: selectedUser.id,
+      });
+
+      sendMessage({
+        chatID: selectedUser.id,
+        message: `Meeting link: ${data.url}`,
+      });
+
+      window.open(data.url, '_blank').focus();
+    } catch (error) {
+      console.log('Error creating meeting:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -51,13 +76,12 @@ export default function ChatTopbar({ selectedUser, mentorInfo }) {
 
           <div className="flex row gap-1">
             <Link
-              to={'https://meet.google.com/new'}
-              target="_blank"
               className={cn(
                 buttonVariants({ variant: 'ghost', size: 'icon' }),
                 'h-9 w-9',
                 'dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white',
               )}
+              onClick={createMeeting}
             >
               <Video size={20} className="text-muted-foreground" />
             </Link>

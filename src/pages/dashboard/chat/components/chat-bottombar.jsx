@@ -6,7 +6,7 @@ import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { EmojiPicker } from './emoji-picker';
 
-export default function ChatBottombar({ chatID, sendMessage, isMobile }) {
+export default function ChatBottombar({ chatID, sendMessage }) {
   const [message, setMessage] = useState('');
   const inputRef = useRef(null);
 
