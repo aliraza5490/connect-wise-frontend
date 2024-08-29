@@ -3,7 +3,8 @@ import { Layout } from '@/components/custom/layout';
 import { Skeleton } from '@/components/ui/skeleton';
 import { UserNav } from '@/components/UserNav';
 import api from '@/utils/api';
-import { useCallback, useState } from 'react';
+import { parse, stringify } from 'flatted';
+import { useCallback, useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 
 const LoadingMessage = () => (
@@ -14,7 +15,11 @@ const LoadingMessage = () => (
 );
 
 export default function Assistant() {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState(
+    sessionStorage.getItem('messages')
+      ? parse(sessionStorage.getItem('messages'))
+      : [],
+  );
   const [isLoading, setIsLoading] = useState(true);
 
   useQuery(
@@ -62,6 +67,13 @@ export default function Assistant() {
     },
     [isLoading, messages],
   );
+
+  useEffect(() => {
+    //persist messages in session storage
+    if (typeof messages === 'object' && messages?.length > 0) {
+      sessionStorage.setItem('messages', stringify(messages));
+    }
+  }, [messages]);
 
   return (
     <Layout>
