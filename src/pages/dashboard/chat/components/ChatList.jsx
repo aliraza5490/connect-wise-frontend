@@ -78,7 +78,7 @@ export default function ChatList({
                 message.by === user._id ? 'items-end' : 'items-start',
               )}
             >
-              <div className="flex gap-3 items-center">
+              <div className="flex gap-3 items-start">
                 {message.by !== user._id && (
                   <Avatar className="flex justify-center items-center">
                     <AvatarImage
