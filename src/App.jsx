@@ -42,18 +42,26 @@ function App() {
             clearInterval(interval);
             updateStatus(true);
           }
-        }, 5000);
+        }, 3000);
         console.log('disconnected');
       }
     });
+
     socket.on('connected', () => {
       updateStatus(true);
       console.log('connected');
     });
+
     socket.on('reconnect', () => {
       updateStatus(true);
       console.log('reconnected');
     });
+
+    return () => {
+      socket.off('disconnect');
+      socket.off('connected');
+      socket.off('reconnect');
+    };
   }, [updateStatus]);
 
   return (
