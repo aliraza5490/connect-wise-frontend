@@ -38,6 +38,7 @@ const useUserStore = create((set, get) => ({
   },
   logOut: () => {
     set({ user: null });
+    socket.disconnect();
     removeTokenCookie();
   },
   refresh: async (signal) => {
