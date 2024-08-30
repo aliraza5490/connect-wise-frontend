@@ -9,14 +9,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import useStatusStore from '@/store/statusStore';
 import useUserStore from '@/store/userStore';
-import { socket } from '@/utils/socket';
 import { Link, useNavigate } from 'react-router-dom';
 
 export function UserNav() {
   const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
   const logOut = useUserStore((state) => state.logOut);
+  const userStatus = useStatusStore((state) => state.status);
 
   const handleLogOut = () => {
     logOut();
@@ -48,7 +49,7 @@ export function UserNav() {
             </Avatar>
             <div
               className={`absolute top-0 left-[1.6rem] w-3 h-3 rounded-full border border-white ${
-                socket.connected ? 'bg-green-500' : 'bg-slate-600'
+                userStatus === 'online' ? 'bg-green-500' : 'bg-slate-600'
               }`}
             ></div>
           </Button>
