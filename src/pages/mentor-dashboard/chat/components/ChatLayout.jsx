@@ -46,6 +46,16 @@ export default function ChatLayout({
         });
       } else {
         setHistory(data);
+        const updatedSelectedUser = data.find(
+          (chat) => chat._id === selectedUser.id,
+        );
+        setSelectedUser((prev) => {
+          return {
+            ...prev,
+            isOnline: updatedSelectedUser.status === 'online',
+            isPaused: updatedSelectedUser.isPaused,
+          };
+        });
       }
     }
   }, [data, selectedUser]);
