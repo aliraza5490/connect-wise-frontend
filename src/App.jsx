@@ -7,8 +7,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import LoadingIcon from './components/LoaderIcon';
 import router from './router';
 import useUserStore from './store/userStore';
-import { getTokenCookie } from './utils/helpers';
-import { socket } from './utils/socket';
 
 // Create a client
 const queryClient = new QueryClient();
@@ -16,7 +14,6 @@ const queryClient = new QueryClient();
 function App() {
   const user = useUserStore((state) => state?.user);
   const refresh = useUserStore((state) => state?.refresh);
-  const updateStatus = useUserStore((state) => state?.updateStatus);
 
   useEffect(() => {
     let ctrl;
@@ -30,39 +27,6 @@ function App() {
       }
     };
   }, [user, refresh]);
-
-  useEffect(() => {
-    socket.on('disconnect', () => {
-      updateStatus(false);
-      if (getTokenCookie()) {
-        const interval = setInterval(() => {
-          socket.auth.token = getTokenCookie();
-          socket.connect();
-          if (socket.connected) {
-            clearInterval(interval);
-            updateStatus(true);
-          }
-        }, 3000);
-        console.log('disconnected');
-      }
-    });
-
-    socket.on('connected', () => {
-      updateStatus(true);
-      console.log('connected');
-    });
-
-    socket.on('reconnect', () => {
-      updateStatus(true);
-      console.log('reconnected');
-    });
-
-    return () => {
-      socket.off('disconnect');
-      socket.off('connected');
-      socket.off('reconnect');
-    };
-  }, [updateStatus]);
 
   return (
     <>

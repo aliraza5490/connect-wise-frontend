@@ -11,7 +11,6 @@ import { create } from 'zustand';
 const useUserStore = create((set, get) => ({
   user: null,
   isLoading: false,
-  isOnline: false,
   login: async (token, signal) => {
     try {
       setTokenCookie(token);
@@ -19,26 +18,13 @@ const useUserStore = create((set, get) => ({
         signal: signal,
       });
       if (!data) {
-        set({ user: null, isOnline: false });
+        set({ user: null });
       }
       set({ user: data });
-      if (socket.disconnected) {
-        socket.auth.token = token;
-        socket.connect();
-      }
-      setTimeout(() => {
-        // recheck if socket is connected
-        if (socket.connected) {
-          console.log('emit join', data._id);
-          socket.emit('join', data._id, (res) => {
-            console.log(res);
-            if (res.status === 'ok') {
-              set({ isOnline: true });
-            }
-          });
-          console.log('connected');
-        }
-      }, 1000);
+
+      // Connect to the socket server with new token
+      socket.auth.token = token;
+      socket.connect();
     } catch (err) {
       console.error(err);
       if (
@@ -69,25 +55,6 @@ const useUserStore = create((set, get) => ({
     } finally {
       set({ isLoading: false });
     }
-  },
-  updateStatus: (status) => {
-    if (status && socket.connected) {
-      const data = get().user;
-      setTimeout(() => {
-        console.log('emit join', data._id);
-        socket.emit('join', data._id, (res) => {
-          console.log(res);
-          if (res.status === 'ok') {
-            set({ isOnline: true });
-          }
-        });
-      }, 1000);
-      console.log('connected');
-    }
-    set((state) => {
-      state.isOnline = status;
-      console.log('status update:', status);
-    });
   },
 }));
 
