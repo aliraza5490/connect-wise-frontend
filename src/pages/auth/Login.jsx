@@ -1,3 +1,4 @@
+import PageTransition from '@/components/PageTransition';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -54,7 +55,7 @@ export default function Login() {
   };
 
   return (
-    <div className="mx-auto max-w-md space-y-6">
+    <PageTransition className="mx-auto max-w-md space-y-6">
       <div className="space-y-2 text-center">
         <h1 className="text-3xl font-bold">Sign In</h1>
         <p className="text-gray-500 dark:text-gray-400">
@@ -89,7 +90,9 @@ export default function Login() {
                 type="password"
                 placeholder="Enter your password"
                 required
-                {...register('password', { required: 'Password is required' })}
+                {...register('password', {
+                  required: 'Password is required',
+                })}
               />
               {errors?.password && (
                 <p className="text-red-500 dark:text-red-400">
@@ -111,6 +114,6 @@ export default function Login() {
           </form>
         </div>
       </div>
-    </div>
+    </PageTransition>
   );
 }

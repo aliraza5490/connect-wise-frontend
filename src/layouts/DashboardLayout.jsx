@@ -2,6 +2,7 @@ import Sidebar from '@/components/SideBar';
 import mentorSideLinks from '@/data/mentorSideLinks';
 import sideLinks from '@/data/sideLinks';
 import useIsCollapsed from '@/hooks/use-is-collapsed';
+import { AnimatePresence } from 'framer-motion';
 import { Outlet } from 'react-router-dom';
 
 export default function DashboardLayout({ forMentor = false }) {
@@ -19,7 +20,9 @@ export default function DashboardLayout({ forMentor = false }) {
           isCollapsed ? 'md:ml-14' : 'md:ml-64'
         } h-full`}
       >
-        <Outlet />
+        <AnimatePresence mode="wait">
+          <Outlet />
+        </AnimatePresence>
       </main>
     </div>
   );

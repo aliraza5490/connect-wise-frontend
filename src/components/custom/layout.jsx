@@ -7,6 +7,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import PageTransition from '../PageTransition';
 
 const LayoutContext = createContext(null);
 
@@ -75,7 +76,7 @@ const Body = forwardRef(({ className, ...props }, ref) => {
   }
 
   return (
-    <div
+    <PageTransition
       ref={ref}
       data-layout="body"
       className={cn(

@@ -1,4 +1,5 @@
 import PageHeader from '@/components/PageHeader';
+import { AnimatePresence } from 'framer-motion';
 import { Outlet } from 'react-router-dom';
 
 export default function AuthLayout() {
@@ -6,7 +7,9 @@ export default function AuthLayout() {
     <>
       <PageHeader />
       <main className="my-10">
-        <Outlet />
+        <AnimatePresence mode="wait">
+          <Outlet />
+        </AnimatePresence>
       </main>
     </>
   );
