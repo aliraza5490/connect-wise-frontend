@@ -23,7 +23,7 @@ import useUserStore from '@/store/userStore';
 import api from '@/utils/api';
 import { paginationNumbers, truncateText } from '@/utils/helpers';
 import { MagnetIcon } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useQuery } from 'react-query';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
@@ -34,6 +34,7 @@ export default function Landing() {
   const user = useUserStore((state) => state.user);
   const [featuredPage, setFeaturedPage] = useState(1);
   const [browsePage, setBrowsePage] = useState(1);
+  const featuredContainer = useRef(null);
 
   const { isLoading: featuredIsLoading, data: featuredMentors = [] } = useQuery(
     {
@@ -127,7 +128,10 @@ export default function Landing() {
             />
           </div>
         </section>
-        <section className="w-full py-12 md:py-20 bg-gray-100 dark:bg-gray-800">
+        <section
+          className="w-full py-12 md:py-20 bg-gray-100 dark:bg-gray-800"
+          ref={featuredContainer}
+        >
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
@@ -205,7 +209,13 @@ export default function Landing() {
                     <PaginationPrevious
                       className={'hover:bg-gray-900'}
                       href="#"
-                      onClick={() => setFeaturedPage((prev) => prev - 1)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        featuredContainer.current.scrollIntoView({
+                          behavior: 'smooth',
+                        });
+                        setFeaturedPage((prev) => prev - 1);
+                      }}
                     />
                   </PaginationItem>
                 )}
@@ -226,7 +236,13 @@ export default function Landing() {
                               : 'hover:bg-gray-900'
                           }
                           href="#"
-                          onClick={() => setFeaturedPage(page)}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            featuredContainer.current.scrollIntoView({
+                              behavior: 'smooth',
+                            });
+                            setFeaturedPage(page);
+                          }}
                         >
                           {page}
                         </PaginationLink>
@@ -239,7 +255,13 @@ export default function Landing() {
                     <PaginationNext
                       className={'hover:bg-gray-900'}
                       href="#"
-                      onClick={() => setFeaturedPage((prev) => prev + 1)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        featuredContainer.current.scrollIntoView({
+                          behavior: 'smooth',
+                        });
+                        setFeaturedPage((prev) => prev + 1);
+                      }}
                     />
                   </PaginationItem>
                 )}
@@ -335,7 +357,15 @@ export default function Landing() {
                     <PaginationPrevious
                       className={'hover:bg-gray-900'}
                       href="#"
-                      onClick={() => setBrowsePage((prev) => prev - 1)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        document
+                          .getElementById('browse-mentors')
+                          .scrollIntoView({
+                            behavior: 'smooth',
+                          });
+                        setBrowsePage((prev) => prev - 1);
+                      }}
                     />
                   </PaginationItem>
                 )}
@@ -354,7 +384,15 @@ export default function Landing() {
                                 : 'hover:bg-gray-900'
                             }
                             href="#"
-                            onClick={() => setBrowsePage(page)}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              document
+                                .getElementById('browse-mentors')
+                                .scrollIntoView({
+                                  behavior: 'smooth',
+                                });
+                              setBrowsePage(page);
+                            }}
                           >
                             {page}
                           </PaginationLink>
@@ -368,7 +406,15 @@ export default function Landing() {
                     <PaginationNext
                       className={'hover:bg-gray-900'}
                       href="#"
-                      onClick={() => setBrowsePage((prev) => prev + 1)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        document
+                          .getElementById('browse-mentors')
+                          .scrollIntoView({
+                            behavior: 'smooth',
+                          });
+                        setBrowsePage((prev) => prev + 1);
+                      }}
                     />
                   </PaginationItem>
                 )}
