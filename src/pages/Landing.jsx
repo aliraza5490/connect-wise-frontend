@@ -185,12 +185,14 @@ export default function Landing() {
                   </CardContent>
                   <CardFooter>
                     <div className="w-full flex items-center justify-between">
-                      <button
-                        className="bg-none text-white border-none"
+                      <a
+                        className="inline-block bg-none text-white border-none cursor-pointer"
                         onClick={() => handleProfileView(mentor)}
                       >
-                        <Button>View Profile</Button>
-                      </button>
+                        <Button asChild={true}>
+                          <span>View Profile</span>
+                        </Button>
+                      </a>
                       {/* Price /month */}
                       <span className="text-gray-500 dark:text-gray-400">
                         ${mentor.pricePerMonth}/month
@@ -337,7 +339,9 @@ export default function Landing() {
                         className="bg-none text-white border-none"
                         onClick={() => handleProfileView(mentor)}
                       >
-                        <Button>View Profile</Button>
+                        <Button asChild={true}>
+                          <span>View Profile</span>
+                        </Button>
                       </button>
                       {/* Price /month */}
                       <span className="text-gray-500 dark:text-gray-400">
