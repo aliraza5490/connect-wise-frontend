@@ -27,6 +27,17 @@ export default function ChatLayout({
     queryKey: ['chat', 'history'],
     queryFn: async () => {
       const { data } = await api.get(`/chat/history`);
+      setHistory(data);
+      const updatedSelectedUser = data.find(
+        (chat) => chat._id === selectedUser.id,
+      );
+      setSelectedUser((prev) => {
+        return {
+          ...prev,
+          isOnline: updatedSelectedUser.status === 'online',
+          isPaused: updatedSelectedUser.isPaused,
+        };
+      });
       return data;
     },
   });
@@ -45,21 +56,9 @@ export default function ChatLayout({
           isOnline: chat.status === 'online',
           isPaused: chat.isPaused,
         });
-      } else {
-        setHistory(data);
-        const updatedSelectedUser = data.find(
-          (chat) => chat._id === selectedUser.id,
-        );
-        setSelectedUser((prev) => {
-          return {
-            ...prev,
-            isOnline: updatedSelectedUser.status === 'online',
-            isPaused: updatedSelectedUser.isPaused,
-          };
-        });
       }
     }
-  }, [data]);
+  }, [data, selectedUser]);
 
   const addNewMessage = useCallback(async (data, chatID) => {
     setHistory((prev) => {
@@ -95,7 +94,7 @@ export default function ChatLayout({
     return () => {
       socket.off('newMessage');
     };
-  }, []);
+  }, [addNewMessage]);
 
   const handleSelectUser = (user) => {
     setSelectedUser(user);

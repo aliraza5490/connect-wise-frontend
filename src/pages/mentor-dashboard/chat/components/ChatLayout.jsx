@@ -27,37 +27,37 @@ export default function ChatLayout({
     queryKey: ['chat', 'history'],
     queryFn: async () => {
       const { data } = await api.get(`/chat/history`);
+      setHistory(data);
+
+      const updatedSelectedUser = data.find(
+        (chat) => chat._id === selectedUser.id,
+      );
+
+      setSelectedUser((prev) => {
+        return {
+          ...prev,
+          isOnline: updatedSelectedUser.status === 'online',
+          isPaused: updatedSelectedUser.isPaused,
+        };
+      });
+
       return data;
     },
   });
 
   useEffect(() => {
-    if (data?.length > 0) {
-      if (!selectedUser) {
-        const chat = data[0];
-        setSelectedUser({
-          id: chat._id,
-          name: chat.user.firstName + ' ' + chat.user.lastName,
-          messages: chat.messages ?? [],
-          avatar: chat.user.avatar,
-          variant: 'ghost',
-          isOnline: chat.status === 'online',
-        });
-      } else {
-        setHistory(data);
-        const updatedSelectedUser = data.find(
-          (chat) => chat._id === selectedUser.id,
-        );
-        setSelectedUser((prev) => {
-          return {
-            ...prev,
-            isOnline: updatedSelectedUser.status === 'online',
-            isPaused: updatedSelectedUser.isPaused,
-          };
-        });
-      }
+    if (data?.length > 0 && !selectedUser) {
+      const chat = data[0];
+      setSelectedUser({
+        id: chat._id,
+        name: chat.user.firstName + ' ' + chat.user.lastName,
+        messages: chat.messages ?? [],
+        avatar: chat.user.avatar,
+        variant: 'ghost',
+        isOnline: chat.status === 'online',
+      });
     }
-  }, [data]);
+  }, [data, selectedUser]);
 
   const addNewMessage = useCallback(async (data, chatID) => {
     setHistory((prev) => {
@@ -171,7 +171,7 @@ export default function ChatLayout({
             name: chat.user.firstName + ' ' + chat.user.lastName,
             messages: chat.messages ?? [],
             avatar: chat.user.avatar,
-            variant: selectedUser.id === chat._id ? 'grey' : 'ghost',
+            variant: selectedUser?.id === chat._id ? 'grey' : 'ghost',
             isOnline: chat.status === 'online',
           }))}
           isMobile={isMobile}
@@ -184,7 +184,7 @@ export default function ChatLayout({
           messages={
             history?.find((chat) => {
               if (selectedUser) {
-                return chat._id === selectedUser.id;
+                return chat._id === selectedUser?.id;
               }
             })?.messages || []
           }
