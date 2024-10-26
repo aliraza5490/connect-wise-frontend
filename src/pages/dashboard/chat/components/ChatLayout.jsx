@@ -43,20 +43,18 @@ export default function ChatLayout({
   });
 
   useEffect(() => {
-    if (data?.length > 0) {
-      if (!selectedUser) {
-        const chat = data[0];
-        setSelectedUser({
-          id: chat._id,
-          name: chat.mentor.firstName + ' ' + chat.mentor.lastName,
-          messages: chat.messages ?? [],
-          avatar: chat.mentor.avatar,
-          mentorID: chat.mentor._id,
-          variant: selectedUser?.id === chat._id ? 'grey' : 'ghost',
-          isOnline: chat.status === 'online',
-          isPaused: chat.isPaused,
-        });
-      }
+    if (data?.length > 0 && !selectedUser) {
+      const chat = data[0];
+      setSelectedUser({
+        id: chat._id,
+        name: chat.mentor.firstName + ' ' + chat.mentor.lastName,
+        messages: chat.messages ?? [],
+        avatar: chat.mentor.avatar,
+        mentorID: chat.mentor._id,
+        variant: selectedUser?.id === chat._id ? 'grey' : 'ghost',
+        isOnline: chat.status === 'online',
+        isPaused: chat.isPaused,
+      });
     }
   }, [data, selectedUser]);
 
@@ -170,7 +168,7 @@ export default function ChatLayout({
             messages: chat.messages ?? [],
             avatar: chat.mentor.avatar,
             mentorID: chat.mentor._id,
-            variant: selectedUser.id === chat._id ? 'grey' : 'ghost',
+            variant: selectedUser?.id === chat._id ? 'grey' : 'ghost',
             isOnline: chat.status === 'online',
             isPaused: chat.isPaused,
           }))}
@@ -184,7 +182,7 @@ export default function ChatLayout({
           messages={
             history?.find((chat) => {
               if (selectedUser) {
-                return chat._id === selectedUser.id;
+                return chat._id === selectedUser?.id;
               }
             })?.messages || []
           }
