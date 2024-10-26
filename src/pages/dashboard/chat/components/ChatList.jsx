@@ -34,7 +34,7 @@ export default function ChatList({
       messagesContainerRef.current.scrollTop =
         messagesContainerRef.current.scrollHeight;
     }
-  }, []);
+  });
 
   if (!selectedUser) {
     return (
