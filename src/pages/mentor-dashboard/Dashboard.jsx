@@ -23,8 +23,6 @@ export default function Dashboard() {
     },
   });
 
-  console.log(data);
-
   return (
     <Layout>
       {/* ===== Top Heading ===== */}

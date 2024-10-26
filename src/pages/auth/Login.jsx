@@ -33,7 +33,6 @@ export default function Login() {
   const onValid = async (data) => {
     if (isLoading) return;
     setIsLoading(true);
-    console.log(data);
     try {
       const { data: res } = await api.post('/auth/login', data);
       await login(res.token);

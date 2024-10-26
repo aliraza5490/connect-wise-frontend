@@ -44,14 +44,12 @@ export default function Search() {
     event.preventDefault();
     const formData = new FormData(event.target);
     const searchQuery = formData.get('search');
-    console.log('Search Query:', searchQuery);
     navigate(`/search`, {
       state: { searchQuery },
     });
   };
 
   const handleProfileView = (mentor) => {
-    console.log('View Profile:', mentor);
     navigate(`/profile`, {
       state: { mentor },
     });

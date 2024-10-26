@@ -76,7 +76,6 @@ export default function BecomeMentor() {
 
   const onValid = async (data) => {
     if (isLoading) return;
-    console.log(data);
     if (!isAvailable) {
       toast.error(
         'You must be available for mentorship at least 2 hours per week.',
@@ -85,7 +84,6 @@ export default function BecomeMentor() {
     }
     setIsLoading(true);
     try {
-      console.log(data);
       logOut();
       const payload = { ...data };
       delete payload.availability;
@@ -366,7 +364,6 @@ export default function BecomeMentor() {
                 className="mx-2"
                 type="checkbox"
                 onChange={() => {
-                  console.log('here');
                   setIsAvailable((prev) => !prev);
                 }}
               />

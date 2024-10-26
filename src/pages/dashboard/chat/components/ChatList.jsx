@@ -18,14 +18,12 @@ export default function ChatList({
   const navigate = useNavigate();
 
   const handleProfileView = (mentor) => {
-    console.log('View Profile:', mentor);
     navigate(`/profile`, {
       state: { mentor },
     });
   };
 
   const handleReview = (mentor) => {
-    console.log('Add Review:', mentor);
     navigate(`/review`, {
       state: { mentor: { ...mentor, chatID: selectedUser.id } },
     });

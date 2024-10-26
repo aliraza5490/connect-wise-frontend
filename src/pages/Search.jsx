@@ -80,7 +80,6 @@ export default function About() {
   };
 
   const handleProfileView = (mentor) => {
-    console.log('View Profile:', mentor);
     navigate(`/profile`, {
       state: { mentor },
     });

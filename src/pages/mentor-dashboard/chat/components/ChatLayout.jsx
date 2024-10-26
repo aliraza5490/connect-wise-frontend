@@ -32,7 +32,6 @@ export default function ChatLayout({
   });
 
   useEffect(() => {
-    console.log('chat history: \n', data);
     if (data?.length > 0) {
       if (!selectedUser) {
         const chat = data[0];
@@ -69,7 +68,6 @@ export default function ChatLayout({
     });
     setTimeout(() => {
       const messageContainer = document.getElementById('messages-container');
-      console.log('message container: \n', messageContainer);
       if (messageContainer) {
         messageContainer.scrollTop = messageContainer.scrollHeight;
       }
@@ -87,10 +85,8 @@ export default function ChatLayout({
   };
 
   useEffect(() => {
-    socket.id && console.log('socket id: \n', socket.id);
     if (!socket.listeners('newMessageMentor')?.length > 0) {
       socket.on('newMessageMentor', (messageDetails) => {
-        console.log('new message Mentor: \n', messageDetails);
         addNewMessage(messageDetails, messageDetails.chatID);
       });
     }

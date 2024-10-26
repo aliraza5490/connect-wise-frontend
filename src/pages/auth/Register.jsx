@@ -58,7 +58,6 @@ export default function Register() {
   const onValid = async (data) => {
     if (isLoading) return;
     setIsLoading(true);
-    console.log(data);
     try {
       logOut();
       const formData = new FormData(formElement.current);

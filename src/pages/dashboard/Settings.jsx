@@ -31,7 +31,6 @@ export default function Settings() {
   const submitHandler = async (data) => {
     if (isLoading) return;
     setIsLoading(true);
-    console.log(data);
     try {
       await api.post('/settings/update', data);
       toast.success('Password updated successfully');

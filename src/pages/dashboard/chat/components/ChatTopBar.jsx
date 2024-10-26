@@ -13,7 +13,6 @@ export default function ChatTopBar({ selectedUser, mentorInfo, sendMessage }) {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleProfileView = (mentor) => {
-    console.log('View Profile:', mentor);
     navigate(`/profile`, {
       state: { mentor },
     });
