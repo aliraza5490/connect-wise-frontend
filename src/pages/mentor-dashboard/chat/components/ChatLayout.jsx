@@ -57,7 +57,7 @@ export default function ChatLayout({
         });
       }
     }
-  }, [data, selectedUser]);
+  }, [data]);
 
   const addNewMessage = useCallback(async (data, chatID) => {
     setHistory((prev) => {
@@ -74,15 +74,18 @@ export default function ChatLayout({
     }, 1000);
   }, []);
 
-  const sendMessage = async (newMessage) => {
-    try {
-      const { data } = await api.post('/chat/message', newMessage);
-      addNewMessage(data, newMessage.chatID);
-    } catch (error) {
-      console.error(error);
-      toast.error('Failed to send message');
-    }
-  };
+  const sendMessage = useCallback(
+    async (newMessage) => {
+      try {
+        const { data } = await api.post('/chat/message', newMessage);
+        addNewMessage(data, newMessage.chatID);
+      } catch (error) {
+        console.error(error);
+        toast.error('Failed to send message');
+      }
+    },
+    [addNewMessage],
+  );
 
   useEffect(() => {
     if (!socket.listeners('newMessageMentor')?.length > 0) {
@@ -93,7 +96,7 @@ export default function ChatLayout({
     return () => {
       socket.off('newMessageMentor');
     };
-  }, []);
+  }, [addNewMessage]);
 
   const handleSelectUser = (user) => {
     setSelectedUser(user);

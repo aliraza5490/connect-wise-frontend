@@ -59,7 +59,7 @@ export default function ChatLayout({
         });
       }
     }
-  }, [data, selectedUser]);
+  }, [data]);
 
   const addNewMessage = useCallback(async (data, chatID) => {
     setHistory((prev) => {
