@@ -8,7 +8,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import * as React from 'react';
 
 import {
   Table,
@@ -21,12 +20,13 @@ import {
 
 import { DataTablePagination } from './DataTablePagination';
 import { DataTableToolbar } from './DataTableToolbar';
+import { useState } from 'react';
 
 export function DataTable({ columns, data }) {
-  const [rowSelection, setRowSelection] = React.useState({});
-  const [columnVisibility, setColumnVisibility] = React.useState({});
-  const [columnFilters, setColumnFilters] = React.useState([]);
-  const [sorting, setSorting] = React.useState([]);
+  const [rowSelection, setRowSelection] = useState({});
+  const [columnVisibility, setColumnVisibility] = useState({});
+  const [columnFilters, setColumnFilters] = useState([]);
+  const [sorting, setSorting] = useState([]);
 
   const table = useReactTable({
     data,

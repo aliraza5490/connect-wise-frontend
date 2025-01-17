@@ -1,18 +1,11 @@
 import { AIChat } from '@/components/AIChat';
 import { Layout } from '@/components/custom/Layout';
-import { Skeleton } from '@/components/ui/skeleton';
+import LoadingMessage from '@/components/LoadingMessage';
 import { UserNav } from '@/components/UserNav';
 import api from '@/utils/api';
 import { parse, stringify } from 'flatted';
 import { useCallback, useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
-
-const LoadingMessage = () => (
-  <div className="flex flex-col items-center gap-2">
-    <Skeleton className="w-72 h-4 bg-[#020817]" />
-    <Skeleton className="w-72 h-4 bg-[#020817]" />
-  </div>
-);
 
 export default function Assistant() {
   const [messages, setMessages] = useState(
@@ -70,7 +63,7 @@ export default function Assistant() {
 
   useEffect(() => {
     //persist messages in session storage
-    if (typeof messages === 'object' && messages?.length > 0) {
+    if (Array.isArray(messages) && messages?.length > 0) {
       sessionStorage.setItem('messages', stringify(messages));
     }
   }, [messages]);
