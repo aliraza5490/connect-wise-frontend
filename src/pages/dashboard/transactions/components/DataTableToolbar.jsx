@@ -1,6 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
-import { DataTableViewOptions } from './data-table-view-options';
+import { DataTableViewOptions } from './DataTableViewOptions';
 
 export function DataTableToolbar({ table }) {
   const [search, setSearch] = useState('');
@@ -9,7 +9,7 @@ export function DataTableToolbar({ table }) {
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
         <Input
-          placeholder="Filter tasks..."
+          placeholder="Search..."
           value={search}
           onChange={(event) => {
             setSearch(event.target.value);

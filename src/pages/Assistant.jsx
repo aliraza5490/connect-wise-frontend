@@ -1,5 +1,5 @@
 import { AIChat } from '@/components/AIChat';
-import { Layout } from '@/components/custom/layout';
+import { Layout } from '@/components/custom/Layout';
 import { Skeleton } from '@/components/ui/skeleton';
 import { UserNav } from '@/components/UserNav';
 import api from '@/utils/api';

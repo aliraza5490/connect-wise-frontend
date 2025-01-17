@@ -1,7 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 
 import { labels } from '../data/data';
-import { DataTableColumnHeader } from './data-table-column-header';
+import { DataTableColumnHeader } from './DataTableColumnHeader';
 
 export const columns = [
   {

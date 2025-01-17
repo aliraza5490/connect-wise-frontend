@@ -1,4 +1,4 @@
-import { Button } from '@/components/custom/button';
+import { Button } from '@/components/custom/Button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,

@@ -1,4 +1,4 @@
-import { Layout } from '@/components/custom/layout';
+import { Layout } from '@/components/custom/Layout';
 import { UserNav } from '@/components/UserNav';
 import Cookies from 'js-cookie';
 import ChatLayout from './components/ChatLayout';

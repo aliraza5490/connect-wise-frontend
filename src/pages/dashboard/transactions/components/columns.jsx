@@ -1,4 +1,4 @@
-import { DataTableColumnHeader } from './data-table-column-header';
+import { DataTableColumnHeader } from './DataTableColumnHeader';
 
 export const columns = [
   {

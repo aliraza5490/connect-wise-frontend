@@ -1,4 +1,4 @@
-import { Button } from '@/components/custom/button';
+import { Button } from '@/components/custom/Button';
 import PageHeader from '@/components/PageHeader';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';

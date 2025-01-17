@@ -2,8 +2,8 @@ import { cn } from '@/lib/utils';
 import { IconChevronsLeft, IconMenu2, IconX } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from './custom/button';
-import { Layout } from './custom/layout';
+import { Button } from './custom/Button';
+import { Layout } from './custom/Layout';
 import MagnetIcon from './MagnetIcon';
 import Nav from './Nav';
 

@@ -1,9 +1,9 @@
-import useCheckActiveNav from '@/hooks/use-check-active-nav';
+import useCheckActiveNav from '@/hooks/useCheckActiveNav';
 import { cn } from '@/lib/utils';
 import useUserStore from '@/store/userStore';
 import { IconChevronDown, IconRobot } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
-import { Button, buttonVariants } from './custom/button';
+import { Button, buttonVariants } from './custom/Button';
 import {
   Collapsible,
   CollapsibleContent,

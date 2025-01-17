@@ -1,5 +1,5 @@
-import { Button } from '@/components/custom/button';
-import { Layout } from '@/components/custom/layout';
+import { Button } from '@/components/custom/Button';
+import { Layout } from '@/components/custom/Layout';
 import { Input } from '@/components/ui/input';
 import { UserNav } from '@/components/UserNav';
 import useUserStore from '@/store/userStore';

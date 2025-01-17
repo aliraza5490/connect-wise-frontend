@@ -1,4 +1,4 @@
-import { Button } from '@/components/custom/button';
+import { Button } from '@/components/custom/Button';
 
 export default function MaintenanceError() {
   return (

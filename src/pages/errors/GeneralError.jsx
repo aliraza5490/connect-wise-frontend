@@ -1,4 +1,4 @@
-import { Button } from '@/components/custom/button';
+import { Button } from '@/components/custom/Button';
 import { cn } from '@/lib/utils';
 import { useNavigate } from 'react-router-dom';
 

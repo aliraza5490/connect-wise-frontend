@@ -1,11 +1,11 @@
-import { Layout } from '@/components/custom/layout';
+import { Layout } from '@/components/custom/Layout';
 import LoadingIcon from '@/components/LoaderIcon';
 import { UserNav } from '@/components/UserNav';
 import api from '@/utils/api';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { columns } from './components/columns';
-import { DataTable } from './components/data-table';
+import { DataTable } from './components/DataTable';
 
 export default function Orders() {
   const [rows, setRows] = useState([]);

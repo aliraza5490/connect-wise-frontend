@@ -1,4 +1,4 @@
-import { Layout } from '@/components/custom/layout';
+import { Layout } from '@/components/custom/Layout';
 import LoadingIcon from '@/components/LoaderIcon';
 import Rating from '@/components/Rating';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';

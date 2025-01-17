@@ -1,4 +1,4 @@
-import { Layout } from '@/components/custom/layout';
+import { Layout } from '@/components/custom/Layout';
 import LoadingIcon from '@/components/LoaderIcon';
 import {
   Card,

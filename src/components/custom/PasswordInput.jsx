@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import { IconEye, IconEyeOff } from '@tabler/icons-react';
 import * as React from 'react';
-import { Button } from './button';
+import { Button } from './Button';
 
 const PasswordInput = React.forwardRef(({ className, ...props }, ref) => {
   const [showPassword, setShowPassword] = React.useState(false);

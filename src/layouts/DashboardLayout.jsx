@@ -1,7 +1,7 @@
 import Sidebar from '@/components/SideBar';
 import mentorSideLinks from '@/data/mentorSideLinks';
 import sideLinks from '@/data/sideLinks';
-import useIsCollapsed from '@/hooks/use-is-collapsed';
+import useIsCollapsed from '@/hooks/useIsCollapsed';
 import { AnimatePresence } from 'framer-motion';
 import { Outlet } from 'react-router-dom';
 
